@@ -16,25 +16,20 @@ struct istorija {
 };
 struct istorija memorija[20];
 
-void unos_history_celsius(float celsius, int *mesto_istorija_c) {
-  if ( *mesto_istorija_c > 4){
-    for ( (*mesto_istorija_c) = 1 ; (*mesto_istorija_c) < 5; (*mesto_istorija_c)++ ){
-      memorija[*mesto_istorija_c-1].celsius = memorija[*mesto_istorija_c].celsius; }
-      *mesto_istorija_c = 4;
-      memorija[*mesto_istorija_c].celsius = celsius; }
-  else {
-    memorija[*mesto_istorija_c].celsius = celsius;
-  }
-}
+int brojac;
 
-void unos_history_fahrenheit(float fahrenheit, int *mesto_istorija_f) {
-  if ( *mesto_istorija_f > 4){
-    for ( (*mesto_istorija_f) = 1 ; (*mesto_istorija_f) < 5; (*mesto_istorija_f)++ ){
-        memorija[*mesto_istorija_f-1].fahrenheit = memorija[*mesto_istorija_f].fahrenheit; }
-        *mesto_istorija_f = 4;
-        memorija[*mesto_istorija_f].fahrenheit = fahrenheit; }
+void unos_history_celsius(float celsius, float fahrenheit) {
+  if ( brojac > 4){
+    for ( (brojac) = 1 ; (brojac) < 5; (brojac)++ ){
+      memorija[brojac-1].fahrenheit = memorija[brojac].fahrenheit;
+      memorija[brojac-1].celsius = memorija[brojac].celsius; }
+      brojac = 4;
+      memorija[brojac].celsius = celsius;
+      memorija[brojac].fahrenheit = fahrenheit;
+    }
   else {
-    memorija[*mesto_istorija_f].fahrenheit = fahrenheit;
+    memorija[brojac].celsius = celsius;
+    memorija[brojac].fahrenheit = fahrenheit;
   }
 }
 
@@ -46,22 +41,23 @@ float konvert_iz_farh_u_cels(float fahrenheit) {
 return ((PET/DEVET) * (fahrenheit - TRIDESET_DVA));
 }
 
-void konvert_cf(int *mesto_istorija_f) {
+void konvert_cf() {
   float celsius;
   float fahrenheit;
   printf("\nUnesite temperaturu u Celzijusima: ");
   scanf("%f", &celsius);
   fahrenheit=konvert_iz_cels_u_farh(celsius);
-  unos_history_fahrenheit(fahrenheit, mesto_istorija_f);
+  unos_history_celsius(celsius, fahrenheit);
+
   printf("Temperatura u Farenhaitima je: %f\n", fahrenheit);
 }
-void konvert_fc(int *mesto_istorija_c) {
+void konvert_fc() {
   float celsius;
   float fahrenheit;
   printf("\nUnesite temperaturu u Farenhaitima: ");
   scanf("%f", &fahrenheit);
   celsius = konvert_iz_farh_u_cels(fahrenheit);
-  unos_history_celsius(celsius, mesto_istorija_c);
+  unos_history_celsius(celsius, fahrenheit);
   printf("Temperatura u Celsiusima je: %f\n", celsius);
 }
 void tabela() {
@@ -76,21 +72,19 @@ void tabela() {
     celsius = celsius + 5; }
     printf("\n--------------------\n");
 }
-void konvert_again1(int *mesto_istorija_f) {
+void konvert_again1() {
   char answer;
   printf("\nDa li zelite da konvertujete ponovo ? [D/N]\n");
   while (scanf(" %c", &answer) == 1 && answer == 'D' || answer == 'd') {
-  (*mesto_istorija_f)++;
-  konvert_cf(mesto_istorija_f);
+  konvert_cf(brojac);
   printf("\nDa li zelite da konvertujete ponovo? [D/N]\n");
   }
 }
-void konvert_again2(int *mesto_istorija_c) {
+void konvert_again2() {
   char answer;
   printf("\nDa li zelite da konvertujete ponovo ? [D/N]\n");
   while (scanf(" %c", &answer) == 1 && answer == 'D' || answer == 'd') {
-  (*mesto_istorija_c)++;
-  konvert_fc(mesto_istorija_c);
+  konvert_fc(brojac);
   printf("\nDa li zelite da konvertujete ponovo? [D/N]\n");
   }
 }
@@ -105,37 +99,29 @@ void prikazi_menu(int *izbor) {
   printf("Unesite vas izbor: ");
   scanf("%d", izbor);
 }
-void history_ispis (int *izbor2) {
-  int j,mesto_istorija_f,mesto_istorija_c;
-    switch(*izbor2) {
-    case 1:
+void history_ispis () {
+  int j;
       for(j = 0; j < 5; j++) {
-        printf("%d: %.2f\n",(j+1), memorija[j].fahrenheit);}
-    break;
-    case 2:
-      for(j = 0; j < 5; j++) {
-        printf("%.2f\n", memorija[j].celsius);}
-    break;
-    default:
-      printf("\nPogresan unos\n");
-    break;
+        printf("%d: %.2f %.2f\n",(j+1),
+         memorija[j].celsius, memorija[j].fahrenheit);}
   }
- }
+
 int main() {
   int pogresni_unos = 0;
   int izbor, izbor2;
-  int mesto_istorija_c = 0, mesto_istorija_f = 0;
   do {
     prikazi_menu(&izbor);
   switch (izbor) {
   case 1:
-    konvert_cf(&mesto_istorija_f);
-    konvert_again1(&mesto_istorija_f);
+    konvert_cf();
+    brojac++;
+    konvert_again1();
     pogresni_unos = 0;
   break;
   case 2:
-    konvert_fc(&mesto_istorija_c);
-    konvert_again2(&mesto_istorija_c);
+    konvert_fc();
+    brojac++;
+    konvert_again2();
     pogresni_unos = 0;
   break;
   case 3:
@@ -144,10 +130,7 @@ int main() {
   break;
   case 4:
     printf("\nIstorijat konvertovanja\n");
-    printf("\n1.Iz Celzijusa u Farenhajte");
-    printf("\n2.Iz Farenhajta u Celzijuse\n");
-    scanf("%d",&izbor2);
-    history_ispis (&izbor2);
+    history_ispis ();
     pogresni_unos = 0;
   break;
   case 5:
