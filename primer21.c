@@ -16,13 +16,16 @@ void pravougaonikIspis(Prav a) {
    printf("-----------------\n");
 }
 
-typedef struct PresekPP {
+struct PresekPP {
    int povrsina;
    Prav presek;
-}
+};
 
-struct PresekPP presekDvaPravougaonika(Prav a, Prav b) {
-    
+struct PresekPP presekDvaPravougaonika(Prav a, Prav *b) {
+    struct PresekPP pp;
+    //(*b).x <=> b->x 
+    // ovde dolazi deo koji vi morate da uradite i da popunite ovu strukturu
+    return pp;
 }
 
 int povrsinaPrav(Prav a) {
