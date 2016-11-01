@@ -4,8 +4,11 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#define konverzija_f ((1.8 * celsius) + 32)
-#define konverzija_c ((5.0/9.0) * (fahrenheit-32))
+#define MAX_BROJ_POGRESNIH_UNOSA 3
+#define JEDAN_OSAM 1.8
+#define TRIDESET_DVA 32
+#define PET 5
+#define DEVET 9
 
 struct istorija {
   float celsius;
@@ -32,12 +35,21 @@ void unos_history_fahrenheit(float fahrenheit, struct istorija memorija[], int *
     memorija[*mesto_istorija_f].fahrenheit = fahrenheit;
   }
 }
+
+float konvert_iz_cels_u_farh(float celsius) {
+return (JEDAN_OSAM * celsius) + TRIDESET_DVA;
+}
+
+float konvert_iz_farh_u_cels(float fahrenheit) {
+return (PET/DEVET) * (fahrenheit - TRIDESET_DVA);
+}
+
 void konvert_cf(int *mesto_istorija_f) {
   float celsius;
   float fahrenheit;
   printf("\nUnesite temperaturu u Celzijusima: ");
   scanf("%f", &celsius);
-  fahrenheit=konverzija_f;
+  fahrenheit=konvert_iz_cels_u_farh(celsius);
   unos_history_fahrenheit(fahrenheit,memorija,mesto_istorija_f);
   printf("Temperatura u Farenhaitima je: %f\n", fahrenheit);
 }
@@ -46,7 +58,7 @@ void konvert_fc(int *mesto_istorija_c) {
   float fahrenheit;
   printf("\nUnesite temperaturu u Farenhaitima: ");
   scanf("%f", &fahrenheit);
-  celsius = konverzija_c;
+  celsius = konvert_iz_farh_u_cels(fahrenheit);
   unos_history_celsius(celsius,memorija,mesto_istorija_c);
   printf("Temperatura u Celsiusima je: %f\n", celsius);
 }
@@ -57,7 +69,7 @@ void tabela() {
   printf("--------------------");
   celsius = 0;
   while (celsius <= 100) {
-    fahrenheit=konverzija_f;
+    fahrenheit=konvert_iz_cels_u_farh(celsius);
     printf("\n%6.2f%11.2f", celsius, fahrenheit);
     celsius = celsius + 5; }
     printf("\n--------------------\n");
@@ -144,8 +156,9 @@ int main() {
     printf("Pogresan unos, pokusajte ponovo.\n");
     pogresni_unos++;
       if (pogresni_unos == 3) {
+        printf("Jebo mamu al si glup, moze samo tri puta.\n");
       return 0;
-   }	
+   }
   }
  }
   while (izbor != 5);
