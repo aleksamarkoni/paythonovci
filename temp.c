@@ -7,8 +7,8 @@
 #define MAX_BROJ_POGRESNIH_UNOSA 3
 #define JEDAN_OSAM 1.8
 #define TRIDESET_DVA 32
-#define PET 5
-#define DEVET 9
+#define PET 5.0
+#define DEVET 9.0
 
 struct istorija {
   float celsius;
@@ -39,7 +39,7 @@ void unos_history_fahrenheit(float fahrenheit, int *mesto_istorija_f) {
 }
 
 float konvert_iz_cels_u_farh(float celsius) {
-return (JEDAN_OSAM * celsius) + TRIDESET_DVA;
+return ((JEDAN_OSAM * celsius) + TRIDESET_DVA);
 }
 
 float konvert_iz_farh_u_cels(float fahrenheit) {
