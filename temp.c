@@ -15,17 +15,19 @@ struct istorija {
   float fahrenheit;
 };
 struct istorija memorija[20];
-void unos_history_celsius(float celsius, struct istorija memorija[], int *i) {
-  if ( *i > 4){
-    for ( (*i) = 1 ; (*i) < 5; (*i)++ ){
-      memorija[*i-1].celsius = memorija[*i].celsius; }
-      *i = 4;
-      memorija[*i].celsius = celsius; }
+
+void unos_history_celsius(float celsius, int *mesto_istorija_c) {
+  if ( *mesto_istorija_c > 4){
+    for ( (*mesto_istorija_c) = 1 ; (*mesto_istorija_c) < 5; (*mesto_istorija_c)++ ){
+      memorija[*mesto_istorija_c-1].celsius = memorija[*mesto_istorija_c].celsius; }
+      *mesto_istorija_c = 4;
+      memorija[*mesto_istorija_c].celsius = celsius; }
   else {
-    memorija[*i].celsius = celsius;
+    memorija[*mesto_istorija_c].celsius = celsius;
   }
 }
-void unos_history_fahrenheit(float fahrenheit, struct istorija memorija[], int *mesto_istorija_f) {
+
+void unos_history_fahrenheit(float fahrenheit, int *mesto_istorija_f) {
   if ( *mesto_istorija_f > 4){
     for ( (*mesto_istorija_f) = 1 ; (*mesto_istorija_f) < 5; (*mesto_istorija_f)++ ){
         memorija[*mesto_istorija_f-1].fahrenheit = memorija[*mesto_istorija_f].fahrenheit; }
@@ -41,7 +43,7 @@ return (JEDAN_OSAM * celsius) + TRIDESET_DVA;
 }
 
 float konvert_iz_farh_u_cels(float fahrenheit) {
-return (PET/DEVET) * (fahrenheit - TRIDESET_DVA);
+return ((PET/DEVET) * (fahrenheit - TRIDESET_DVA));
 }
 
 void konvert_cf(int *mesto_istorija_f) {
@@ -50,7 +52,7 @@ void konvert_cf(int *mesto_istorija_f) {
   printf("\nUnesite temperaturu u Celzijusima: ");
   scanf("%f", &celsius);
   fahrenheit=konvert_iz_cels_u_farh(celsius);
-  unos_history_fahrenheit(fahrenheit,memorija,mesto_istorija_f);
+  unos_history_fahrenheit(fahrenheit, mesto_istorija_f);
   printf("Temperatura u Farenhaitima je: %f\n", fahrenheit);
 }
 void konvert_fc(int *mesto_istorija_c) {
@@ -59,7 +61,7 @@ void konvert_fc(int *mesto_istorija_c) {
   printf("\nUnesite temperaturu u Farenhaitima: ");
   scanf("%f", &fahrenheit);
   celsius = konvert_iz_farh_u_cels(fahrenheit);
-  unos_history_celsius(celsius,memorija,mesto_istorija_c);
+  unos_history_celsius(celsius, mesto_istorija_c);
   printf("Temperatura u Celsiusima je: %f\n", celsius);
 }
 void tabela() {
@@ -103,7 +105,7 @@ void prikazi_menu(int *izbor) {
   printf("Unesite vas izbor: ");
   scanf("%d", izbor);
 }
-void history_ispis (struct istorija memorija[], int *izbor2) {
+void history_ispis (int *izbor2) {
   int j,mesto_istorija_f,mesto_istorija_c;
     switch(*izbor2) {
     case 1:
@@ -145,7 +147,7 @@ int main() {
     printf("\n1.Iz Celzijusa u Farenhajte");
     printf("\n2.Iz Farenhajta u Celzijuse\n");
     scanf("%d",&izbor2);
-    history_ispis (memorija,&izbor2);
+    history_ispis (&izbor2);
     pogresni_unos = 0;
   break;
   case 5:
