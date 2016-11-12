@@ -8,168 +8,165 @@ typedef struct Pravougaonik {
    int sirina;
    int duzina;
 } Prav;
-
 int povrisina(Prav a) {
    return a.sirina * a.duzina;
 }
-
 */
-
 class Pravougaonik {
 private:
     int x;
     int y;
     int duzina;
     int sirina;
-    int povrsina() {
-       return sirina * duzina;
-    }
-    int obim() {
-       return sirina*2 + duzina*2;
-    }
 public:
     Pravougaonik() {
-		x = 0;
-		y = 0;
-		sirina = 0;
-		duzina = 0;
-	}
-	Pravougaonik(int x1, int y1, int duzina1, int sirina1) {
-		x = x1;
-		y = y1;
-		duzina = duzina1;
-		sirina = sirina1;
+        x = 0;
+        y = 0;
+        sirina = 0;
+        duzina = 0;
+    }
+    Pravougaonik(int x1, int y1, int duzina1, int sirina1) {
+        setX(x1);
+        setY(y1);
+        setDuzina(duzina1);
+        setSirina(sirina1);
+    }
+
+    int getX() {
+       return x;
+    }
+    int getY() {
+       return y;
+    }
+    int getSirina() {
+       return sirina;
+    }
+    int getDuzina() {
+       return duzina;
+    }
+
+	int setX(int x1) {
 		if (x1 >= 0) {
-			x = x1;
-		} else {
-			cerr << "Ne moze x koji je negativan" << endl;
-		}
+            this->x = x1;
+        } else {
+            cerr << "Ne moze x koji je negativan" << endl;
+        }
+	}
+
+  int setY(int y1) {
 		if (y1 >= 0) {
-			y = y1;
-		} else {
-			cerr << "Ne moze y koji je negativan" << endl;
-		}
+            this->y = y1;
+        } else {
+            cerr << "Ne moze y koji je negativan" << endl;
+        }
+	}
+
+  int setDuzina(int duzina1) {
 		if (duzina1 > 0) {
-			duzina = duzina1;
-		} else {
-			cerr << "Ne moze duzina koja je negativna" << endl;
-		}
+            this->duzina = duzina1;
+        } else {
+            cerr << "Ne moze duzina koja je negativna" << endl;
+        }
+	}
+
+  int setSirina(int sirina1) {
 		if (sirina1 > 0) {
-			sirina = sirina1;
-		} else {
-			cerr << "Ne moze sirina koja je negativna" << endl;
-		}
-	}
-
-	int getX() {
-	   return x;
-	}
-
-	void setX(int x1) {
-		if (x1 > 0) {
-			this->x = x1;
-		} else {
-			cerr << "x mora biti pozitivan" << endl;
-		}
-	}
-
-	int getY() {
-	   return y;
-	}
-	void setY(int y1) {
-		if (y1 > 0) {
-			this->y = y1;
-		} else {
-			cerr << "y mora biti pozitivan" << endl;
-		}
-	}
-
-	int getSirina() {
-	   return sirina;
-	}
-	void setSirina(int sirina1) {
-		if (sirina1 > 0) {
-			this->sirina = sirina1;
-		} else {
-			cerr << "sirina mora biti pozitivna" << endl;
-		}
-	}
-
-	int getDuzina() {
-	   return duzina;
-	}
-	void setDuzina(int duzina) {
-		if (duzina > 0) {
-			this->duzina = duzina;
-		} else {
-			cerr << "duzina mora biti pozitivna" << endl;
-		}
+            this->sirina = sirina1;
+        } else {
+            cerr << "Ne moze sirina koja je negativna" << endl;
+        }
 	}
 
   int getPovrsina() {
-     return povrsina();
+     return sirina * duzina;
   }
-
   int getObim() {
-     return obim();
+     return sirina*2 + duzina*2;
   }
-
-int presekDvaPravougaonika(Pravougaonik a, Pravougaonik b) {
-int povrsina_preseka;
-int dx = 0;
-int dy = 0;
-   if ( a.x > b.x && a.x + a.duzina > b.x + b.duzina ) { //gornji leviX i donji leviX i levi SrednjiX
-     dx = b.x - a.x + b.duzina;
+class Pravougaonik presekDvaPravougaonika(Pravougaonik b) {
+class Pravougaonik pp;
+   if ( x > b.x && x + duzina > b.x + b.duzina ) { //gornji leviX i donji leviX i levi SrednjiX
+     pp.duzina = b.x - x + b.duzina;
    }
-   if ( a.y > b.y && a.y + a.sirina > b.y + b.sirina ) { //gornji leviY i gornji desniY
-     dy = b.y - a.y + b.sirina;
+   if ( y > b.y && y + sirina > b.y + b.sirina ) { //gornji leviY i gornji desniY
+     pp.sirina = b.y - y + b.sirina;
    }
-   if ( a.x < b.x && a.x + a.duzina > b.x + b.duzina ) { //gornji srednjiX
-     dx = b.duzina;
+   if ( x < b.x && x + duzina > b.x + b.duzina ) { //gornji srednjiX
+     pp.duzina = b.duzina;
    }
-   if ( a.y < b.y && a.y + a.sirina > b.y + b.sirina ) { //gornji srednjiY i levi srednjiY
-     if ( b.x < a.x ) {
-     dy = b.sirina; }
+   if ( y < b.y && y + sirina > b.y + b.sirina ) { //gornji srednjiY i levi srednjiY
+     if ( b.x < x ) {
+     pp.sirina = b.sirina; }
      else {
-     dy = b.sirina - a.y;
+     pp.sirina = b.sirina - y;
    }}
-   if ( a.y < b.y && a.y + a.sirina > b.y + b.sirina && b.x > a.x ) { //desni srednjiY
-     dy = b.sirina;
+   if ( y < b.y && y + sirina > b.y + b.sirina && b.x > x ) { //desni srednjiY
+     pp.sirina = b.sirina;
    }
-   if ( a.x < b.x && a.x + a.duzina < b.x + b.duzina ) { //gornji desniX i desni srednjiX i donji desniX
-       dx = a.duzina - b.x + a.x;
+   if ( x < b.x && x + duzina < b.x + b.duzina ) { //gornji desniX i desni srednjiX i donji desniX
+       pp.duzina = duzina - b.x + x;
    }
-   if ( a.y < b.y && a.y + a.sirina < b.y + b.sirina ) { //donji leviY
-     dy = a.sirina - b.y + a.y;
+   if ( y < b.y && y + sirina < b.y + b.sirina ) { //donji leviY
+     pp.sirina = sirina - b.y + y;
    }
-   if ( a.x < b.x && a.x + a.duzina > b.x + b.duzina && b.y > a.y && //srednji srednjiXY
-      a.y + a.sirina > b.y + b.sirina ) {
-        dx = b.duzina;
-        dy = b.sirina;
+   if ( x < b.x && x + duzina > b.x + b.duzina && b.y > y && //srednji srednjiXY
+      y + sirina > b.y + b.sirina ) {
+        pp.duzina = b.duzina;
+        pp.sirina = b.sirina;
    }
-   if ( a.x + a.duzina < b.x ) { //dole desno vanXY
-        dx = -1;
-        dy = 1;
+   if ( x + duzina < b.x ) { //Van desno
+        pp.duzina = -1;
+        pp.sirina = 1;
    }
+    if ( y + sirina < b.y ) { //Van dole
+        pp.duzina = -1;
+        pp.sirina = 1;
+    }
+    if ( y > b.y + b.sirina ) { //Van gore
+        pp.duzina = -1;
+        pp.sirina = 1;
+    }
+    if ( x > b.x + b.duzina ) { //Van levo
+        pp.duzina = -1;
+        pp.sirina = 1;
+    }
+    return pp;
+    }
 
-   povrsina_preseka = dx * dy;
-   return povrsina_preseka;
-   }
+bool operator==(const Pravougaonik& d) {
+   if (x != d.x)
+	   return false;
+   if (y != d.y)
+	   return false;
+   if (sirina != d.sirina)
+	   return false;
+   if (duzina != d.duzina)
+	   return false;
+   return true;
+}
+
+bool operator!=(const Pravougaonik& d) {
+   return !(*this == d);
+}
+
 };
-
-
 
 
 
 int main() {
    Pravougaonik a(3,3,10,6);
-   Pravougaonik b(14,7,3,3);
-   Pravougaonik c;
-   cout << "Povrsina za c je: " << c.presekDvaPravougaonika(a,b) << endl;
+   Pravougaonik b(6,6,5,4);
+   Pravougaonik c = a.presekDvaPravougaonika(b);
+   Pravougaonik d = b.presekDvaPravougaonika(a);
+   cout << c.getX() << " " << c.getY() << " " << c.getDuzina() << " " << c.getSirina() << endl;
+   cout << "Povrsina za c je: " << c.getPovrsina() << endl;
    cout << "Obim a: " << a.getObim() << endl;
    cout << "Obim b: " << b.getObim() << endl;
-   cout << "Povrsina a: " << a.getPovrsina() << endl;
-   cout << "Povrsina b: " << b.getPovrsina() << endl;
-   //cout << "c: " << c.getX() << " " << c.y << " " << c.sirina << " " << c.duzina << endl;
+   cout << "Povrsina a: " << a.getDuzina() << " " << a.getSirina() << " = " << a.getPovrsina() << endl;
+   cout << "Povrsina b: " << b.getDuzina() << " " << b.getSirina() << " = " << b.getPovrsina() << endl;
+   cout << "Povrsina c: " << c.getDuzina() << " " << c.getSirina() << " = " << c.getPovrsina() << endl;
+   cout << "Obim c: " << c.getObim() << endl;
+   cout << true << " " << false << endl;
+   cout << "Da li su c i d isti: " << (d == c) << endl;
    return 0;
 }
