@@ -1,17 +1,45 @@
 #include <iostream>
+#include <climits>
+#include <math.h>
+#include <stdlib.h>
 
 using namespace std;
-/*
-typedef struct Pravougaonik {
+
+class Tacka {
+private:
    int x;
    int y;
-   int sirina;
-   int duzina;
-} Prav;
-int povrisina(Prav a) {
-   return a.sirina * a.duzina;
+public:
+
+   int getX() {
+      return x;
+   }
+   int getY() {
+      return y;
+   }
+
+Tacka() {
+	this->x = 0;
+	this->y = 0;
 }
-*/
+
+Tacka(int x1, int y1): x(x1), y(y1) {}
+
+float udaljenost() {
+	return udaljenost(0,0);
+}
+
+float udaljenost(int x, int y) {
+	int xa = abs(this->x - x);
+	int ya = abs(this->y - y);
+	return sqrt(xa*xa+ya*ya);
+}
+
+float udaljenost(Tacka t) {
+	return udaljenost(t.x, t.y);
+}
+};
+
 class Pravougaonik {
 private:
     int x;
@@ -19,13 +47,13 @@ private:
     int duzina;
     int sirina;
 public:
-    Pravougaonik() {
-        x = 0;
-        y = 0;
-        sirina = 0;
-        duzina = 0;
+        Pravougaonik() {
+        this->x = 0;
+        this->y = 0;
+        this->sirina = 0;
+        this->duzina = 0;
     }
-    Pravougaonik(int x1, int y1, int duzina1, int sirina1) {
+        Pravougaonik(int x1, int y1, int duzina1, int sirina1) {
         setX(x1);
         setY(y1);
         setDuzina(duzina1);
@@ -83,55 +111,42 @@ public:
   int getObim() {
      return sirina*2 + duzina*2;
   }
+
+bool TackaUPrav(Tacka a) {
+  return TackaUPrav (a.getX(), a.getY());
+}
+
+bool TackaUPrav(int x, int y) {
+  int tx1 = this->x;
+  int ty1 = this->y;
+  if (tx1 < x && ty1 < y && tx1 + duzina > x && ty1 + sirina > y) {
+    return true;
+  }
+  else {
+  return false;
+  }
+}
+
 class Pravougaonik presekDvaPravougaonika(Pravougaonik b) {
-class Pravougaonik pp;
-   if ( x > b.x && x + duzina > b.x + b.duzina ) { //gornji leviX i donji leviX i levi SrednjiX
-     pp.duzina = b.x - x + b.duzina;
-   }
-   if ( y > b.y && y + sirina > b.y + b.sirina ) { //gornji leviY i gornji desniY
-     pp.sirina = b.y - y + b.sirina;
-   }
-   if ( x < b.x && x + duzina > b.x + b.duzina ) { //gornji srednjiX
-     pp.duzina = b.duzina;
-   }
-   if ( y < b.y && y + sirina > b.y + b.sirina ) { //gornji srednjiY i levi srednjiY
-     if ( b.x < x ) {
-     pp.sirina = b.sirina; }
-     else {
-     pp.sirina = b.sirina - y;
-   }}
-   if ( y < b.y && y + sirina > b.y + b.sirina && b.x > x ) { //desni srednjiY
-     pp.sirina = b.sirina;
-   }
-   if ( x < b.x && x + duzina < b.x + b.duzina ) { //gornji desniX i desni srednjiX i donji desniX
-       pp.duzina = duzina - b.x + x;
-   }
-   if ( y < b.y && y + sirina < b.y + b.sirina ) { //donji leviY
-     pp.sirina = sirina - b.y + y;
-   }
-   if ( x < b.x && x + duzina > b.x + b.duzina && b.y > y && //srednji srednjiXY
-      y + sirina > b.y + b.sirina ) {
-        pp.duzina = b.duzina;
-        pp.sirina = b.sirina;
-   }
-   if ( x + duzina < b.x ) { //Van desno
-        pp.duzina = -1;
-        pp.sirina = 1;
-   }
-    if ( y + sirina < b.y ) { //Van dole
-        pp.duzina = -1;
-        pp.sirina = 1;
-    }
-    if ( y > b.y + b.sirina ) { //Van gore
-        pp.duzina = -1;
-        pp.sirina = 1;
-    }
-    if ( x > b.x + b.duzina ) { //Van levo
-        pp.duzina = -1;
-        pp.sirina = 1;
-    }
-    return pp;
-    }
+int tx1 = this->x;
+int ty1 = this->y;
+int rx1 = b.x;
+int ry1 = b.y;
+long tx2 = tx1; tx2 += this->duzina;
+long ty2 = ty1; ty2 += this->sirina;
+long rx2 = rx1; rx2 += b.duzina;
+long ry2 = ry1; ry2 += b.sirina;
+if (tx1 < rx1) tx1 = rx1;
+if (ty1 < ry1) ty1 = ry1;
+if (tx2 > rx2) tx2 = rx2;
+if (ty2 > ry2) ty2 = ry2;
+tx2 -= tx1;
+ty2 -= ty1;
+
+if (tx2 < LONG_MIN) tx2 = LONG_MIN;
+if (ty2 < LONG_MIN) ty2 = LONG_MIN;
+return Pravougaonik(tx1, ty1, tx2, ty2);
+}
 
 bool operator==(const Pravougaonik& d) {
    if (x != d.x)
@@ -151,22 +166,24 @@ bool operator!=(const Pravougaonik& d) {
 
 };
 
-
-
 int main() {
-   Pravougaonik a(3,3,10,6);
-   Pravougaonik b(6,6,5,4);
+   Tacka t(4,4);
+   Tacka t1(6, 6);
+   Pravougaonik a(6,6,5,4);
+   Pravougaonik b(3,3,10,6);
    Pravougaonik c = a.presekDvaPravougaonika(b);
    Pravougaonik d = b.presekDvaPravougaonika(a);
    cout << c.getX() << " " << c.getY() << " " << c.getDuzina() << " " << c.getSirina() << endl;
-   cout << "Povrsina za c je: " << c.getPovrsina() << endl;
    cout << "Obim a: " << a.getObim() << endl;
    cout << "Obim b: " << b.getObim() << endl;
+   cout << "Obim c: " << c.getObim() << endl;
    cout << "Povrsina a: " << a.getDuzina() << " " << a.getSirina() << " = " << a.getPovrsina() << endl;
    cout << "Povrsina b: " << b.getDuzina() << " " << b.getSirina() << " = " << b.getPovrsina() << endl;
    cout << "Povrsina c: " << c.getDuzina() << " " << c.getSirina() << " = " << c.getPovrsina() << endl;
-   cout << "Obim c: " << c.getObim() << endl;
-   cout << true << " " << false << endl;
    cout << "Da li su c i d isti: " << (d == c) << endl;
+   cout << "Udaljenost izmedju dve tacke je: " << " " << t.udaljenost(c.getX(),c.getY()) << endl;
+   cout << "Da li se tacka nalazi unutar pravougaonika: " << " " << a.TackaUPrav(4,4) << endl;
+   cout << "Da li se tacka nalazi unutar pravougaonika: " << " " << b.TackaUPrav(t) << endl;
+
    return 0;
 }
