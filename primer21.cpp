@@ -2,43 +2,11 @@
 #include <climits>
 #include <math.h>
 #include <stdlib.h>
+#include "Pravougaonik.h"
+#include "Tacka.h"
+
 
 using namespace std;
-
-class Tacka {
-private:
-   int x;
-   int y;
-public:
-
-   int getX() {
-      return x;
-   }
-   int getY() {
-      return y;
-   }
-
-Tacka() {
-	this->x = 0;
-	this->y = 0;
-}
-
-Tacka(int x1, int y1): x(x1), y(y1) {}
-
-float udaljenost() {
-	return udaljenost(0,0);
-}
-
-float udaljenost(int x, int y) {
-	int xa = abs(this->x - x);
-	int ya = abs(this->y - y);
-	return sqrt(xa*xa+ya*ya);
-}
-
-float udaljenost(Tacka t) {
-	return udaljenost(t.x, t.y);
-}
-};
 
 class Pravougaonik {
 private:
@@ -90,7 +58,7 @@ public:
 	}
 
   int setDuzina(int duzina1) {
-		if (duzina1 > 0) {
+		if (duzina1 >= 0) {
             this->duzina = duzina1;
         } else {
             cerr << "Ne moze duzina koja je negativna" << endl;
@@ -98,7 +66,7 @@ public:
 	}
 
   int setSirina(int sirina1) {
-		if (sirina1 > 0) {
+		if (sirina1 >= 0) {
             this->sirina = sirina1;
         } else {
             cerr << "Ne moze sirina koja je negativna" << endl;
@@ -166,6 +134,8 @@ bool operator!=(const Pravougaonik& d) {
 
 };
 
+void test(Pravougaonik a, Pravougaonik b, Pravougaonik c);
+
 int main() {
    Tacka t(4,4);
    Tacka t1(6, 6);
@@ -185,5 +155,24 @@ int main() {
    cout << "Da li se tacka nalazi unutar pravougaonika: " << " " << a.TackaUPrav(4,4) << endl;
    cout << "Da li se tacka nalazi unutar pravougaonika: " << " " << b.TackaUPrav(t) << endl;
 
+   Pravougaonik a1(1,1,5,5);
+   Pravougaonik b1(3,3,5,5);
+   Pravougaonik c1(3,3,2,2);
+   test(a1, b1, c1);
+   
+   Pravougaonik a2(1,1,1,1);
+   Pravougaonik b2(10,10,1,1);
+   Pravougaonik c2(0,0,0,0);
+   test(a2,b2,c2);
+   
    return 0;
+}
+
+void test(Pravougaonik a, Pravougaonik b, Pravougaonik c) {
+	Pravougaonik pp = a.presekDvaPravougaonika(b);
+	if (pp == c) {
+		cout << "Test je prosao." << endl;
+	} else {
+		cout << "Test je pao." << endl;
+	}
 }
