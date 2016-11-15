@@ -4,7 +4,7 @@
 class Tacka {
 private:
     int x;
-	  int y;
+	int y;
 public:
 	Tacka();
 	Tacka(int x1, int y1);
