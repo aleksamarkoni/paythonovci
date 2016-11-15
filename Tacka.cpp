@@ -5,11 +5,11 @@
 int Tacka::getX() {
       return x;
    }
-   
+
 int Tacka::getY() {
       return y;
    }
-   
+
 Tacka::Tacka() {
 	this->x = 0;
 	this->y = 0;

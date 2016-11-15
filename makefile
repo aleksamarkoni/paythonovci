@@ -1,10 +1,10 @@
-CC=gcc
+CC=g++
 
-%.o: %.c mojefunkcije.h
+%.o: %.cpp Tacka.h Pravougaonik.h
 	$(CC) -c -o $@ $<
 
-program: program.o mojefunkcije.o
-	$(CC) -o program program.o mojefunkcije.o
+program: primer21.o Tacka.o Pravougaonik.o
+	$(CC) -o primer primer21.o Tacka.o Pravougaonik.o
 
 clean:
-	rm program program.o mojefunkcije.o
+	rm primer primer21.o Tacka.o Pravougaonik.o
