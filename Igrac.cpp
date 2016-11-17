@@ -49,6 +49,12 @@ public:
 		return brItema;
 	}
 	
+	//igram ima {koliko ima itema}, koliko nosi {kolicna} 
+	//for (int i = 0; i < brItema; i++) {
+	//	outstream << itemi[i];
+	//}
+	//
+	
 	~Igrac() {
 		delete [] itemi;
 	}
@@ -66,5 +72,6 @@ int main() {
 	for (int i = 0; i < 20; i++) {
 		pera.dodajItem(cvet);
 	}
-	cout << "kraj dodavanja, pera ima: " << pera.kolikoImasItema() << endl;
+	(cout << "kraj dodavanja, pera ima: ") << pera.kolikoImasItema() << endl;
+	cout << "Item sekira: " << sekira << endl;
 }
