@@ -29,21 +29,74 @@ public:
 		 }
    }
    
-   public Vojnik lastStand() {
-	   //1.) ubij sve vojnike u krugu
-	   killThemAll();
-	   //2.) izbaci sve mrtve
-	   //3.) ponovi ovaj postupak sve dok ne ostane samo jedan vojnik
+   Niz(int koliko) {
+	   z = koliko;
+	   u = koliko;
+	   krug = new Vojnik[u];
+	   for (int i = 0; i < z; i++) {
+			krug[i].i = i+1;
+		 }
    }
    
-   public void killThemAll() {
-	   //1.) ubij vojnika do sebe i izbaci ga iz niza
-	   //Ako ima paran broj vojnika to je to, a ako je neparan ubi i prvog u nizu
+   // dodati parametar i koji predstavlja kojeg vojnika od sebe ubijas
+   // ako je prazno to jest jedan, do znaci ubijas vojnika do sebe
+   // ako je dva onda drugog od sebe itd.
+   // modifikovati program da radi ispravno i u tom slucaju.
+   Vojnik lastStand() {
+	   // napraviti nov niz koliko i napraviti da ima 'u' vojnika
+	   while(z > 1) {
+		killThemAll();
+		removeDeadSolders();
+	   }
+	   return krug[0];
+   }
+   
+   void killThemAll() {
 	   for (int i = 0; i < z; i+=2) {
-		   if (i+1 == z)
-		   krug[i+1].ziv = false; // ubij vojnika do sebe
+			   krug[(i+1)%z].ziv = false; // ubij vojnika do sebe
 	   }
    }
+   //napraviti metodu int killThemAll() koja vraca koliko je vojnika preostalo zivih
+   // marko i dusan
+   
+   void removeDeadSolders() {
+	   // izracunati koliko je preostalo zivih koristeci for petlju
+	   // pesic, nikola i zolak
+	   
+	   // napraviti niz koji ima onoliko elemenata koliko ima prezivelih vojnika.
+	   Vojnik *krugZivih = new Vojnik[u];
+	   int br = 0;
+	   for (int i = 0; i < z; i++) {
+		   if (krug[i].ziv) {
+			   krugZivih[br++] = krug[i];
+		   }
+	   }
+	   z = br;
+	   delete [] krug;
+	   krug = krugZivih;
+   }
+   
+   // napraviti novu metodu koja ne pravi nov krug, vec samo izbacuje mrtve iz postojeceg kruga
+   void removeDeadSoldersInPlace() {
+	   int br = 0;
+	   for (int i = 0; i < z; i++) {
+		   if (krug[i].ziv) {
+			   krug[br++] = krug[i];
+		   }
+	   }
+	   z = br;
+   }
+   
+   // napraviti novu metodu koja ne pravi nov krug, vec samo izbacuje mrtve iz postojeceg kruga
+   void removeDeadSoldersInPlace2() {
+	   //int br = 0;
+	   //if (br mrtav)
+		//   izbaci ga iz niza
+	    //   i smanji ukupan broj elemenat za 1
+	   //ovo treba da ponavljam dok ne izbacim sve mrtve, to jest dok ne stignem do kraja niza.
+   }
+   
+  
    
    
    friend ostream &operator<<( ostream &output, const Niz &a ) {
@@ -63,4 +116,23 @@ public:
 int main() {
    Niz test;
    cout << test << endl;
+   test.killThemAll();
+   cout << test << endl;
+   test.removeDeadSolders();
+   cout << test << endl;
+   test.killThemAll();
+   cout << test << endl;
+   test.removeDeadSolders();
+   cout << test << endl;
+   
+   Niz test1(41);
+   cout << test1.lastStand() << endl;
+   
+   cout << test1.lastStand() << endl;
+   
+   // prebaciti sve u h, napraviti make fajl
+   // zatim napisati testove, nadjite video i formulu 
+   // i onda uporedite da li lastStand vraca isto sto i formula
+   
+   
 }
