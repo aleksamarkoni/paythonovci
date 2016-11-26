@@ -1,10 +1,11 @@
-CC=gcc
+CC=g++
+DEPS = Josiphklasa.h Vojnik.h VojnikGS.h
 
-%.o: %.c mojefunkcije.h
-	$(CC) -c -o $@ $<
+vojnik: Josiph.o Josiphklasa.o Vojnik.o VojnikGS.o
+	$(CC) -o $@ $<
 
-program: program.o mojefunkcije.o
-	$(CC) -o program program.o mojefunkcije.o
+%.o: Josiph.cpp $(DEPS)
+	$(CC) -c Josiph.cpp Josiphklasa.h Vojnik.h VojnikGS.h
 
 clean:
-	rm program program.o mojefunkcije.o
+	rm vojnik Josiph.o
