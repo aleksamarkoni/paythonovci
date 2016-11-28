@@ -6,9 +6,11 @@ class Vojnik {
 protected:
     int poz;
     bool ziv;
+    void ubijVojnika();
 public:
     friend ostream &operator<<( ostream &output, const Vojnik &a );
     Vojnik();
-    friend class Josiph;
+    int getPoz();
+    bool getZiv();
 };
 #endif

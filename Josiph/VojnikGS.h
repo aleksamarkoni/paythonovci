@@ -5,9 +5,7 @@ class VojnikGS : public Vojnik {
 private:
    int brojZivota;
 public:
-	Glavonja();
+  VojnikGS();
 	void ubijVojnika();
-  friend class Vojnik;
-  friend class Josiph;
 };
 #endif

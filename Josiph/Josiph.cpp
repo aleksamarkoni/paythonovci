@@ -2,19 +2,18 @@
 #include <stdlib.h>
 #include "Josiphklasa.h"
 #include "Vojnik.h"
-#include "VojnikGS.h"
 
 using namespace std;
 
 void Josiph::ispis() {
 	for (int i = 0; i < z; i++) {
-		cout << "(" << krug[i].poz << ", " << (krug[i].ziv?"Ziv":"Mrtav") << ")";
+		cout << "(" << krug[i].getPoz() << ", " << (krug[i].getZiv()?"Ziv":"Mrtav") << ")";
   }
 	cout << "\n" << endl;
 }
 
 ostream &operator<<( ostream &output, const Vojnik &a ) {
-	output << "(" << a.poz << "," << (a.ziv?"Ziv":"Mrtav") << ")";
+	output << "(" << a.getPoz() << "," << (a.getZiv()?"Ziv":"Mrtav") << ")";
 return output;
 }
 Josiph::Josiph() {
@@ -22,8 +21,27 @@ Josiph::Josiph() {
  u = 5;
  krug = new Vojnik[u];
  for (int i = 0; i < z; i++) {
-	 krug[i].poz = i+1;
+	 krug[i].getPoz() = i+1;
+	 krug[i] = dodajVojnike();
 	}
+}
+
+void Josiph::dodajVojnike() {
+    int vrsta = rand() * 4 +1;
+    switch (vrsta) {
+        case 1:
+           Vojnik();
+           break;
+        case 2:
+           Sreckovic::Sreckovic();
+           break;
+			  case 3:
+				   Glavonja();
+					 break;
+				case 4:
+				   VojnikGS();
+					 break;
+    }
 }
 
 Josiph::Josiph(int koliko, int gp) {
@@ -31,9 +49,10 @@ Josiph::Josiph(int koliko, int gp) {
 	z = koliko;
 	krug = new Vojnik[u];
   for (int i = 0; i < z; i++) {
-	  krug[i].poz = i+1;
+	  krug[i].getPoz() = i+1;
+		krug[i] = dodajVojnike();
+
   }
-		krug[gp] = Glavonja();
 }
 
 void Josiph::killThemAll(int m) {
@@ -41,32 +60,15 @@ void Josiph::killThemAll(int m) {
     m = 1;
   }
   for (int i = 0; i < z; i+=(m+1)) {
-      krug[(i+m)%z].ziv = false;
+      krug[(i+m)%z].getZiv() = ubijVojnika();
   }
-}
-
-void ubijVojnika() {
-	srand (time(NULL));
-	int iSecret = rand() % 100 + 1;
-	if (ziv) {
-		if (iSecret <= 70)
-			brojZivota--;
-			if (brojZivota == 0) {
-				ziv = false;
-				cout << "Glavonja Sreckovic je ubijen" << endl;
-		} else {
-			cout << "Glavonja Sreckovic zivi i ima jos " << brojZivota << " zivota" << endl;
-		}
-	} else {
-		cout << "Glavonja Sreckovic je vec mrtav" << endl;
-	}
 }
 
 Vojnik Josiph::LastStand(int m) {
 	while(z > 1) {
-  ispis();
+  cout << test; endl;
   killThemAll(m);
-  ispis();
+	cout << test; endl;
   removeDeadSoldersInPlace2();
   }
   return krug[0];
@@ -76,7 +78,7 @@ void Josiph::removeDeadSoldiers() {
 	Vojnik *krugZivih = new Vojnik[u];
 	int br = 0;
 	for (int i = 0; i < z; i++) {
-		if (krug[i].ziv) {
+		if (krug[i].getZiv()) {
 			krugZivih[br++] = krug[i];
 		}
 	}
@@ -88,7 +90,7 @@ void Josiph::removeDeadSoldiers() {
 	void Josiph::removeDeadSoldersInPlace() {
 		int br = 0;
 		for (int i = 0; i < z; i++) {
-			if (krug[i].ziv) {
+			if (krug[i].getZiv()) {
 				krug[br++] = krug[i];
 			}
 		}
@@ -99,7 +101,7 @@ void Josiph::removeDeadSoldiers() {
     int br = 0;
     u = z;
     for (int i = 0; i < u; i++) {
-      if (krug[i].ziv) {
+      if (krug[i].getZiv()) {
         krug[br++] = krug[i]; }
         else {
         z--; }
@@ -118,15 +120,6 @@ void Josiph::removeDeadSoldiers() {
 	 output << "]";
 	 return output;
 	}
-
-Vojnik::Vojnik() {
-	ziv = true;
-}
-
-VojnikGS::Glavonja() {
-	ziv = true;
-	brojZivota = 3;
-}
 
 int main() {
 	int n;
