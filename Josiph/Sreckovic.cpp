@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "Sreckovic.h"
 
+using namespace std;
+
 Sreckovic::Sreckovic() {
   ziv = true;
   }

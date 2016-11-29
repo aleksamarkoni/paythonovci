@@ -1,5 +1,7 @@
 #include "Vojnik.h"
 #include "VojnikGS.h"
+#include "Sreckovic.h"
+#include "Glavonja.h"
 #ifndef _Josiphklasa_H
 #define _Josiphklasa_H
 using namespace std;
@@ -13,11 +15,11 @@ private:
   void removeDeadSoldersInPlace();
   void removeDeadSoldersInPlace2();
   void ispis();
-  void dodajVojnike();
+  Vojnik dodajVojnike();
 public:
   friend ostream &operator<<( ostream &output, const Josiph &a );
   Josiph();
-  Josiph(int koliko, int gp);
+  Josiph(int koliko);
   Vojnik LastStand(int m);
 };
 #endif

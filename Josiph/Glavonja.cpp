@@ -1,6 +1,8 @@
 #include "Vojnik.h"
 #include "Glavonja.h"
 
+using namespace std;
+
 Glavonja::Glavonja() {
 	ziv = true;
   brojZivota = 2;

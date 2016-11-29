@@ -12,5 +12,8 @@ public:
     Vojnik();
     int getPoz();
     bool getZiv();
+    void setPoz(int poz);
+    void setZiv(bool ziv);
+    friend class Josiph;
 };
 #endif
