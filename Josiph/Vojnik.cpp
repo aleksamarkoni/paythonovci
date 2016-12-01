@@ -24,3 +24,7 @@ void Vojnik::setPoz(int poz) {
   void Vojnik::setZiv(bool ziv) {
   this->ziv = ziv;
   }
+  ostream &operator<<( ostream &output, const Vojnik &a ) {
+  	output << "(" << a.poz << "," << (a.ziv?"Ziv":"Mrtav") << ")";
+  return output;
+  }

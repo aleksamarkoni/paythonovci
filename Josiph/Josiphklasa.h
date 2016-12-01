@@ -15,7 +15,7 @@ private:
   void removeDeadSoldersInPlace();
   void removeDeadSoldersInPlace2();
   void ispis();
-  Vojnik dodajVojnike();
+  Vojnik dodajVojnika(int *vrsta);
 public:
   friend ostream &operator<<( ostream &output, const Josiph &a );
   Josiph();

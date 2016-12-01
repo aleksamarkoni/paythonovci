@@ -1,14 +1,10 @@
 #include <iostream>
 #include <stdlib.h>
+#include <time.h>
 #include "Josiphklasa.h"
 #include "Vojnik.h"
 
 using namespace std;
-
-ostream &operator<<( ostream &output, const Vojnik &a ) {
-	output << "(" << a.poz << "," << (a.ziv?"Ziv":"Mrtav") << ")";
-return output;
-}
 
 /*Josiph::Josiph() {
  z = 5;
@@ -24,33 +20,39 @@ return output;
 }*/
 
 Josiph::Josiph(int koliko) {
+	int vrsta = 0;
 	u = koliko;
 	z = koliko;
 	//int poz;
 	krug = new Vojnik[u];
   for (int i = 0; i < z; i++) {
-  	krug[i] = dodajVojnike();
+  	krug[i] = dodajVojnika(&vrsta);
   	//poz = i+1;
   	krug[i].poz = i+1;
+		cout << krug[i] << endl;
 	 // krug[i].getPoz() = i+1;
   }
 }
 
-Vojnik Josiph::dodajVojnike() {
-    int vrsta = rand() * 4 +1;
-    switch (vrsta) {
-        case 1:
-           Vojnik();
+Vojnik Josiph::dodajVojnika(int *vrsta) {
+	srand (time(NULL));
+		*vrsta += rand() % 4 + 1;
+		if (*vrsta > 4){
+		*vrsta = rand() % 4 + 1;}
+			cout << *vrsta << endl;
+    switch (*vrsta) {
+      case 1:
+					 return Vojnik();
            break;
-        case 2:
-           Sreckovic();
+      case 2:
+					 return Sreckovic();
            break;
-		case 3:
-		   Glavonja();
-		   break;
-		case 4:
-		   VojnikGS();
-		   break;
+      case 3:
+           return Glavonja();
+           break;
+      case 4:
+           return VojnikGS();
+           break;
     }
 }
 
