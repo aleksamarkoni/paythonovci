@@ -2,52 +2,68 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
+
+#define MAX_BROJ_POGRESNIH_UNOSA 3
+#define JEDAN_OSAM 1.8
+#define TRIDESET_DVA 32
+#define PET 5.0
+#define DEVET 9.0
 
 struct istorija {
   float celsius;
   float fahrenheit;
+  int tip;
 };
 struct istorija memorija[20];
+int brojac;
 
-void unos_history_celsius(float celsius, struct istorija memorija[], int *i) {
-  if ( *i > 4){
-    for ( (*i) = 1 ; (*i) < 5; (*i)++ ){
-      memorija[*i-1].celsius = memorija[*i].celsius; }
-      *i = 4;
-      memorija[*i].celsius = celsius; }
+void unos_history_celsius(float celsius, int tip, float fahrenheit) {
+  if ( brojac > 4){
+    for ( (brojac) = 1 ; (brojac) < 5; (brojac)++ ){
+      memorija[brojac-1].fahrenheit = memorija[brojac].fahrenheit;
+      memorija[brojac-1].celsius = memorija[brojac].celsius;
+      memorija[brojac-1].tip = memorija[brojac].tip;}
+      brojac = 4;
+      memorija[brojac].celsius = celsius;
+      memorija[brojac].tip = tip;
+      memorija[brojac].fahrenheit = fahrenheit;
+    }
   else {
-    memorija[*i].celsius = celsius;
+    memorija[brojac].celsius = celsius;
+    memorija[brojac].tip = tip;
+    memorija[brojac].fahrenheit = fahrenheit;
   }
 }
-void unos_history_fahrenheit(float fahrenheit, struct istorija memorija[], int *k) {
-  if ( *k > 4){
-    for ( (*k) = 1 ; (*k) < 5; (*k)++ ){
-        memorija[*k-1].fahrenheit = memorija[*k].fahrenheit; }
-        *k = 4;
-        memorija[*k].fahrenheit = fahrenheit; }
-  else {
-    memorija[*k].fahrenheit = fahrenheit;
-  }
+
+float konvert_iz_cels_u_farh(float celsius) {
+return ((JEDAN_OSAM * celsius) + TRIDESET_DVA);
 }
-float konvert_cf(int *k) {
+
+float konvert_iz_farh_u_cels(float fahrenheit) {
+return ((PET/DEVET) * (fahrenheit - TRIDESET_DVA));
+}
+
+void konvert_cf() {
+  int tip = 0;
   float celsius;
   float fahrenheit;
   printf("\nUnesite temperaturu u Celzijusima: ");
   scanf("%f", &celsius);
-  fahrenheit = (1.8 * celsius) + 32;
-  unos_history_fahrenheit(fahrenheit,memorija,k);
+  fahrenheit=konvert_iz_cels_u_farh(celsius);
+  unos_history_celsius(celsius, tip, fahrenheit);
+
   printf("Temperatura u Farenhaitima je: %f\n", fahrenheit);
-  return (fahrenheit);
 }
-float konvert_fc(int *i) {
+void konvert_fc() {
+  int tip = 1;
   float celsius;
   float fahrenheit;
   printf("\nUnesite temperaturu u Farenhaitima: ");
   scanf("%f", &fahrenheit);
-  celsius = (5.0/9.0) * (fahrenheit-32);
-  unos_history_celsius(celsius,memorija,i);
+  celsius = konvert_iz_farh_u_cels(fahrenheit);
+  unos_history_celsius(celsius, tip, fahrenheit);
   printf("Temperatura u Celsiusima je: %f\n", celsius);
-  return(celsius);
 }
 void tabela() {
   float celsius;
@@ -56,31 +72,28 @@ void tabela() {
   printf("--------------------");
   celsius = 0;
   while (celsius <= 100) {
-    fahrenheit = (1.8 * celsius) + 32;
+    fahrenheit=konvert_iz_cels_u_farh(celsius);
     printf("\n%6.2f%11.2f", celsius, fahrenheit);
     celsius = celsius + 5; }
     printf("\n--------------------\n");
 }
-void konvert_again1(int *k) {
+void konvert_again1() {
   char answer;
   printf("\nDa li zelite da konvertujete ponovo ? [D/N]\n");
   while (scanf(" %c", &answer) == 1 && answer == 'D' || answer == 'd') {
-  (*k)++;
-  konvert_cf(k);
+  konvert_cf(brojac);
   printf("\nDa li zelite da konvertujete ponovo? [D/N]\n");
   }
 }
-void konvert_again2(int *i) {
+void konvert_again2() {
   char answer;
   printf("\nDa li zelite da konvertujete ponovo ? [D/N]\n");
   while (scanf(" %c", &answer) == 1 && answer == 'D' || answer == 'd') {
-  (*i)++;
-  konvert_fc(i);
-
+  konvert_fc(brojac);
   printf("\nDa li zelite da konvertujete ponovo? [D/N]\n");
   }
 }
-int prikazi_menu(int *izbor) {
+void prikazi_menu(int *izbor) {
   printf("\nSta zelite da konvertujete?:");
   printf("\n****************************");
   printf("\n1. Iz Celzijusa u Farenhaite\n");
@@ -89,56 +102,61 @@ int prikazi_menu(int *izbor) {
   printf("4. Istorijat konvertovanja\n");
   printf("5. Izlaz\n");
   printf("Unesite vas izbor: ");
-  scanf("%d", &*izbor);
-  return *izbor;
+  scanf("%d", izbor);
 }
-void history_ispis (struct istorija memorija[], int *izbor2) {
-  int j,k,i;
-    switch(*izbor2) {
-    case 1:
+void history_ispis () {
+  int j;
       for(j = 0; j < 5; j++) {
-        printf("%d: %.2f\n",(j+1), memorija[j].fahrenheit);}
-    break;
-    case 2:
-      for(j = 0; j < 5; j++) {
-        printf("%.2f\n", memorija[j].celsius);}
-    break;
-    default:
-      printf("\nPogresan unos\n");
-    break;
+        printf("%d: tip %d %.2f C %.2f F\n",(j+1), memorija[j].tip,
+         memorija[j].celsius, memorija[j].fahrenheit);}
+         printf("\ntip 0 - iz Celzijusa u Farenhaita\n");
+         printf("tip 1 - iz Farenhaita u Celzijusa\n");
   }
- }
-int main() {
 
+int main() {
+  int pogresni_unos = 0;
+  char answer;
   int izbor, izbor2;
-  int i = 0, k = 0;
-  while (izbor != 5) {
+  do {
     prikazi_menu(&izbor);
   switch (izbor) {
   case 1:
-    konvert_cf(&k);
-    konvert_again1(&k);
+  do {
+    konvert_cf();
+    brojac++;
+    printf("\nDa li zelite da konvertujete ponovo ? [D/N]\n");
+  } while (scanf(" %c", &answer) == 1 && answer == 'D' || answer == 'd');
+    pogresni_unos = 0;
   break;
   case 2:
-    konvert_fc(&i);
-    konvert_again2(&i);
+  do {
+    konvert_fc();
+    brojac++;
+    printf("\nDa li zelite da konvertujete ponovo ? [D/N]\n");
+  } while (scanf(" %c", &answer) == 1 && answer == 'D' || answer == 'd');
+    pogresni_unos = 0;
   break;
   case 3:
     tabela();
+    pogresni_unos = 0;
   break;
   case 4:
     printf("\nIstorijat konvertovanja\n");
-    printf("\n1.Iz Celzijusa u Farenhajte");
-    printf("\n2.Iz Farenhajta u Celzijuse\n");
-    scanf("%d",&izbor2);
-    history_ispis (memorija,&izbor2);
+    history_ispis ();
+    pogresni_unos = 0;
   break;
   case 5:
     printf("Hvala na koristenju programa.\n");
+    pogresni_unos = 0;
   break;
   default:
     printf("Pogresan unos, pokusajte ponovo.\n");
-  return 0;
+    pogresni_unos++;
+      if (pogresni_unos == 3) {
+        printf("Jebo mamu al si glup, moze samo tri puta.\n");
+      return 0;
+   }
   }
  }
+  while (izbor != 5);
 }
