@@ -1,110 +1,151 @@
 #include<iostream>
-#include "putanja/Zivot.h"
-#include "putanjapesic/Zivot.h"
-
 
 using namespace std;
 
-#define WIDTH 10
-#define HEIGHT 10
-#define PRAZNO '.'
-#define DRVO 'X'
-
-int mod(int a, int b);
-
-void ispis(char mapa[WIDTH][HEIGHT]) {
-	cout << endl;
-	cout << "---------------------" << endl;
-	cout << endl;
-	for (int i = 0; i < WIDTH; i++) {
-		for (int j = 0; j < HEIGHT; j++) {
-			cout << mapa[i][j];
-		}
-		cout << endl;
+class zivot {
+private:
+	int width;
+	int height;
+	static const char prazno = '.';
+	static const char drvo = 'X';
+	int **mapa;
+	zivot(const zivot &mapa) {
+		int **mapa = new int*[width];
+		for(int i = 0; i < width; i++)
+		    mapa[i] = new int[height];
 	}
+  zivot() {
+		width = 10;
+		height = 10;
+		int **mapa = new int*[width];
+		for(int i = 0; i < width; i++)
+		    mapa[i] = new int[height];
+	}
+  zivot(int w, int h) {
+		int **mapa = new int*[w];
+		for(int i = 0; i < w; i++)
+		    mapa[i] = new int[h];
+	}
+  ~zivot();
+public:
+
+	int getwidth() {
+		return width;
+	}
+
+	int getheight() {
+		return height;
+	}
+   zivot mapa = zivot();
+	 zivot mapa = zivot(int w, int h);
+};
+
+void simulacija(int bs, bool ssk = false) {
+    if (bs >= 0) {
+		  if (ssk == true) {
+				for(int i = 0; i < bs; i++) {
+					jedanKorak();
+					cout << mapa << endl;
+				}
+			} else {
+			    for(int i = 0; i < bs; i++) {
+				    jedanKorak();
+				  }
+			    cout << mapa << endl;
+			  }
+		}
 }
 
-int brojSuseda(char mapa[WIDTH][HEIGHT],int i,int j) {
+int mod(int a, int b) {
+	return (a%b+b)%b;
+}
+
+ostream &operator<<(ostream &output, const zivot &mapa) {
+	output << endl;
+	output << "---------------------" << endl;
+	output << endl;
+	for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
+			output << mapa[i][j];
+		}
+		output << endl;
+	}
+	return output;
+}
+
+int brojSuseda(char mapa[width][height],int i,int j) {
 	int br = 0;
 	int p, q;
 	for (int k = -1; k <= 1; k++) {
 		for (int t = -1; t <= 1; t++) {
-			p = mod(i + k, WIDTH);
-			q = mod(j + t, HEIGHT);
-			//if (p < 0) {
-			//  p = HEIGHT-1;
-			//}
-			//if (q < 0) {
-			//  q = WIDTH-1;
-			//}
-			//if (p >= HEIGHT) {
-			//  p = 0;
-			//}
-			//if (q > WIDTH) {
-			//  q = 0;
-			//}
-			if (mapa[p][q] == DRVO)
-				br++;
+			p = mod(i + k, width);
+			q = mod(j + t, height);
+
+			if (mapa[p][q] == drvo)
+			br++;
 		}
 	}
-	if (mapa[i][j] == DRVO) {
+	if (mapa[i][j] == drvo) {
 		br--;
 	}
 	return br;
 }
 
-void Kopiranje(char mapa[WIDTH][HEIGHT], char sg[WIDTH][HEIGHT]);
+void Kopiranje(char mapa[width][height], char sg[width][height]);
 
-void jedanKorak(char mapa[WIDTH][HEIGHT]) {
-	char sg[WIDTH][HEIGHT];
+void jedanKorak(char mapa[width][height]) {
+	char sg[width][height];
 	int bs = 0;
-	for (int i = 0; i < WIDTH; i++) {
-		for (int j = 0; j < HEIGHT; j++) {
-			if (mapa[i][j] == PRAZNO) {
+	for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {	char drvo = 'X';
+
+			if (mapa[i][j] == prazno) {
 				bs = brojSuseda(mapa, i, j);
 				sg[i][j] = mapa[i][j];
-				if (bs == 3 && mapa[i][j] == PRAZNO) {
-				  sg[i][j] = DRVO;
+				if (bs == 3 && mapa[i][j] == prazno) {
+					sg[i][j] = drvo;
 				}
 			} else {
-				  bs = brojSuseda(mapa, i, j);
-				  if (bs < 2) {
-						sg[i][j] = PRAZNO;
-					}
-					if (bs == 2 || bs == 3) {
-						sg[i][j] = DRVO;
-					}
-					if (bs > 3) {
-						sg[i][j] = PRAZNO;
-					}
-			 }
+				bs = brojSuseda(mapa, i, j);
+				if (bs < 2) {
+					sg[i][j] = prazno;
+				}
+				if (bs == 2 || bs == 3) {
+					sg[i][j] = drvo;
+				}
+				if (bs > 3) {
+					sg[i][j] = prazno;
+				}
+			}
 		}
 	}
 	ispis(sg);
 	Kopiranje(mapa, sg);
 }
 
-void Kopiranje(char mapa[WIDTH][HEIGHT], char sg[WIDTH][HEIGHT]) {
-	for (int i = 0; i < WIDTH; i++) {
-		for (int j = 0; j < HEIGHT; j++) {
+void Kopiranje(char mapa[width][height], char sg[width][height]) {
+	for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
 			mapa[i][j] = sg[i][j];
-    }
-  }
+		}
+	}
 }
 
-void uNos(char mapa[WIDTH][HEIGHT]) {
-	int n, i, j;
+void uNos(char mapa[width][height]) {
+	int n, i, j, bs;
+	cout << "Unesite broj simulacija" << endl;
+	cin >> bs;
 	cout << "Koliko zelite drva ?" << endl;
 	cin >> n;
-	while (n > 100) {
-		cout << " Ne moze vise od 100 drveca, unesite ponovo." << endl;
+	while (n !> width*height) {
+		cout << " Ne moze toliko drveca, unesite ponovo." << endl;
 		cin >> n;
 	}
 	for (int k = 0; k < n; k++) {
-	  cout << "Unesite vrstu: " << endl;
+		cout << "Unesite vrstu: " << endl;
 		cin >> i;
 		i -= 1;
-		while (i < 0) {
+		while (i < 0 && i !> width) {
 			cout << "Ne moze broj 0, unesite ponovo vrstu" << endl;
 			cin >> i;
 			i -= 1;
@@ -112,85 +153,59 @@ void uNos(char mapa[WIDTH][HEIGHT]) {
 		cout << "Unesite kolonu: " << endl;
 		cin >> j;
 		j -= 1;
-		while (j < 0) {
+		while (j < 0 && !> height) {
 			cout << "Ne moze broj 0, unesite ponovo kolonu" << endl;
 			cin >> j;
 			j -= 1;
 		}
-		mapa[i][j] = DRVO;
+		mapa[i][j] = drvo;
 	}
 }
 
 int main() {
-	char mapa[WIDTH][HEIGHT];
-	for (int i = 0; i < WIDTH; i++) {
-		for (int j = 0; j < HEIGHT; j++) {
-			mapa[i][j] = PRAZNO;
+	char mapa[width][height];
+	for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
+			mapa[i][j] = prazno;
 		}
 	}
-	//uNos(mapa);
-	
-	mapa[0][0] = DRVO;
-	mapa[0][1] = DRVO;
-	mapa[0][2] = DRVO;
-	
-	ispis(mapa);
+	uNos(mapa);
+  mapa.simulacija(5, true);
 	for (int i = 0, j = 4; i < 2; i++) {
 		jedanKorak(mapa);
 	}
-	
-	//int i = 9;
-	//int j = 0;
-	//i+1; // za ovaj slucaj treba
-	//j-1; // za ovde treba 9
-	//int rezi = mod(i+1, WIDTH);
-	//int rezj = mod(j-1, HEIGHT);
-	//cout << rezi << endl;
-	//cout << rezj << endl;
-	
-	//Domaci 
+
+	//Domaci
 	// 1) Imate klasu koja se zove Zivot()
 	//    - private delu, ona treba da ima ovu mapu ovih slova
 	//    - imacete podrazumevani konstruktor, koji pravi mapu 10x10
 	//	  - imacete drugi konstruktor koji pravi mapu wxh, w duzina, h sirina, koja se zadaje kao parametri konstruktoru
 	//	  - ovde treba koristiti dinamicku memoriju
-	//    - sto se tice javnih metoda, potrebo je da ima samo sledeci, 
+	//    - sto se tice javnih metoda, potrebo je da ima samo sledeci,
 	//		Zivot z = Zivot();
-	//      z.postaviDrvo(4, 4); ovde vodi racuna da su indeksi i i j dobri, to jest da nisu negativni i veci od w ili h respektivno	 	 
-	//	- void similacija(int i, bool ssk = false); ona vrsi i koraka simulacije. ovde treba voditi racuna da je i >= 0, ova funkcija samo stampa mapu posle i koraka simulacije
+	//      z.postaviDrvo(4, 4); ovde vodi racuna da su indeksi i i j dobri, to jest da nisu negativni i veci od w ili h respektivno
+	//	- void simulacija(int i, bool ssk = false); ona vrsi i koraka simulacije. ovde treba voditi racuna da je i >= 0, ova funkcija samo stampa mapu posle i koraka simulacije
 	//       i nece vrsiti promenu orginalne konfigurcije.
 	// 		 parametar ssk odredjuje da li stampamo sve korake ili samo poslednji
-	//    - similacija(5, true);
+	//    - simulacija(5, true);
 	//    - overridovati << operator tako da moze da se istampa klasa Zivot, to jest njegova mapa.
 	// primer koriscenja ovog programa:
 	/*     	Zivot z = Zivot(5, 5);
-			z.postaviDrvo(1, 1); // znaci ovo drvo ide na mapa[0][0]
-			z.postaviDrvo(1, 2);
-			z.postaviDrvo(1, 3);
-			cout << z << endl; // kako izgleda trenutna mapa sa drvima
-			z.similacija(1); // ovde treba da se ispise ona mapa kao u nasem primeru
-			cout << z << endl; // ovde treba da dobijem pocetnu mapu, ne mapu posle jednog koraka
-			z.simulacije(5);
-			z.similacija(10);
-			z.similacija(20);
-			z.similacija(40, true);
+	z.postaviDrvo(1, 1); // znaci ovo drvo ide na mapa[0][0]
+	z.postaviDrvo(1, 2);
+	z.postaviDrvo(1, 3);
+	cout << z << endl; // kako izgleda trenutna mapa sa drvima
+	z.simulacija(1); // ovde treba da se ispise ona mapa kao u nasem primeru
+	cout << z << endl; // ovde treba da dobijem pocetnu mapu, ne mapu posle jednog koraka
+	z.simulacije(5);
+	z.simulacija(10);
+	z.simulacija(20);
+	z.simulacija(40, true);
 	*/
-	
+
 	//pera(int, konver, prebac, filtir)
 	//pera(int) {pera(int, false, false, false)}
 	//pera(int, konver) {pera(int, konver, false, false)}
 	//pera(int, kover, prea)
-	slackeri::Zivot()
-	using namespace babe;
-	Zivot()
-	z.dodajDrvo();
-	z.dodajDrvo();
-	z.dodajDrvo();
-	z.dodajDrvo();
-	z.dodajDrvo();
-	using namespace slackeri;
-	Zivot z = Zivot();
-}
 
-int mod(int a, int b)
-{ return (a%b+b)%b; }
+}
