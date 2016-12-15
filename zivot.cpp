@@ -3,189 +3,98 @@
 
 using namespace std;
 
-int mod(int a, int b) {
+int zivot::mod(int a, int b) {
 	return (a%b+b)%b;
 }
 
-zivot& zivot::operator=(const zivot &mapa) {
+zivot::zivot() {
+  this->width = 10;
+  this->height = 10;
+  mapa = new char*[width];
+  for(int i = 0; i < width; i++)
+    mapa[i] = new char[height];
   for (int i = 0; i < width; i++) {
     for (int j = 0; j < height; j++) {
       mapa[i][j] = PRAZNO;
     }
   }
-  return *this;
-}
-
-void zivot::setWidth(int width1) {
-	width = width1;
-}
-
-void zivot::setHeight(int height1) {
-	height = height1;
-}
-
-zivot::zivot() {
-	width = 10;
-	height = 10;
-  mapa = PRAZNO;
-}
-zivot::~zivot() {
-	for(int i = 0; i < height; i++) {
-    delete [] mapa[i];
-  }
-delete [] mapa;
 }
 
 zivot::zivot(int width, int height) {
+  //TODO treba proveriti width i height < 0
+  this->width = width;
+  this->height = height;
   mapa = new char*[width];
-	for(int i = 0; i < width; i++)
-		mapa[i] = new char[height];
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < height; j++) {
-        mapa[i][j] = PRAZNO;
-    }
-  }
-}
-zivot(const zivot& matrica) {
-	width = matrica.width;
-	height = matrica.height;
-}
-
-/*
-ostream &operator<<(ostream &output, &mapa) {
-	cout << endl;
-	cout << "---------------------" << endl;
-	cout << endl;
-			cout << mapa << endl;
-}
-*/
-int zivot::brojSuseda(zivot **mapa, int i, int j) {
-	int br = 0;
-	int p, q;
-	for (int k = -1; k <= 1; k++) {
-		for (int t = -1; t <= 1; t++) {
-			p = mod(i + k, width);
-			q = mod(j + t, height);
-			if (mapa[p][q] == DRVO)
-				br++;
-		}
-	}
-	if (mapa[i][j] == DRVO) {
-		br--;
-	}
-	return br;
-}
-
-void zivot::jedanKorak(zivot **mapa) {
-	zivot **sg;
-	int bs = 0;
-	for (int i = 0; i < width; i++) {
-		for (int j = 0; j < height; j++) {
-			if (mapa[i][j] == PRAZNO) {
-				bs = brojSuseda(mapa, i, j);
-				sg[i][j] = mapa[i][j];
-				if (bs == 3 && mapa[i][j] == PRAZNO) {
-				  sg[i][j] = DRVO;
-				}
-			} else {
-				  bs = brojSuseda(mapa, i, j);
-				  if (bs < 2) {
-						sg[i][j] = PRAZNO;
-					}
-					if (bs == 2 || bs == 3) {
-						sg[i][j] = DRVO;
-					}
-					if (bs > 3) {
-						sg[i][j] = PRAZNO;
-					}
-			 }
-		}
-	}
-	cout << sg << endl;
-	Kopiranje(mapa, sg);
-}
-
-void zivot::Kopiranje(zivot **mapa, zivot **sg) {
-	for (int i = 0; i < width; i++) {
-		for (int j = 0; j < height; j++) {
-			mapa[i][j] = sg[i][j];
+  for(int i = 0; i < width; i++)
+    mapa[i] = new char[height];
+  for (int i = 0; i < width; i++) {
+    for (int j = 0; j < height; j++) {
+      mapa[i][j] = PRAZNO;
     }
   }
 }
 
-void zivot::velicinaMape() {
-	int width1, height1;
-	cout << "Unesite sirinu mape." << endl;
-	cin >> width1;
-	cout << "Unesite visinu mape." << endl;
-	cin >> height1;
-	zivot::setWidth(width1);
-	zivot::setHeight(height1);
+zivot::zivot(const zivot& o) {
+  this->width = o.getWidth();
+  this->height = o.getHeight();
+  mapa = new char*[width];
+  for(int i = 0; i < width; i++)
+    mapa[i] = new char[height];
+  for (int i = 0; i < width; i++) {
+    for (int j = 0; j < height; j++) {
+      mapa[i][j] = o.dajPolje(i, j);
+    }
+  }
 }
 
-void zivot::uNos(zivot **mapa) {
-	int n, i, j, brSimulacija;
-	cout << "Koliko zelite drva?" << endl;
-	cin >> n;
-	while (n > width*height) {
-		cout << " Ne moze toliko drveca, unesite ponovo." << endl;
-		cin >> n;
-	}
-	for (int k = 0; k < n; k++) {
-		cout << "Unesite vrstu:" << endl;
-		cin >> i;
-		i -= 1;
-		while (i < 0 && i > width) {
-			cout << "Ne moze broj 0 i broj veci od vrste, unesite ponovo vrstu." << endl;
-			cin >> i;
-			i -= 1;
-		}
-		cout << "Unesite kolonu:" << endl;
-		cin >> j;
-		j -= 1;
-		while (j < 0 && j > height) {
-			cout << "Ne moze broj 0 i broj veci od kolone, unesite ponovo kolonu." << endl;
-			cin >> j;
-			j -= 1;
-		}
-		mapa[i][j] = DRVO;
-	}
-	cout << "Unesite broj simulacija" << endl;
-	cin >> brSimulacija;
+zivot& zivot::operator=(const zivot &o) {
+  this->width = o.getWidth();
+  this->height = o.getHeight();
+  mapa = new char*[width];
+  for(int i = 0; i < width; i++)
+    mapa[i] = new char[height];
+  for (int i = 0; i < width; i++) {
+    for (int j = 0; j < height; j++) {
+      mapa[i][j] = o.dajPolje(i, j);
+    }
+  }
+  //TODO objasniti ovo
+  return *this;
 }
 
-void zivot::simulacija(int brSimulacija, bool ssk = false, zivot **mapa) {
-    if (brSimulacija >= 0) {
-		  if (ssk == true) {
-				for(int i = 0; i < brSimulacija; i++) {
-					zivot::jedanKorak(mapa);
-					cout << mapa << endl;
-				}
-			} else {
-			    for(int i = 0; i < brSimulacija; i++) {
-				    zivot::jedanKorak(mapa);
-				  }
-			    cout << mapa << endl;
-			  }
-		}
+zivot::~zivot() {
+  for(int i = 0; i < width; i++) {
+    delete [] mapa[i];
+  }
+  delete [] mapa;
 }
 
-void zivot::praznaMapa(zivot **mapa) {
-	for (int i = 0; i < width; i++) {
-		for (int j = 0; j < height; j++) {
-			mapa[i][j] = PRAZNO;
-		}
-	}
+int zivot::getWidth() const {
+  return width;
+}
+
+int zivot::getHeight() const {
+  return height;
+}
+
+char zivot::dajPolje(int i, int j) const {
+	//TODO proveriti da li su i i j u opsezima
+	return mapa[i][j];
+}
+
+void zivot::dodajDrvo(int i, int j) {
+  //TODO ovde idu provere i i j > 0 i manje od widht height
+  mapa[i][j] = DRVO;
 }
 
 int main() {
-	zivot::velicinaMape();
+  //zivot::velicinaMape();
   //zivot mapa = zivot();
 
-	zivot::praznaMapa(mapa);
-	zivot::uNos(mapa);
-  zivot::simulacija(brSimulacija, ssk, mapa);
-	}
+  //zivot::praznaMapa(mapa);
+  //zivot::uNos(mapa);
+  //zivot::simulacija(brSimulacija, ssk, mapa);
+  //}
 
 	//Domaci
 	// 1) Imate klasu koja se zove Zivot()
@@ -229,3 +138,16 @@ int main() {
 	z.dodajDrvo();
 	using namespace slackeri;
 	Zivot z = Zivot();*/
+    zivot z = zivot();
+	cout << z;
+	z.dodajDrvo(2, 2);
+	cout << z;
+	zivot p = zivot(z);
+	cout << "ovo je p" << endl;
+	cout << p;
+	//TODO objasniti zasto vracamo pozaziva *this kod operator=
+	zivot j = p = z;
+	//hint da bi ovo j = p = z moglo da radi. Zbog cega?
+	cout << "ovo je j" << endl;
+	cout << j;
+}

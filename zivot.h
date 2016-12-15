@@ -5,24 +5,30 @@ using namespace std;
 
 class zivot {
 private:
-  static int width;
-  static int height;
+  int width;
+  int height;
+  char **mapa;
+  int mod(int a, int b);
+  void jedanKorak();
+public:
   zivot();
   zivot(int width, int height);
   ~zivot();
-  zivot(const zivot& matrica);
-public:
-  zivot** mapa;
+  zivot(const zivot& zivot);
   zivot& operator=(const zivot &zivot);
-  int getWidth();
-  int getHeight();
-  void setWidth(int width1);
-  void setHeight(int height1);
-  void velicinaMape();
-  void praznaMapa(zivot **mapa);
-  void uNos(zivot **mapa);
-  void Kopiranje(zivot **mapa, zivot **sg);
-  void jedanKorak(zivot **mapa);
-  int brojSuseda(zivot **mapa, int i, int j);
-  void simulacija(int brSimulacija, bool ssk, zivot **mapa);
+  void dodajDrvo(int i, int j);
+  int getWidth() const;
+  int getHeight() const;
+  char dajPolje(int i, int j) const;
+  int brojSuseda(int i, int j) const;
+  void simulacija(int brSimulacija, bool ssk) const;
+  friend ostream& operator <<(ostream& out,const zivot &z) {
+    out << "--------------" << endl;
+    for (int i = 0; i < z.width; i++) {
+      for (int j = 0; j < z.height; j++) {
+        cout << z.mapa[i][j];
+      }
+	  cout << endl;
+    }
+}
 };
