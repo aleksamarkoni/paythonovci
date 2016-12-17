@@ -16,19 +16,12 @@ public:
   ~zivot();
   zivot(const zivot& zivot);
   zivot& operator=(const zivot &zivot);
-  void dodajDrvo(int i, int j);
+  void dodajDrvo();
+  void jedanKorak(int width, int height);
   int getWidth() const;
   int getHeight() const;
   char dajPolje(int i, int j) const;
   int brojSuseda(int i, int j) const;
   void simulacija(int brSimulacija, bool ssk) const;
-  friend ostream& operator <<(ostream& out,const zivot &z) {
-    out << "--------------" << endl;
-    for (int i = 0; i < z.width; i++) {
-      for (int j = 0; j < z.height; j++) {
-        cout << z.mapa[i][j];
-      }
-	  cout << endl;
-    }
-}
+  friend ostream& operator <<(ostream& out,const zivot &z);
 };
