@@ -9,7 +9,8 @@ private:
   int height;
   char **mapa;
   int mod(int a, int b);
-  void jedanKorak();
+  void jedanKorak(int width, int height);
+  int brojSuseda(int i, int j);
 public:
   zivot();
   zivot(int width, int height);
@@ -17,11 +18,9 @@ public:
   zivot(const zivot& zivot);
   zivot& operator=(const zivot &zivot);
   void dodajDrvo();
-  void jedanKorak(int width, int height);
   int getWidth() const;
   int getHeight() const;
   char dajPolje(int i, int j) const;
-  int brojSuseda(int i, int j) const;
   void simulacija(int brSimulacija, bool ssk) const;
   friend ostream& operator <<(ostream& out,const zivot &z);
 };

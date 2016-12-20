@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int zivot::mod(int a, int b) {
+int mod(int a, int b) {
 	return (a%b+b)%b;
 }
 
@@ -145,7 +145,7 @@ ostream& operator <<(ostream& out,const zivot &z) {
   }
 }
 
-/*int brojSuseda(int i,int j) {
+int zivot::brojSuseda(int i, int j) {
 	int br = 0;
 	int p, q;
 	for (int k = -1; k <= 1; k++) {
@@ -162,15 +162,14 @@ ostream& operator <<(ostream& out,const zivot &z) {
 	}
 return br;
 }
-*/
 
-void Kopiranje(char sg[width][height], int width, int height) {
+/*void Kopiranje(char sg[width][height], int width, int height) {
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
 			mapa[i][j] = sg[i][j];
 		}
 	}
-}
+}*/
 
 void zivot::jedanKorak(int width, int height) {
 	char sg[width][height];
@@ -197,10 +196,22 @@ void zivot::jedanKorak(int width, int height) {
 		}
 	}
 }
-	Kopiranje(sg);
+	mapa = sg;
 }
 
-void zivot::simulacija(int brSimulacija, bool ssk = false) const {
+void simulacija(int bs, bool ssk = false) {
+  zivot kopija = zivot(*this);
+  for (int k = 0; k < bs; k++) {
+    zivot pom = kopija;
+      pom.jedanKorak();
+    if (ssk == true) {
+      cout << pom;
+		}
+  }
+    kopija = pom;
+if (ssk == false) {
+    cout << kopija;
+  }
 }
 
 int main() {
@@ -270,7 +281,8 @@ int main() {
   Unos(&width, &height);
   zivot h = zivot(width, height);
   h.dodajDrvo();
-  h.jedanKorak(width, height);
+	int bs = 5;
+  h.simulacija(bs, true);
   //Unos(&width, &height);
   //zivot p = zivot(width,height);
   cout << h;
