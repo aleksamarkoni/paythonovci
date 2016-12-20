@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int mod(int a, int b) {
+int zivot::mod(int a, int b) {
 	return (a%b+b)%b;
 }
 
@@ -171,39 +171,52 @@ return br;
 	}
 }*/
 
-void zivot::jedanKorak(int width, int height) {
-	char sg[width][height];
-	int bs = 0;
-	for (int i = 0; i < width; i++) {
-		for (int j = 0; j < height; j++) {
-      if (mapa[i][j] == PRAZNO) {
-			bs = brojSuseda(i, j);
-			sg[i][j] = mapa[i][j];
-			if (bs == 3 && mapa[i][j] == PRAZNO) {
-				sg[i][j] = DRVO;
-			}
-		} else {
-			bs = brojSuseda(i, j);
-			if (bs < 2) {
-				sg[i][j] = PRAZNO;
-			}
-			if (bs == 2 || bs == 3) {
-				sg[i][j] = DRVO;
-			}
-			if (bs > 3) {
-				sg[i][j] = PRAZNO;
-			}
-		}
-	}
-}
-	mapa = sg;
+bool zivot::SetSim() {
+	this->ssk = true;
 }
 
-void simulacija(int bs, bool ssk = false) {
-  zivot kopija = zivot(*this);
-  for (int k = 0; k < bs; k++) {
-    zivot pom = kopija;
-      pom.jedanKorak();
+void zivot::simulacija(int brSimulacija, bool ssk = false) {
+	zivot kopija = zivot(*this);
+	zivot pom = zivot(width, height);
+	int bs = 0;
+	for (int k = 0; k < brSimulacija; k++) {
+	  for (int i = 0; i < width; i++) {
+		  for (int j = 0; j < height; j++) {
+        if (kopija.mapa[i][j] == PRAZNO) {
+			  bs = brojSuseda(i, j);
+			  pom.mapa[i][j] = kopija.mapa[i][j];
+			  if (bs == 3 && kopija.mapa[i][j] == PRAZNO) {
+				  pom.mapa[i][j] = DRVO;
+			  }
+		  } else {
+			  bs = brojSuseda(i, j);
+			  if (bs < 2) {
+				  pom.mapa[i][j] = PRAZNO;
+			  }
+			  if (bs == 2 || bs == 3) {
+				  pom.mapa[i][j] = DRVO;
+			  }
+			  if (bs > 3) {
+				  pom.mapa[i][j] = PRAZNO;
+			  }
+	  	}
+	  }
+  }
+	if (ssk == true) {
+		cout << pom;
+	}
+}
+	kopija = pom;
+if (ssk == false) {
+	cout << kopija;
+}
+}
+
+/*void zivot::simulacija(int brSimulacija, bool ssk = false) {
+	zivot pom;
+	zivot kopija;
+  for (int k = 0; k < brSimulacija; k++) {
+      jedanKorak(width, height);
     if (ssk == true) {
       cout << pom;
 		}
@@ -212,7 +225,7 @@ void simulacija(int bs, bool ssk = false) {
 if (ssk == false) {
     cout << kopija;
   }
-}
+}*/
 
 int main() {
   //zivot::velicinaMape();
@@ -281,8 +294,9 @@ int main() {
   Unos(&width, &height);
   zivot h = zivot(width, height);
   h.dodajDrvo();
-	int bs = 5;
-  h.simulacija(bs, true);
+	int brSimulacija = 5;
+	h.SetSim();
+  h.simulacija(brSimulacija, true);
   //Unos(&width, &height);
   //zivot p = zivot(width,height);
   cout << h;
