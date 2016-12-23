@@ -1,0 +1,16 @@
+<
+sta je ispravan nacin deklaracije promenljive?
+- a = 4;
+* int a;
+- int a = 4;
+- int a = 4
+>
+{
+"pitanje" : "Sta je ispravan nacin deklaracije promenljive?",
+"odgovori" : [
+ {"tacan": false, "odgovor" : "a = 4;"}, 
+ "int a;", 
+ "int a = 4;", 
+ "int a = 4"
+  ]
+}
