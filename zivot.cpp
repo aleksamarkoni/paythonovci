@@ -136,7 +136,7 @@ void zivot::dodajDrvo() {
 }
 
 ostream& operator <<(ostream& out,const zivot &z) {
-  out << "--------------" << endl;
+  //out << "--------------" << endl;
   for (int i = 0; i < z.width; i++) {
     for (int j = 0; j < z.height; j++) {
       cout << z.mapa[i][j];
@@ -171,14 +171,12 @@ return br;
 	}
 }*/
 
-bool zivot::SetSim() {
-	this->ssk = true;
-}
-
-void zivot::simulacija(int brSimulacija, bool ssk = false) {
+void zivot::simulacija(int brSimulacija, bool ssk) {
 	zivot kopija = zivot(*this);
 	zivot pom = zivot(width, height);
 	int bs = 0;
+	cout << "Pocetna mapa" << endl;
+	cout << kopija;
 	for (int k = 0; k < brSimulacija; k++) {
 	  // ovde pocinjemo jedan korak simulacije
 	  for (int i = 0; i < width; i++) {
@@ -213,21 +211,11 @@ void zivot::simulacija(int brSimulacija, bool ssk = false) {
 		cout << kopija;
 	}
 }
-
-/*void zivot::simulacija(int brSimulacija, bool ssk = false) {
-	zivot pom;
-	zivot kopija;
-  for (int k = 0; k < brSimulacija; k++) {
-      jedanKorak(width, height);
-    if (ssk == true) {
-      cout << pom;
-		}
+	if (ssk == false) {
+	  cout << "Poslednji korak: " << endl;
+	  cout << kopija;
   }
-    kopija = pom;
-if (ssk == false) {
-    cout << kopija;
-  }
-}*/
+}
 
 int main() {
   //zivot::velicinaMape();
@@ -296,10 +284,26 @@ int main() {
   Unos(&width, &height);
   zivot h = zivot(width, height);
   h.dodajDrvo();
-  int brSimulacija = 5;
-  //h.SetSim();
-  h.simulacija(brSimulacija, true);
+	int brSimulacija;
+	int ssk;
+	cout << "Unesite zeljeni broj koraka u simulaciji: " << endl;
+	cin >> brSimulacija;
+	cout << "Izaberite broj koraka:" << endl;
+	cout << "1) Svi koraci." << endl;
+	cout << "2) Poslednji korak." << endl;
+	cin >> ssk;
+	switch (ssk) {
+		case 1:
+		  h.simulacija(brSimulacija, true);
+		  break;
+		case 2:
+		  h.simulacija(brSimulacija, false);
+		  break;
+		default:
+		  cout << "ne moze taj broj" << endl;
+		  return 0;
+	}
+  //h.simulacija(brSimulacija, true);
   //Unos(&width, &height);
   //zivot p = zivot(width,height);
-  cout << h;
 }
