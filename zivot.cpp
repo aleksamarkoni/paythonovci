@@ -180,36 +180,38 @@ void zivot::simulacija(int brSimulacija, bool ssk = false) {
 	zivot pom = zivot(width, height);
 	int bs = 0;
 	for (int k = 0; k < brSimulacija; k++) {
+	  // ovde pocinjemo jedan korak simulacije
 	  for (int i = 0; i < width; i++) {
 		  for (int j = 0; j < height; j++) {
-        if (kopija.mapa[i][j] == PRAZNO) {
-			  bs = brojSuseda(i, j);
-			  pom.mapa[i][j] = kopija.mapa[i][j];
-			  if (bs == 3 && kopija.mapa[i][j] == PRAZNO) {
-				  pom.mapa[i][j] = DRVO;
-			  }
-		  } else {
-			  bs = brojSuseda(i, j);
-			  if (bs < 2) {
-				  pom.mapa[i][j] = PRAZNO;
-			  }
-			  if (bs == 2 || bs == 3) {
-				  pom.mapa[i][j] = DRVO;
-			  }
-			  if (bs > 3) {
-				  pom.mapa[i][j] = PRAZNO;
-			  }
-	  	}
-	  }
-  }
-	if (ssk == true) {
-		cout << pom;
+				bs = brojSuseda(i, j);
+				if (kopija.mapa[i][j] == PRAZNO) {
+					if (bs == 3) {
+						pom.mapa[i][j] = DRVO;
+					} else {
+						pom.mapa[i][j] = PRAZNO;
+					}
+				} else {
+					if (bs < 2) {
+						pom.mapa[i][j] = PRAZNO;
+					}
+					if (bs == 2 || bs == 3) {
+						pom.mapa[i][j] = DRVO;
+					}
+					if (bs > 3) {
+						pom.mapa[i][j] = PRAZNO;
+					}
+				}
+			}
+		}
+		// ovde pokusavamo da odstampamo korak
+		if (ssk == true) {
+			cout << pom;
+		}
+		kopija = pom;
 	}
-}
-	kopija = pom;
-if (ssk == false) {
-	cout << kopija;
-}
+	if (ssk == false) {
+		cout << kopija;
+	}
 }
 
 /*void zivot::simulacija(int brSimulacija, bool ssk = false) {
@@ -294,8 +296,8 @@ int main() {
   Unos(&width, &height);
   zivot h = zivot(width, height);
   h.dodajDrvo();
-	int brSimulacija = 5;
-	h.SetSim();
+  int brSimulacija = 5;
+  //h.SetSim();
   h.simulacija(brSimulacija, true);
   //Unos(&width, &height);
   //zivot p = zivot(width,height);
