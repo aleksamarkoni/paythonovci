@@ -18,3 +18,12 @@ funkcije void ime_funkcije(int a) radi sledece ?
 - vraca parametre, ali ih nema
 - funkcija nije dobro inicijalizovana
 >
+<
+da li varijabla moze biti definisana sa tipom void npr: void vrednost;?
+- da,
+* ne.
+>
+<
+da li ova funkcija "void writeValue(int x)" vraca vrednost x?
+* void ovde znaci da ne vraca vrednost,
+- void ovde znaci da vraca vrednost.
