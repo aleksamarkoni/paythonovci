@@ -52,3 +52,40 @@ pogresna deklaracija je?
 * int rezultat = 13.82;
 - bool true = true;
 >
+<
+oznaciti sve osnovne vrste podataka?
+- floating point, true.
+* boolean, integer, character, floating point, void.
+- false, character, integer.
+>
+<
+jedana od sest definisanih varijabli nije ispravna koja?
+- int nVrednost;
+- bool bVrednost;
+- char chVrednost;
+* void vVrednost;
+- float fVrednost;
+- double dVrednost;
+>
+<
+kako glasi ispravno deklarisana direktna inicijalizacija?
+- int a = 5;
+* int a(5);
+- int a{5};
+- int a = 5
+>
+<
+kako glasi ispravno deklarisana copy inicijalizacija?
+* int a = 8;
+- int a(8);
+- int a = 8
+- int a->8
+>
+<
+koja varijabla je ispravno definisana?
+* int a, b;
+- int a, int b;
+* int c(7), d(8);
+- int a, b = 5;
+* int a= 5, b= 5;
+>
