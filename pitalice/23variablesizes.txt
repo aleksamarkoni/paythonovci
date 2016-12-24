@@ -27,4 +27,12 @@ kada bismo zeleli da saznamo koliko memorije koristi integer tip podataka kucali
 - 64 bita
 - 128 bita
 * 8 bita
-- 1 megabajt 
+- 1 megabajt
+>
+<
+koliko jedan byte more sadrzati mogucih vrednosti?
+- 2^16
+* 2^8
+- 2^32
+* 256
+ >
