@@ -8,9 +8,47 @@ sta je ispravan nacin deklaracije promenljive?
 {
 "pitanje" : "Sta je ispravan nacin deklaracije promenljive?",
 "odgovori" : [
- {"tacan": false, "odgovor" : "a = 4;"}, 
- "int a;", 
- "int a = 4;", 
+ {"tacan": false, "odgovor" : "a = 4;"},
+ "int a;",
+ "int a = 4;",
  "int a = 4"
   ]
 }
+<
+vrednost bool-a moze biti?
+- 1
+- 0
+* 1 i 0
+- da i ne
+>
+<
+ko ne pripada nizu?
+- int
+* class
+- double
+- float
+- char
+>
+<
+float tip podataka je?
+* 3.14
+- 3
+- 3/14
+- 3-14
+>
+<
+oznaciti pogresne inicijalizacije?
+- int a;
+- bool true;
+* inl bob;
+* int a, int b;
+- int b[5];
+>
+<
+pogresna deklaracija je?
+- int broj = 5;
+- char slovo = 'a';
+- double decimalni = 5.19;
+* int rezultat = 13.82;
+- bool true = true;
+>
