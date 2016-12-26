@@ -1,0 +1,23 @@
+<
+integer tip podataka u sebe smesta samo ?
+- razlomke
+- decimalne brojeve
+* cele brojeve
+- znakove
+- pozitivne brojeve
+>
+<
+unsigned keyword za 4 bajtni tip podatka int znaci da ?
+- ima raspon od - 2.147.483.648 do 2.147.483.648
+* ima raspon od 0 do 4.294.967.295
+- ne moze da se deklarise
+- konstantno je 0
+>
+<
+decimalni broj 5 u binarnom formatu bismo napisali kao ?
+- 10
+- 5
+- 50
+* 101
+- 0110011101
+>
