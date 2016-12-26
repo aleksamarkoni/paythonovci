@@ -21,3 +21,15 @@ decimalni broj 5 u binarnom formatu bismo napisali kao ?
 * 101
 - 0110011101
 >
+<
+Char tip podataka moze biti signed ili unsigned po defaultu?
+* Moze biti oba, ali u vecini slucajeva je signed zbog efikasnosti
+- Moze biti samo signed
+- Ne moze biti ni jedno ni drugo
+>
+<
+Sta ce se desiti ako bude overflow na unsigned integer?
+- Pucice program
+- Bice loop bez granica
+* Vratice se na 0 i krenuti od pocetka tog integera, gube se podaci.
+>

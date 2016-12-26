@@ -130,3 +130,9 @@ Da li je potrebno deklarisati varijablu pre upotrebe iste ?
 * da
 - samo ako je ta varijabla bool
 >
+<
+Da li Unsigned integer moze sadrzati vise karaktera nego obican integer?
+* Da, moze duplo vise ali samo pozitivnih
+- Ne, isto kao obican
+- Moze vise nego obican
+>

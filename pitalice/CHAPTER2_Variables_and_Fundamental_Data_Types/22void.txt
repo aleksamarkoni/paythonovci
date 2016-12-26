@@ -33,3 +33,8 @@ Da li pointer moze biti tipa void?
 * Da
 - Ne
 >
+<
+Da li mozemo da koristimo "return" u void funkciji?
+* Da, samo u situaciji da ne vracamo vrednost
+- Mozemo uvek
+>
