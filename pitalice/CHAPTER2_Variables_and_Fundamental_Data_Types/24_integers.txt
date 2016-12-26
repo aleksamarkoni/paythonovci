@@ -29,7 +29,33 @@ Char tip podataka moze biti signed ili unsigned po defaultu?
 >
 <
 Sta ce se desiti ako bude overflow na unsigned integer?
-- Pucice program
+- Puci ce program
 - Bice loop bez granica
 * Vratice se na 0 i krenuti od pocetka tog integera, gube se podaci.
+>
+<
+Da li se varijabla tipa integer x = 20 moze podeliti sa 8?
+- Moze
+- Ne moze, rezultat mora biti ceo broj
+* Moze, ali ce se ostatak posle zareza izgubiti
+>
+<
+Da li je neophodno naglasiti da je integer signed prilikom deklaracije?
+* Nije, to je podrazumevano od strane kompajlera
+- Jeste, inace kompajler izbacuje error
+- Jeste, ako ne naglasimo uvek se deklarise kao unsigned
+>
+<
+Ukoliko na 4-bitnu vrednost 1101 dodamo 1, koji je rezultat?
+- 11101
+* 13
+* 1101
+- Kompajler izbacuje error jer moze samo 4 bita
+>
+<
+Integer tipa _t se koristi?
+- Kada se koristi #define
+- Za deklaraciju globalne varijable
+* Za garanciju iste vrednosti na svakoj arhitekturi
+- To je varijabla koja se moze pretvoriti u sve ostale
 >

@@ -1,0 +1,30 @@
+<
+Kako se pravilno deklarise varijabla tipa float?
+- float fValue = 5;
+- float fValue = 5.0;
+* float fValue;
+>
+<
+Da li se moze varijabla tipa int konvertovati u float?
+- Ne moze
+* Moze
+>
+<
+Koliko cifara kompajler standardno ispisuje na vrednost float varijable?
+- Jednu
+- Tri
+* Sest
+>
+<
+Koja je vrednost eksponenta E ili e?
+- Ona koju mu korisnik zada
+* 10^<zadata vrednost>
+- Koren iz 10
+* -10^<zadata vrednost>
+>
+<
+Sta znaci specijalna kategorija float-a NaN?
+- Not another Neanderthal
+- New added Number
+* Not a Number
+>
