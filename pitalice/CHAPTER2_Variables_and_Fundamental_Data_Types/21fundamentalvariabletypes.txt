@@ -95,3 +95,38 @@ Da li je neophodno deklarisati varijablu na vrhu funkcije?
 - Jeste, inace se kompajler buni
 * Nije, dovoljno je da se deklarise pre upotrebe
 >
+<
+Koji tip varijable ce biti varijabla cija je vrednost a = 7,2?
+- int
+* float
+- bool
+- char
+>
+<
+Ispravno deklarisane varijable su:
+- int a = 7
+* int a;
+* bool ziv;
+- char c = 'kafa je zdrava';
+>
+<
+Za deklaraciju varijable cija je vrednost a = 65 koristimo?
+* int
+- float
+- void
+- long float
+>
+<
+Sta je pravilno deklarisano ?
+- int a, float b, int c;
+* int a; float b; int c;
+- int a, float b; int c;
+- a,b,c;
+>
+<
+Da li je potrebno deklarisati varijablu pre upotrebe iste ?
+- moze i posle
+- ne
+* da
+- samo ako je ta varijabla bool
+>
