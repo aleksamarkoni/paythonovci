@@ -1,0 +1,12 @@
+<
+Koju vrednost ima b ako je bool b = !true ?
+- true
+* false
+>
+<
+Ako zelimo da nam program umesto 0 i 1 ispisuje true i false koristimo ?
+* alphabool
+- charbool
+- converttochar
+- tako nesto nije moguce
+>
