@@ -28,3 +28,18 @@ Sta znaci specijalna kategorija float-a NaN?
 - New added Number
 * Not a Number
 >
+<
+Kada bismo napisali double d = (3e3); d vrednost bi iznosila?
+- 3
+- 9
+* 3000
+- nije moguce tako deklarisati
+- 0
+>
+<
+Postoje tri tipa podataka sa pokretnim zarezom a to su?
+- long long, long float, int
+- float, int, long
+* float, double, long double
+- int, char, bool
+>
