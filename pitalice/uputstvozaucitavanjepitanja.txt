@@ -1,0 +1,120 @@
+main() {
+	//otvorite fajl
+	// caracter po caracter, liniju po liniju, stream
+	// dinamicki niz Pitanja[]
+ 	std::vector<Pitanja> pitanja;
+
+	while(nisam stigao do kraja fajla) {
+		Pitanje pitanje; // int a;
+ 		fs >> pitanje; // cin >> a;
+		pitanja.push_back(pitanje); // stim sto je ovde mozda potrebno prisirit niz
+	}
+}
+
+bool imaOdgovor() {
+	//ucitamo liniju texta // cin >> ucitaj;
+	// proverimo da li je prvi karakter - ili *
+	// i posle uzmemo ostatak linije kao odgovor, bez - ili *
+}
+
+bool ucitajPocetakPitanj(fs) {
+	char c
+	fs >> c;
+	if (c == '<<') {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+class Pitanje() {
+	istrem >> () {
+
+	}
+
+	void ucitaj() {
+		if (!ucitajPocetakPitanja()) {
+			throw new Izuzetak("Citanje pitanja nije uspelo");
+		}
+		char *pitanje = ucitajSamoPitanje();
+		while (imaOdgovor()) {
+			// ucitaj odgovor
+		}
+		if (!ucitajKrajPitanja()) {
+			throw new Izuzetak("Citanje kraja pitanja nije uspelo");
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class PitanjeSaPovezivanjem : Pitanje() {
+	void ucitaj() {
+		if (!ucitajPocetakPitanja()) {
+			throw new Izuzetak("Citanje pitanja nije uspelo");
+		}
+		char *pitanje = ucitajSamoPitanje();
+		while (imaOdgovor()) {
+			// ucitaj odgovor
+		}
+
+		// ucita tacne odgovore
+
+		if (!ucitajKrajPitanja()) {
+			throw new Izuzetak("Citanje kraja pitanja nije uspelo");
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class Pitanje {pitanja, Odgovor[]}
+class Odgovor {odgovor, tacan}
