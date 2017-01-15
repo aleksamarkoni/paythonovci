@@ -11,10 +11,14 @@ using namespace std;
 
 int br = 0;
 
-ostream& operator<<(ostream& out, vector<string>& kviz) {
-  for(int i = 0; i < br; i++) {
-    out << kviz[i] << endl; }
-    return out;
+Pitanje& Pitanje::operator=(Pitanje& pitanje) {
+    istringstream iss;
+    getline(iss, pitanje.pitanje);
+    return pitanje;
+}
+ostream& operator<<(ostream& out, Pitanje& pitanje) {
+  out << pitanje.pitanje;
+  return out;
 }
 
 void brojPitanja(ifstream& mojfajl) {
@@ -29,7 +33,7 @@ void brojPitanja(ifstream& mojfajl) {
 }
 
 void popunjavanjeVektora(vector<string>& kviz) {
-ifstream mojfajl("/home/dusan/gits/paythonovci/pitalice/CHAPTER2_Variables_and_Fundamental_Data_Types/21_fundamental_variable_types.txt");
+ifstream mojfajl("/home/marko/gits/paythonovci/pitalice/CHAPTER2_Variables_and_Fundamental_Data_Types/21_fundamental_variable_types.txt");
 string strInput;
 string jednoPitanje;
     int i = 0;
@@ -56,26 +60,38 @@ string jednoPitanje;
     }
   }
 }
+int magicnaKockica(int *i){
+  *i = rand() % 17 + 0;
+  return *i;
+}
 
-void ucitajSamoPitanje(vector<string>& kviz) {
-  int i = rand() % 17 + 0;
-  cout << "Pitanje broj " << i << " je:" << endl;
+void Pitanje::ucitajSamoPitanje(vector<string>& kviz, Pitanje &pitanje, int i) {
+    cout << "Pitanje broj " << i << " je:" << endl;
     string strInput;
-    string penis;
     strInput = kviz[i];
     istringstream iss(strInput);
-    getline(iss, penis);
-      cout << penis << endl;
+    getline(iss, pitanje.pitanje);
+}
+void Odgovor::ucitajSamoOdgovor(vector<string>& kviz, Odgovor &odgovor, int i) {
+  cout << "Odgovor " << i << " je:" << endl;
 }
 
 int main() {
+  int i;
   srand(time(NULL));
   Pitanje pitanje;
-  ifstream mojfajl("/home/dusan/gits/paythonovci/pitalice/CHAPTER2_Variables_and_Fundamental_Data_Types/21_fundamental_variable_types.txt");
+  Odgovor odgovor;
+  ifstream mojfajl("/home/marko/gits/paythonovci/pitalice/CHAPTER2_Variables_and_Fundamental_Data_Types/21_fundamental_variable_types.txt");
   brojPitanja(mojfajl);
   vector<string> kviz(br);
   cout << "Ukupan broj pitanja je " <<  br << "." << endl;
   popunjavanjeVektora(kviz);
-  ucitajSamoPitanje(kviz);
+  magicnaKockica(&i);
+  //cout << "MagicnaKockica " << i << endl;
+  pitanje.ucitajSamoPitanje(kviz, pitanje, i);
+  cout << pitanje << endl;
+  odgovor.ucitajSamoOdgovor(kviz, odgovor, i);
+//  cout << odgovor << endl;
+
   //cout << kviz;
 }
