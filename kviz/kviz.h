@@ -19,12 +19,15 @@ public:
 
 };
 
-class Odgovor: Pitanje {
+class Odgovor: public Pitanje {
 private:
   string odgovor;
   bool tacan;
 public:
-void ucitajSamoOdgovor(vector<string>& kviz, Odgovor &odgovor, int i);
+  Odgovor() {}
+  ~Odgovor() {}
+  void ucitajSamoOdgovor(vector<string>& kviz, vector< vector< string > >& sviOdgovori,
+     Odgovor &odgovor, int i, int brOdgovora);
 
 };
 #endif
