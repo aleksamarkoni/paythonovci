@@ -6,23 +6,32 @@
 #include <cstdlib>
 #include <time.h>
 #include "kviz.h"
-//#include "menu.h"
+#include "menu.h"
+#include "menu.cpp"
 
 using namespace std;
 
 int br = 0;
+
+string& Povezivanje::operator=(Povezivanje& povezivanje) {
+  povezivanje.myfile = "/home/dusan/gits/paythonovci/pitalice/CHAPTER2_Variables_and_Fundamental_Data_Types/21_fundamental_variable_types.txt";
+  return myfile;
+}
 
 Pitanje& Pitanje::operator=(Pitanje& pitanje) {
     istringstream iss;
     getline(iss, pitanje.pitanje);
     return pitanje;
 }
+
 ostream& operator<<(ostream& out, Pitanje& pitanje) {
   out << pitanje.pitanje;
   return out;
 }
 
-void brojPitanja(ifstream& mojfajl) {
+void Povezivanje::brojPitanja(Povezivanje& povezivanje) {
+  fstream mojfajl;
+  mojfajl.open((povezivanje.myfile).c_str());
   string strInput;
   while(mojfajl) {
     getline(mojfajl, strInput);
@@ -33,10 +42,11 @@ void brojPitanja(ifstream& mojfajl) {
   }
 }
 
-void popunjavanjeVektora(vector<string>& kviz) {
-ifstream mojfajl("/home/nikola/gits/paythonovci/pitalice/CHAPTER2_Variables_and_Fundamental_Data_Types/21_fundamental_variable_types.txt");
-string strInput;
-string jednoPitanje;
+void Povezivanje::popunjavanjeVektora(vector<string>& kviz, Povezivanje& povezivanje) {
+  fstream mojfajl;
+  mojfajl.open((povezivanje.myfile).c_str());
+  string strInput;
+  string jednoPitanje;
     int i = 0;
     bool isBegin = false;
     while(mojfajl) {
@@ -61,8 +71,8 @@ string jednoPitanje;
     }
   }
 }
-int magicnaKockica(int *i){
-  *i = rand() % 17 + 0;
+int magicnaKockica(int *i, int br){
+  *i = rand() % br + 0;
   return *i;
 }
 
@@ -74,8 +84,8 @@ void Pitanje::ucitajSamoPitanje(vector<string>& kviz, Pitanje &pitanje, int i) {
     getline(iss, pitanje.pitanje);
 }
 void Odgovor::ucitajSamoOdgovor(vector<string>& kviz, vector< vector< string > >& sviOdgovori,
-   Odgovor &odgovor, int i, int brOdgovora) {
-  cout << "Odgovor " << i << " je:" << endl;
+  Odgovor &odgovor, int i, int brOdgovora) {
+  cout << "Odgovori na pitanje broj " << i << " su:" << endl;
   size_t found;
   string strInput;
   string jednoPitanje;
@@ -99,21 +109,21 @@ int main() {
   int brOdgovora = 0;
   srand(time(NULL));
   Pitanje pitanje;
+  Povezivanje povezivanje;
   Odgovor odgovor;
-  ifstream mojfajl("/home/nikola/gits/paythonovci/pitalice/CHAPTER2_Variables_and_Fundamental_Data_Types/21_fundamental_variable_types.txt");
-  //ifstream mojfajl;
-  //main_menu();
-  brojPitanja(mojfajl);
+  string myfile;
+  main_menu();
+  povezivanje.izbor(povezivanje);
+  povezivanje.brojPitanja(povezivanje);
   vector<string> kviz(br);
   vector< vector< string > > sviOdgovori(br);
   cout << "Ukupan broj pitanja je " <<  br << "." << endl;
-  popunjavanjeVektora(kviz);
-  magicnaKockica(&i);
+  povezivanje.popunjavanjeVektora(kviz, povezivanje);
+  magicnaKockica(&i, br);
   //cout << "MagicnaKockica " << i << endl;
   pitanje.ucitajSamoPitanje(kviz, pitanje, i);
   cout << pitanje << endl;
   odgovor.ucitajSamoOdgovor(kviz, sviOdgovori, odgovor, i, brOdgovora);
   //cout << odgovor << endl;
-
   //cout << kviz;
 }
