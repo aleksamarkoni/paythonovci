@@ -31,10 +31,12 @@ void pronadjiElement(struct Node **node, int broj) {
 void stampaj(struct Node *p) {
   if (p != NULL) {
     //za domaci, nacrtati kojim redosledom se stampaju ovi elementi ako printf stoji ovde
+
     stampaj(p->left);
     // ako printf stoji ovde
-    printf("%d, ", p->broj);
+
     stampaj(p->right);
+    printf("%d, ", p->broj);
     //ako printf stoji ovde
   }
 }
@@ -45,6 +47,7 @@ int main() {
   ubaciBroj(&parent, 134);
   ubaciBroj(&parent, 23);
   ubaciBroj(&parent, 11);
+  ubaciBroj(&parent, 116);
   stampaj(parent);
   printf("\n");
 
