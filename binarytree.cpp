@@ -5,77 +5,34 @@
 
 using namespace std;
 
-struct node {
+struct Node {
   int broj;
-  node *levo;
-  node *desno;
+  struct Node *levo;
+  struct Node *desno;
 };
 
 class Btree {
 private:
-  void ubaciBroj(int unosBr) {
-    if(root != NULL) {
-      ubaciBroj(unosBr, root);
+  struct Node *root;
+  void ubaciBroj(struct Node **node, int broj) {
+    //printf("Ubacujem broj");
+    if ((*node) == NULL) {
+      (*node) = (struct Node*) malloc( sizeof( struct Node ) );
+      (*node)->left = NULL;
+      (*node)->right = NULL;
+      (*node)->broj = broj;
+    } else if (broj > (*node)->broj) {
+      ubaciBroj(&(*node)->right, broj);
+    } else if (broj < (*node)->broj) {
+      ubaciBroj(&(*node)->left, broj);
     } else {
-      root = new node;
-      root->broj = unosBr;
-      root->levo = NULL;
-      root->desno = NULL;
+      //no - op
+      return;
     }
   }
   node *nadjiBroj(int unosBr) {
     return nadjiBroj(unosBr, root);
   }
-  void unistiDrvo() {
-    unistiDrvo(root);
-  }
-
-public:
-  Btree() {
-    root = NULL;
-  }
-  ~Btree() {
-    unistiDrvo();
-  }
-  void ubaciBroj(int unosBr, node *parent) {
-    if(unosBr < parent->broj) {
-      if(parent->levo != NULL) {
-        ubaciBroj(unosBr, parent->levo);
-      } else {
-        parent->levo = new node;
-        parent->levo->broj = unosBr;
-        parent->levo->levo = NULL;
-        parent->levo->desno = NULL;
-      }
-    }
-      else if(unosBr >= parent->broj) {
-        if(parent->desno != NULL) {
-          ubaciBroj(unosBr, parent->desno);
-        } else {
-          parent->desno = new node;
-          parent->desno->broj = unosBr;
-          parent->desno->levo = NULL;
-          parent->desno->desno = NULL;
-        }
-      }
-  }
-
-
-  node *nadjiBroj(int unosBr, node *parent) {
-    if(parent != NULL) {
-      if(unosBr == parent->broj) {
-        return parent;
-      }
-      if(unosBr < parent->broj) {
-        return nadjiBroj(unosBr, parent->levo);
-      } else {
-        return nadjiBroj(unosBr, parent->desno);
-      }
-    }
-    else return NULL;
-  }
-
-
   void unistiDrvo(node *parent) {
     if(parent!=NULL) {
       unistiDrvo(parent->levo);
@@ -96,14 +53,26 @@ public:
       //ako printf stoji ovde
     }
   }
+public:
+  Btree() {
+    root = NULL;
+  }
+  ~Btree() {
+    unistiDrvo(root);
+  }
+  void dodajBroj(int br) {
+    ubaciBroj(root, br);
+  }
 
-  node *root;
+  void stampaj() {
+    stampaj(root);
+  }
   //Btree &operator=(Btree &BinarnoDrvo);
 };
 
-ostream &operator<<(ostream& out, Btree &BinarnoDrvo) {
-  out << BinarnoDrvo << endl;
-}
+//ostream &operator<<(ostream& out, Btree &BinarnoDrvo) {
+//  out << BinarnoDrvo << endl;
+//}
 
 //Btree &operator=(Btree &BinarnoDrvo) {
 //  BinarnoDrvo = r;
@@ -165,18 +134,20 @@ int sortiranje( int *A,  int *B){
 }*/
 
 int main() {
- Btree BinarnoDrvo;
- double srVreme = 0;
- srand (time(NULL));
- int A[10000];
- int B[10000];
- int r = randomBroj();
- popunjavanjeNizaA(A);
- sortiranje(A, B);
- printObaNiza(srVreme, A, B, r);
- for (int i = 0; i < 10000; i++) {
-   BinarnoDrvo.ubaciBroj(r, parent);
- }
- BinarnoDrvo.stampaj(parent);
+ Btree bd;
+ //double srVreme = 0;
+ //srand (time(NULL));
+ //int A[10000];
+ //int B[10000];
+ //int r = randomBroj();
+ //popunjavanjeNizaA(A);
+ //sortiranje(A, B);
+ //printObaNiza(srVreme, A, B, r);
+ //for (int i = 0; i < 100; i++) {
+ //   br.ubaciBroj(i);
+ //}
+ bd.dodajBroj(25);
+ bd.dodajBroj(37);
+ bd.stampaj();
 
 }
