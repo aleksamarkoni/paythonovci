@@ -18,22 +18,22 @@ private:
     //printf("Ubacujem broj");
     if ((*node) == NULL) {
       (*node) = (struct Node*) malloc( sizeof( struct Node ) );
-      (*node)->left = NULL;
-      (*node)->right = NULL;
+      (*node)->levo = NULL;
+      (*node)->desno = NULL;
       (*node)->broj = broj;
     } else if (broj > (*node)->broj) {
-      ubaciBroj(&(*node)->right, broj);
+      ubaciBroj(&(*node)->desno, broj);
     } else if (broj < (*node)->broj) {
-      ubaciBroj(&(*node)->left, broj);
+      ubaciBroj(&(*node)->levo, broj);
     } else {
       //no - op
       return;
     }
   }
-  node *nadjiBroj(int unosBr) {
-    return nadjiBroj(unosBr, root);
-  }
-  void unistiDrvo(node *parent) {
+  //Node *nadjiBroj(int unosBr) {
+  //  return nadjiBroj(unosBr, root);
+  //}
+  void unistiDrvo(struct Node *parent) {
     if(parent!=NULL) {
       unistiDrvo(parent->levo);
       unistiDrvo(parent->desno);
@@ -41,7 +41,7 @@ private:
     }
   }
 
-  void stampaj(node *parent) {
+  void stampaj(struct Node *parent) {
     if (parent != NULL) {
       //za domaci, nacrtati kojim redosledom se stampaju ovi elementi ako printf stoji ovde
 
@@ -60,8 +60,8 @@ public:
   ~Btree() {
     unistiDrvo(root);
   }
-  void dodajBroj(int br) {
-    ubaciBroj(root, br);
+  void dodajBroj(int broj) {
+    ubaciBroj(&root, broj);
   }
 
   void stampaj() {
@@ -136,18 +136,18 @@ int sortiranje( int *A,  int *B){
 int main() {
  Btree bd;
  //double srVreme = 0;
- //srand (time(NULL));
+ srand (time(NULL));
  //int A[10000];
  //int B[10000];
  //int r = randomBroj();
  //popunjavanjeNizaA(A);
  //sortiranje(A, B);
  //printObaNiza(srVreme, A, B, r);
- //for (int i = 0; i < 100; i++) {
- //   br.ubaciBroj(i);
- //}
- bd.dodajBroj(25);
- bd.dodajBroj(37);
+ for (int i = 0; i < 100; i++) {
+    bd.dodajBroj(randomBroj());
+ }
+ //bd.dodajBroj(25);
+ //bd.dodajBroj(37);
  bd.stampaj();
 
 }
