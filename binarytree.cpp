@@ -84,18 +84,31 @@ public:
     }
   }
 
+  void stampaj(node *parent) {
+    if (parent != NULL) {
+      //za domaci, nacrtati kojim redosledom se stampaju ovi elementi ako printf stoji ovde
+
+      stampaj(parent->levo);
+      // ako printf stoji ovde
+      cout << parent->broj << endl;
+      stampaj(parent->desno);
+
+      //ako printf stoji ovde
+    }
+  }
+
   node *root;
-  Btree &operator=(Btree &BinarnoDrvo);
+  //Btree &operator=(Btree &BinarnoDrvo);
 };
 
 ostream &operator<<(ostream& out, Btree &BinarnoDrvo) {
   out << BinarnoDrvo << endl;
 }
 
-Btree &operator=(Btree &BinarnoDrvo) {
-  BinarnoDrvo = r;
-  return BinarnoDrvo;
-}
+//Btree &operator=(Btree &BinarnoDrvo) {
+//  BinarnoDrvo = r;
+//  return BinarnoDrvo;
+//}
 
 int randomBroj(){
    int r = (rand()%1000000)+0;
@@ -144,38 +157,26 @@ int sortiranje( int *A,  int *B){
   return *B;
 }
 
-Btree popunjavanjeBtree(Btree &BinarnoDrvo, int r) {
+/*Btree popunjavanjeBtree(Btree &BinarnoDrvo, int r) {
   for (int i = 0; i < 10000; i++) {
-    ubaciBroj(r, &parent);
+    BinarnoDrvo.ubaciBroj(r, &parent);
     return BinarnoDrvo;
   }
-}
-
-void stampaj(Btree &BinarnoDrvo) {
-  if (p != NULL) {
-    //za domaci, nacrtati kojim redosledom se stampaju ovi elementi ako printf stoji ovde
-
-    stampaj(p->left);
-    // ako printf stoji ovde
-
-    stampaj(p->right);
-    printf("%d, ", p->broj);
-    //ako printf stoji ovde
-  }
-}
+}*/
 
 int main() {
  Btree BinarnoDrvo;
- int unosBr = 0;
  double srVreme = 0;
  srand (time(NULL));
  int A[10000];
  int B[10000];
  int r = randomBroj();
  popunjavanjeNizaA(A);
-
-sortiranje(A, B);
-printObaNiza(srVreme, A, B, r);
-
+ sortiranje(A, B);
+ printObaNiza(srVreme, A, B, r);
+ for (int i = 0; i < 10000; i++) {
+   BinarnoDrvo.ubaciBroj(r, parent);
+ }
+ BinarnoDrvo.stampaj(parent);
 
 }
