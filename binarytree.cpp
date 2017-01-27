@@ -30,9 +30,11 @@ private:
       return;
     }
   }
+
   //Node *nadjiBroj(int unosBr) {
   //  return nadjiBroj(unosBr, root);
   //}
+
   void unistiDrvo(struct Node *parent) {
     if(parent!=NULL) {
       unistiDrvo(parent->levo);
@@ -67,24 +69,12 @@ public:
   void stampaj() {
     stampaj(root);
   }
-  //Btree &operator=(Btree &BinarnoDrvo);
 };
 
-//ostream &operator<<(ostream& out, Btree &BinarnoDrvo) {
-//  out << BinarnoDrvo << endl;
-//}
-
-//Btree &operator=(Btree &BinarnoDrvo) {
-//  BinarnoDrvo = r;
-//  return BinarnoDrvo;
-//}
 
 int randomBroj(){
    int r = (rand()%1000000)+0;
   return r;
-}
-void srednjeVreme(double *vreme){
-  *vreme = *vreme/(double)1000;
 }
 
 void popunjavanjeNizaA( int *A) {
@@ -109,12 +99,12 @@ void printObaNiza(double srVreme, int *A, int *B, int r) {
   for (int i = 0; i < 1000; i++) {
   srVreme += poredjenje(A, r);
   }
-  cout << "Vreme za niz A je: " << srVreme/1000 << "ms" << endl;
+  cout << "Linearno srednje vreme za niz A je: " << srVreme/1000 << "ms" << endl;
   srVreme = 0;
   for (int i = 0; i < 1000; i++) {
   srVreme += poredjenje(B, r);
   }
-  cout << "Vreme za niz B je: " << srVreme/1000 << "ms" << endl;
+  cout << "Linearno srednje vreme za niz B je: " << srVreme/1000 << "ms" << endl;
 }
 
 int sortiranje( int *A,  int *B){
@@ -126,28 +116,63 @@ int sortiranje( int *A,  int *B){
   return *B;
 }
 
-/*Btree popunjavanjeBtree(Btree &BinarnoDrvo, int r) {
-  for (int i = 0; i < 10000; i++) {
-    BinarnoDrvo.ubaciBroj(r, &parent);
-    return BinarnoDrvo;
+double Binary_SearchNizB(int *B) {
+int iteration = 0, left = 0, right = 10000, mid;
+int r = randomBroj();
+double vreme;
+clock_t start;
+start = clock();
+  while (left <= right) {
+	  iteration++;
+	  mid = (int) ((left + right) / 2);
+	  if (r == B[mid]) {
+		  //cout << "Binary search find " << B[mid] << " after " << iteration << " iterations.\n";
+      vreme = clock() - start / (double)(CLOCKS_PER_SEC / 1000);
+		  iteration++;
+		  return vreme;
+	  } else if (r > B[mid])
+	      left = mid + 1;
+      else
+	      right = mid - 1;
+      }
+      //out << "Binary search did not find " << B[mid] << " after " << iteration << " iterations.\n";
+  vreme = clock() - start / (double)(CLOCKS_PER_SEC / 1000);
+  return vreme;
+}
+
+void binarnoSrednjeVreme(double srVreme, int *B){
+  for (int i = 0; i < 1000; i++) {
+    srVreme += Binary_SearchNizB(B);
+  }
+  cout << "Binarno srednje vreme za niz B je: " << srVreme/1000 << "ms" << endl;
+}
+
+/*bool myfunction (int i,int j) { return (i<j); }
+
+void test(int r) {
+if (binary_search (v.begin(), v.end(), r, myfunction)) {
+    cout << "found!\n";
+} else {
+    cout << "not found.\n";
   }
 }*/
 
 int main() {
  Btree bd;
- //double srVreme = 0;
+ double srVreme = 0;
  srand (time(NULL));
- //int A[10000];
- //int B[10000];
- //int r = randomBroj();
- //popunjavanjeNizaA(A);
- //sortiranje(A, B);
- //printObaNiza(srVreme, A, B, r);
- for (int i = 0; i < 100; i++) {
+ int A[10000];
+ int B[10000];
+ int r = randomBroj();
+ popunjavanjeNizaA(A);
+ sortiranje(A, B);
+ printObaNiza(srVreme, A, B, r);
+ for (int i = 0; i < 10000; i++) {
     bd.dodajBroj(randomBroj());
  }
+binarnoSrednjeVreme(srVreme, B);
  //bd.dodajBroj(25);
  //bd.dodajBroj(37);
- bd.stampaj();
+ //bd.stampaj();
 
 }
