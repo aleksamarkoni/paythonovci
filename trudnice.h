@@ -13,7 +13,7 @@ private:
   int brojBeba;
 public:
   Trudnice() {
-    brojBeba = (rand() % 5) + 0;
+    brojBeba = (rand() % 5) + 1;
   }
   ~Trudnice() {}
 
