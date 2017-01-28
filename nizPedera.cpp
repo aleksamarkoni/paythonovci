@@ -9,12 +9,7 @@
 
 using namespace std;
 
-int konstruktorNizaRandom(int *i) {
-  *i = (rand() % 20) + 0;
-  return *i;
-}
-
-bool sortiraj(const SaVezom & s1, const SaVezom & s2) {
+bool sortirajEvrice(const SaVezom & s1, const SaVezom & s2) {
    if (s1.getEvrici() != s2.getEvrici())
    return s1.getEvrici() > s2.getEvrici();
 }
@@ -29,7 +24,7 @@ void upisPederaSaVezom(int *i, vector <SaVezom>& Veza) {
 
 void printNizova(int *i, vector <SaVezom> &Veza) {
   for (int k; k < *i; k++){
-    cout << Veza[k].getEvrici() << endl;
+    cout << "Ovaj peder ima: " << Veza[k].getEvrici() << " evrica." << endl;
   }
 }
 #endif
