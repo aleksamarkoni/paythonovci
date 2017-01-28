@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <algorithm>
-#include "Penzioneri.h"
+#include "penzioneri.h"
 
 
 using namespace std;

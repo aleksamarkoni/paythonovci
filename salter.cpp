@@ -6,7 +6,9 @@
 #include "nizPedera.cpp"
 #include "trudnice.cpp"
 #include "zeneSaDecom.cpp"
-#include "Penzioneri.cpp"
+#include "penzioneri.cpp"
+#include "saReceptom.cpp"
+#include "bezRecepta.cpp"
 
 using namespace std;
 
@@ -43,4 +45,16 @@ int main() {
   upisPederaSaVezom(&i, Penzija);
   sort(Penzija.begin(), Penzija.end(), sortirajPenziju);
   printNizova(&i, Penzija);
+
+  vector <SaReceptom> Recept;
+  Recept.reserve(i);
+  upisPederaSaVezom(&i, Recept);
+  sort(Recept.begin(), Recept.end(), sortirajRecepte);
+  printNizova(&i, Recept);
+
+  vector <BezRecepta> bezRecepta;
+  bezRecepta.reserve(i);
+  upisPederaSaVezom(&i, bezRecepta);
+  sort(bezRecepta.begin(), bezRecepta.end(), sortirajBezRecepte);
+  printNizova(&i, bezRecepta);
 }
