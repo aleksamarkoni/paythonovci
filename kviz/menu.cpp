@@ -19,7 +19,10 @@ int izbor;
 cin >> izbor;
   switch(izbor) {
     case 1:
-    povezivanje.myfile = "/home/dusan/gits/paythonovci/pitalice/"
+    //TODO ukloniti parametar iz metode
+    //TODO promeniti da ovo budu relativne putanje
+    // myfile = "../pitanja/CHAPTER2_Variables_and_Fundamental_Data_Types/21_fundamental_variable_types.txt"
+    myfile = "/home/dusan/gits/paythonovci/pitalice/"
     "CHAPTER2_Variables_and_Fundamental_Data_Types/21_fundamental_variable_types.txt";
     break;
     case 2:
