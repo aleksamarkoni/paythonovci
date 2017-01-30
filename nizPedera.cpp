@@ -23,7 +23,8 @@ void upisPederaSaVezom(int *i, vector <SaVezom>& Veza) {
 }
 
 void printNizova(int *i, vector <SaVezom> &Veza) {
-  for (int k; k < *i; k++){
+  cout << "PEDERI SA VEZOM:" << endl;
+  for (int k; k < *i; k++) {
     cout << "Ovaj peder ima: " << Veza[k].getEvrici() << " evrica." << endl;
   }
 }

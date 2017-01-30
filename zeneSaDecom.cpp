@@ -14,7 +14,7 @@ bool sortirajDecu(const ZeneSaDecom & s1, const ZeneSaDecom & s2) {
    return s1.getDeca() > s2.getDeca();
 }
 
-void upisPederaSaVezom(int *i, vector <ZeneSaDecom>& brDece) {
+void upisZenaSaDecom(int *i, vector <ZeneSaDecom>& brDece) {
   for (int k = 0; k < *i; k++) {
     brDece.push_back(ZeneSaDecom());
     //cout << Veza[k].getEvrici() << endl;
@@ -23,6 +23,7 @@ void upisPederaSaVezom(int *i, vector <ZeneSaDecom>& brDece) {
 }
 
 void printNizova(int *i, vector <ZeneSaDecom> &brDece) {
+  cout << "ZENE SA DECOM:" << endl;
   for (int k; k < *i; k++){
     cout << "Ova kurva ima: " << brDece[k].getDeca() << " Jugovica." << endl;
   }

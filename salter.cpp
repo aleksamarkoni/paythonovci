@@ -32,7 +32,7 @@ int main() {
   konstruktorNizaRandom(&i);
   vector <Trudnice> brBeba;
   brBeba.reserve(i);
-  upisPederaSaVezom(&i, brBeba);
+  upisTrudnica(&i, brBeba);
   sort(brBeba.begin(), brBeba.end(), sortirajBebe);
   printNizova(&i, brBeba);
   cout << endl;
@@ -41,7 +41,7 @@ int main() {
   konstruktorNizaRandom(&i);
   vector <ZeneSaDecom> brDece;
   brDece.reserve(i);
-  upisPederaSaVezom(&i, brDece);
+  upisZenaSaDecom(&i, brDece);
   sort(brDece.begin(), brDece.end(), sortirajDecu);
   printNizova(&i, brDece);
   cout << endl;
@@ -50,7 +50,7 @@ int main() {
   konstruktorNizaRandom(&i);
   vector <Penzioneri> Penzija;
   Penzija.reserve(i);
-  upisPederaSaVezom(&i, Penzija);
+  upisPenzionera(&i, Penzija);
   sort(Penzija.begin(), Penzija.end(), sortirajPenziju);
   printNizova(&i, Penzija);
   cout << endl;
@@ -59,7 +59,7 @@ int main() {
   konstruktorNizaRandom(&i);
   vector <SaReceptom> Recept;
   Recept.reserve(i);
-  upisPederaSaVezom(&i, Recept);
+  upisSaReceptom(&i, Recept);
   sort(Recept.begin(), Recept.end(), sortirajRecepte);
   printNizova(&i, Recept);
   cout << endl;
@@ -68,7 +68,7 @@ int main() {
   konstruktorNizaRandom(&i);
   vector <BezRecepta> bezRecepta;
   bezRecepta.reserve(i);
-  upisPederaSaVezom(&i, bezRecepta);
+  upisBezRecepta(&i, bezRecepta);
   sort(bezRecepta.begin(), bezRecepta.end(), sortirajBezRecepte);
   printNizova(&i, bezRecepta);
 }

@@ -14,7 +14,7 @@ bool sortirajBezRecepte(const BezRecepta & s1, const BezRecepta & s2) {
    return s1.getRecepti() > s2.getRecepti();
 }
 
-void upisPederaSaVezom(int *i, vector <BezRecepta>& bezRecepta) {
+void upisBezRecepta(int *i, vector <BezRecepta>& bezRecepta) {
   for (int k = 0; k < *i; k++) {
     bezRecepta.push_back(BezRecepta());
     //cout << Veza[k].getEvrici() << endl;
@@ -23,6 +23,7 @@ void upisPederaSaVezom(int *i, vector <BezRecepta>& bezRecepta) {
 }
 
 void printNizova(int *i, vector <BezRecepta> &bezRecepta) {
+  cout << "BEZ RECEPTA:" << endl;
   for (int k; k < *i; k++){
     cout << "Ovaj slepac ima: " << bezRecepta[k].getRecepti() << " pogresnih recepta." << endl;
   }

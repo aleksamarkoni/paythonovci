@@ -14,7 +14,7 @@ bool sortirajBebe(const Trudnice & s1, const Trudnice & s2) {
    return s1.getBeba() > s2.getBeba();
 }
 
-void upisPederaSaVezom(int *i, vector <Trudnice>& brBeba) {
+void upisTrudnica(int *i, vector <Trudnice>& brBeba) {
   for (int k = 0; k < *i; k++) {
     brBeba.push_back(Trudnice());
     //cout << Veza[k].getEvrici() << endl;
@@ -23,6 +23,7 @@ void upisPederaSaVezom(int *i, vector <Trudnice>& brBeba) {
 }
 
 void printNizova(int *i, vector <Trudnice> &brBeba) {
+  cout << "TRUDNICE:" << endl;
   for (int k; k < *i; k++){
     cout << "Ova kurva nosi: " << brBeba[k].getBeba() << " beba." << endl;
   }
