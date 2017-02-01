@@ -116,4 +116,3 @@ void ispisi(Povezivanje &povezivanje, int *br) {
 }
 
 #endif
-

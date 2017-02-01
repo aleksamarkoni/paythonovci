@@ -5,26 +5,22 @@
 #include <fstream>
 #include <string>
 #include <cstdlib>
-#include "pitanje1.h"
+#include "izPocetkaPitanje.h"
 
 using namespace std;
 
-void setPitanje(string Pitanje) {
-  
-}
-
-void izvlacenjePitanjaiOdgovora() {
+/*void izvlacenjePitanjaiOdgovora(string pitanje, Povezivanje &povezivanje) {
   string line;
-  isstream iss(pitanje);
-  getLine(iss, line);
+  istringstream iss(pitanje);
+  getline(iss, line);
   if (line == "<") {
-    getLine(mojFajl, line); // ucitaj samo pitanje
+    getline(povezivanje.getmyfile(), line); // ucitaj samo pitanje
     pitanje = line;
-    getLine(mojFajl, line);
+    getline(povezivanje.getmyfile(), line);
     while (line != ">") {
       Odgovor odgovor(line, line[0]=="-"?false:true);
       odgovori.push_back(odgovor);//dodaj ovaj odgovor na pitanje
-      getLine(mojFile, line);
+      getline(myfile, line);
     }
   }
 }
@@ -47,5 +43,5 @@ void istampaj(bool daLiPrikazujemOdgovore = false) {
 int kolikoImaOdgvora() {
   return odgovori.size();
 }
-
+*/
 #endif

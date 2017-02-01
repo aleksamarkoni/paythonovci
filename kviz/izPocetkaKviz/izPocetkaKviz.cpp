@@ -27,4 +27,3 @@ int main() {
   povezivanje.ucitajPitanja(&br);
   ispisi(povezivanje, &br);
 }
-
