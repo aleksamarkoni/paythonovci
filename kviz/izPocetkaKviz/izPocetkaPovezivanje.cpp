@@ -41,28 +41,28 @@ int izbor;
 cin >> izbor;
   switch(izbor) {
     case 1:
-      myfile = "/home/dusan/gits/paythonovci/pitalice/"
+      myfile = "./../../pitalice/"
     "CHAPTER2_Variables_and_Fundamental_Data_Types/21_fundamental_variable_types.txt";
       cout << "Biranje oblasti:" << myfile << endl;
     break;
     case 2:
-      myfile = "/../../../../pitalice/"
+      myfile = "./../../pitalice/"
     "CHAPTER2_Variables_and_Fundamental_Data_Types/22_void.txt";
     break;
     case 3:
-      myfile = "/../../../../pitalice/"
+      myfile = "./../../pitalice/"
     "CHAPTER2_Variables_and_Fundamental_Data_Types/23_variable_sizes.txt";
     break;
     case 4:
-      myfile = "/../../../../pitalice/"
+      myfile = "./../../pitalice/"
     "CHAPTER2_Variables_and_Fundamental_Data_Types/24_integers.txt";
     break;
     case 5:
-      myfile = "/../../../../pitalice/"
+      myfile = "./../../pitalice/"
     "CHAPTER2_Variables_and_Fundamental_Data_Types/25_floating_point_numbers.txt";
     break;
     case 6:
-      myfile = "/../../../../pitalice/"
+      myfile = "./../../pitalice/"
     "CHAPTER2_Variables_and_Fundamental_Data_Types/26_boolean_values.txt";
     break;
     case 7:
