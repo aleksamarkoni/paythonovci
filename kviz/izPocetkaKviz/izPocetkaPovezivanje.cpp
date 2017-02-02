@@ -10,8 +10,9 @@
 
 using namespace std;
 
-void Pitanje::setPitanje(Pitanje *novoPitanje, string pomocni) {
-  this->pitanje = pomocni;
+string Pitanje::setPitanje(Pitanje *novoPitanje, string pomocni) {
+  novoPitanje->pitanje = pomocni;
+  return novoPitanje->pitanje;
 }
 
 string Pitanje::getPitanje() {

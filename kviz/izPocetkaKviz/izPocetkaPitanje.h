@@ -13,7 +13,7 @@ private:
   vector<Odgovor> odgovori;
 public:
   Pitanje() {}
-  void setPitanje(Pitanje *novoPitanje, string pomocni);
+  string setPitanje(Pitanje *novoPitanje, string pomocni);
   string getPitanje();
   void izvlacenjePitanjaiOdgovora(string pitanje, string myfile);
   bool proveriDaLiJeOdgovorTacan(int i);
