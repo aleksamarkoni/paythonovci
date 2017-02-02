@@ -8,9 +8,11 @@
 #include "izPocetkaMenu.cpp"
 #include "izPocetkaPovezivanje.cpp"
 #include "izPocetkaPitanje.cpp"
+#include "izPocetkaOdgovor.cpp"
 
 using namespace std;
 
+string pomocni;
 int br;
 
 int magicnaKockica(int *i, int br){
@@ -24,6 +26,6 @@ int main() {
   Povezivanje povezivanje;
   main_menu();
   povezivanje.izbor();
-  povezivanje.ucitajPitanja(&br);
+  povezivanje.ucitajPitanja(&br, pomocni);
   ispisi(povezivanje, &br);
 }

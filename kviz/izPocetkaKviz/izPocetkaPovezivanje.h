@@ -20,7 +20,7 @@ public:
   string getmyfile();
   vector<Pitanje> getPitanja();
   string dodajOdgovor(string line, Odgovor &odgovor);
-  void ucitajPitanja(int *br);
+  void ucitajPitanja(int *br, string pomocni);
   int izbor();
 };
 

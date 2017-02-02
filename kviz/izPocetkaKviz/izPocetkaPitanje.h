@@ -13,12 +13,13 @@ private:
   vector<Odgovor> odgovori;
 public:
   Pitanje() {}
+  void setPitanje(Pitanje *novoPitanje, string pomocni);
   string getPitanje();
   void izvlacenjePitanjaiOdgovora(string pitanje, string myfile);
   bool proveriDaLiJeOdgovorTacan(int i);
   int kolikoImaOdgvora();
   void istampaj(bool daLiPrikazujemOdgovore = false);
-  string setPitanje(Pitanje *novoPitanje, string line);
+  //string setPitanje(Pitanje *novoPitanje, string line);
   void ocistiOdgovore();
   friend ostream& operator<<(ostream& out, Pitanje& pitanje);
 };
