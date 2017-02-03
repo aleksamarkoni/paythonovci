@@ -8,6 +8,8 @@
 #include <cstdlib>
 #include "izPocetkaPovezivanje.h"
 
+//TODO ne treba define za cpp fajlove i ne include cpp
+
 using namespace std;
 
 string Pitanje::setPitanje(Pitanje *novoPitanje, string pomocni) {
@@ -86,10 +88,13 @@ ostream& operator<<(ostream& out, Pitanje& pitanje) {
 }
 
 void Povezivanje::ucitajPitanja(int *br, string pomocni) {
+
   int stanje = 0;
   br = 0;
   Odgovor odgovor;
-  Pitanje *novoPitanje;
+  Pitanje *novoPitanje = new Pitanje();
+  novoPitanje->pitanje = "";
+  //obrisi odgovore
   string line;
   fstream mojfajl;
   mojfajl.open((myfile).c_str());
@@ -101,7 +106,6 @@ void Povezivanje::ucitajPitanja(int *br, string pomocni) {
     if ("<" == line && stanje == 0) {
       //Pitanje *novoPitanje = &pitanje;
       //new(novoPitanje) Pitanje();
-      Pitanje *novoPitanje = new Pitanje();
       stanje = 1;
     } else if (stanje == 1) {
       // ova linija je pitanje
@@ -118,6 +122,7 @@ void Povezivanje::ucitajPitanja(int *br, string pomocni) {
         pitanja.push_back(*novoPitanje);
         stanje = 0;
         br++;
+        delete novoPitanje;
       }
     }
   }
