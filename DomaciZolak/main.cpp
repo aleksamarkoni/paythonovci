@@ -52,7 +52,7 @@ void izborKafane(int *izbor) {
 }
 
 int main() {
-  Kafic kafic1("Kafic", "Renesansa", "Kralja Aleksandra I Karadjordjevica");
+  Kafic kafic1("Kafic", "Renesansa", "Kralja Aleksandra I Karadjordjevica", "Kafa + Limunada = 120 RSD");
   Lokal kafic2("Kafic", "Bridge", "Suboticeva BB");
   int izbor;
   izborLokala(&izbor);
@@ -63,7 +63,7 @@ int main() {
         case 1:
           cout << kafic1.getVrstaKafica() << " " << kafic1.getImeKafica() << endl;
           cout << kafic1.getAdresaKafica() << endl;
-          //cout << kaficakcija("proba") << endl;
+          cout << "Danas je na akciji: " << endl << kafic1.getAkcija() << endl;
         break;
         case 2:
           cout << kafic2.getVrsta() << " " << kafic2.getIme() << endl;

@@ -19,7 +19,3 @@ string Lokal::getIme() {
 string Lokal::getAdresa() {
   return adresa;
 }
-
-//void Lokal::cenovnik() {
-
-//}

@@ -2,18 +2,15 @@
 #define LOKAL_H
 #include <string>
 
-using namespace std;
-
 class Lokal {
   protected:
-    string vrsta;
-    string ime;
-    string adresa;
+    std::string vrsta;
+    std::string ime;
+    std::string adresa;
   public:
-    Lokal(string, string, string);
-    string getVrsta();
-    string getIme();
-    string getAdresa();
-    //void cenovnik();
+    Lokal(std::string, std::string, std::string);
+    std::string getVrsta();
+    std::string getIme();
+    std::string getAdresa();
 };
 #endif
