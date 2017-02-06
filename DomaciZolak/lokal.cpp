@@ -20,6 +20,6 @@ string Lokal::getAdresa() {
   return adresa;
 }
 
-void Lokal::cenovnik() {
+//void Lokal::cenovnik() {
 
-}
+//}

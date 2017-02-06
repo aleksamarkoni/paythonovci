@@ -5,7 +5,7 @@
 using namespace std;
 
 class Lokal {
-  private:
+  protected:
     string vrsta;
     string ime;
     string adresa;
@@ -14,6 +14,6 @@ class Lokal {
     string getVrsta();
     string getIme();
     string getAdresa();
-    void cenovnik();
+    //void cenovnik();
 };
 #endif

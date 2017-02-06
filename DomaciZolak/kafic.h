@@ -8,6 +8,9 @@ using namespace std;
 class Kafic: protected Lokal {
   public:
     Kafic(string, string, string);
-    void akcija(string a);
+    string getVrstaKafica();
+    string getImeKafica();
+    string getAdresaKafica();
+    //void akcija(string a);
 };
 #endif

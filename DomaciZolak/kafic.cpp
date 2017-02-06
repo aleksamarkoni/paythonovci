@@ -1,13 +1,26 @@
 #include "kafic.h"
-#include <iostream>
+
 using namespace std;
 
-Kafic::Kafic(string a, string b, string c) {
-  vrsta = a;
-  ime = b;
-  adresa = c;
+
+Kafic::Kafic(string a1, string b1, string c1) : Lokal(a1, b1, c1) {
+  vrsta = a1;
+  ime = b1;
+  adresa = c1;
 }
 
-void Kafic::akcija(string a) {
-  cout << "Trenutna promocija u kaficu: " << kafic1.getIme(); << "je : " << a << endl;
+string Kafic::getVrstaKafica() {
+  return vrsta;
 }
+
+string Kafic::getImeKafica() {
+  return ime;
+}
+
+string Kafic::getAdresaKafica() {
+  return adresa;
+}
+
+//void Kafic::akcija(string a) {
+  //cout << "Trenutna promocija u kaficu: " << kafic1.getIme(); << "je : " << a << endl;
+//}
