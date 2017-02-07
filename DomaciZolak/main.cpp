@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <ctime>
 #include "lokal.h"
 #include "kafic.h"
 #include "pub.h"
@@ -52,10 +53,38 @@ void izborKafane(int *izbor) {
   cin >> *izbor;
 }
 
+int dan_u_nedelji() {
+  const string DAY[] = {"Ned", "Pon", "Uto", "Sre", "Cet", "Pet", "Sub"};
+  time_t rawtime;
+  tm * timeinfo;
+  time(&rawtime);
+  timeinfo = localtime(&rawtime);
+  int wday = timeinfo->tm_wday;
+  return wday;
+}
+
+void danasnjaAkcija(Kafic& kafic) {
+  switch (dan_u_nedelji()) {
+    case 4:
+      kafic.setAkcija("Kafa + limunada = 119 RSD");
+    break;
+    case 5:
+      kafic.setAkcija("Kola + espreso = 179 RSD");
+    break;
+    case 2:
+      kafic.setAkcija("Studentska kafa = 39 RSD");
+    break;
+  }
+}
+
+
 int main() {
-  Kafic kafic1("Kafic", "Renesansa", "Kralja Aleksandra I Karadjordjevica", "Kafa + Limunada = 120 RSD");
-  Kafic kafic2("Kafic", "Bridge", "Suboticeva BB", "Espreso + Kola = 149 RSD");
-  Kafic kafic3("Kafic", "Ultra Caffe", "Aviv Park", "1. Kafa = 30 RSD \n2. Espreso = 60 RSD \n3. Kola = 80 RSD");
+  Kafic kafic1("Kafic", "Renesansa", "Kralja Aleksandra I Karadjordjevica");
+  danasnjaAkcija(kafic1);
+  Kafic kafic2("Kafic", "Bridge", "Suboticeva BB");
+  kafic2.setAkcija("Espreso + Kola = 149 RSD");
+  Kafic kafic3("Kafic", "Ultra Caffe", "Aviv Park");
+  kafic3.setAkcija("1. Kafa = 30 RSD \n2. Espreso = 60 RSD \n3. Kola = 80 RSD");
   Pub pub1("Pub", "Lion", "Bulevar oslobodjenja BB", "Njuske", "Erdinger 199 RSD");
   Pub pub2("Pub", "London", "Gimnazijska", "Vatrene kise", "Zajecarsko 100 RSD");
   Pub pub3("Pub", "Zlatna krigla", "Koce Kolarova", "/", "Hobogoblin pivo 289 RSD");

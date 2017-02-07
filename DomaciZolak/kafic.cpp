@@ -3,11 +3,10 @@
 using namespace std;
 
 
-Kafic::Kafic(string a1, string b1, string c1, string d1) : Lokal(a1, b1, c1) {
+Kafic::Kafic(string a1, string b1, string c1) : Lokal(a1, b1, c1) {
   vrsta = a1;
   ime = b1;
   adresa = c1;
-  akcija = d1;
 }
 
 string Kafic::getVrstaKafica() {
@@ -24,4 +23,8 @@ string Kafic::getAdresaKafica() {
 
 string Kafic::getAkcija() {
   return akcija;
+}
+
+void Kafic::setAkcija(string a) {
+  akcija = a;
 }
