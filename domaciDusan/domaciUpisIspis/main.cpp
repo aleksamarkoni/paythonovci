@@ -84,12 +84,13 @@ void ispisNaEkran(vector <string> &recenice, int brRecenica) {
 void upisReceniceUFajlRecPoRec() {
   string recenica;
   string rec;
+  int i;
   char c;
   cout << "Unesite recenicu za rastavljanje na reci." << endl;
   getline(cin, recenica);
   //cout << recenica << endl;
   ofstream out("./../../domaciDusan/domaciUpisIspis/razbijanjeRecenice.txt");
-  for(int i = 0; i < recenica.length(); i++) {
+  for(i = 0; i < recenica.length(); i++) {
     if(!isspace(recenica[i])) {
       rec += recenica[i];
     }
@@ -112,6 +113,15 @@ void iscitavanjeIzFajlaRecPoReC() {
     myfile.close();
 }
 
+int main_menu(int *izbor) {
+  cout << "1) Sastavljanje i ispis u recenicama." << endl;
+  cout << "2) Unos recenice u fajl." << endl;
+  cout << "3) Rastavljanje recenice u reci." << endl;
+  cout << "4) Exit." << endl;
+  cin >> *izbor;
+  return *izbor;
+}
+
 int main() {
   vector <int> nizBrReci;
   vector <string> recenice;
@@ -119,9 +129,37 @@ int main() {
   int izbor = 0;
   int answer;
   string ispis;
-  ucitajIzFajla(ispis, nizBrReci, &brRecenica);
-  spojiReciURecenice(ispis, nizBrReci, brRecenica, recenice);
-  ispisNaEkran(recenice, brRecenica);
-  upisReceniceUFajlRecPoRec();
-  iscitavanjeIzFajlaRecPoReC();
+  //ucitajIzFajla(ispis, nizBrReci, &brRecenica);
+  //spojiReciURecenice(ispis, nizBrReci, brRecenica, recenice);
+  //ispisNaEkran(recenice, brRecenica);
+  //upisReceniceUFajlRecPoRec();
+  //iscitavanjeIzFajlaRecPoReC();
+
+  while(izbor != 4) {
+    main_menu(&izbor);
+    switch(izbor) {
+      case 1:
+        ucitajIzFajla(ispis, nizBrReci, &brRecenica);
+        spojiReciURecenice(ispis, nizBrReci, brRecenica, recenice);
+        ispisNaEkran(recenice, brRecenica);
+      break;
+
+      case 2:
+      {
+        cin.ignore();
+        ofstream out;
+        upisReceniceUFajlRecPoRec();
+      break;
+      }
+      case 3:
+      {
+        ifstream myfile;
+        iscitavanjeIzFajlaRecPoReC();
+      break;
+      }
+      case 4:
+        return 0;
+      break;
+    }
+  }
 }
