@@ -97,12 +97,14 @@ void upisReceniceUFajlRecPoRec(vector <int> &nizBrReci) {
   out.close();
 }
 
+/*
 vector<string> razbiRecenicuNaReci(string recenica) {
   vector<string> rezultat();
   // izvucem rec
   rezultat.push_back(rec);
   return rezultat;
 }
+*/
 
 /*
 void test1() {
