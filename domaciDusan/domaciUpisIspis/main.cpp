@@ -137,11 +137,6 @@ int main() {
   int izbor = 0;
   int answer;
   string ispis;
-  //ucitajIzFajla(ispis, nizBrReci, &brRecenica);
-  //spojiReciURecenice(ispis, nizBrReci, brRecenica, recenice);
-  //ispisNaEkran(recenice, brRecenica);
-  //upisReceniceUFajlRecPoRec();
-  //iscitavanjeIzFajlaRecPoReC();
 
   while(izbor != 4) {
     main_menu(&izbor);
