@@ -27,7 +27,7 @@ void iscitavanjeIzFajlaRecPoReC(vector <int> &nizBrReci);
 
 int main_menu(int &izbor);
 
-/*void run( int (*f0)(int*), string (*f1)(string&, vector<int>&, int&),
+ /*void run( int (*f0)(int*), string (*f1)(string&, vector<int>&, int&),
   void (*f2)(string&, vector<int>&, int, vector<string>&),
   void (*f3)(vector<string>&, int), void (*f)(vector<int>&),
   void (*f4)(vector<int>&), void (*f5)(vector<int>&) );*/
