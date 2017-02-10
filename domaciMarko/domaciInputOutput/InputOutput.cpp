@@ -18,18 +18,17 @@ int main() {
     cout << "Ukupan broj Recenica je : " << zbir << endl;
 
   vector<string> recenice(brojRecenica);
-for(int i = 0; i < brojRecenica; i++) {
+  for(int i = 0; i < brojRecenica; i++) {
   recenica = " ";
   getline(myFile, strInput);
   istringstream ( strInput ) >> brojReci;
-
-    cout << "Broj Reci je : " << brojReci << endl;  
-  for (int j = 0; j < brojReci; j++) {
-  getline(myFile, strInput);
-  recenica += strInput;
-  recenica += " ";
-    cout << "Rec " << (j+1) << " je: " << strInput << endl;
-  }
+    cout << "Broj Reci je : " << brojReci << endl;
+    for (int j = 0; j < brojReci; j++) {
+       getline(myFile, strInput);
+       recenica += strInput;
+       recenica += " ";
+       cout << "Rec " << (j+1) << " je: " << strInput << endl;
+    }
   recenice[i] = recenica;
 }
   //  cout << "==== Jaooo moj ucitelju sta mi radis... ====" << endl;
