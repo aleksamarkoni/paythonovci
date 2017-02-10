@@ -75,19 +75,23 @@ void spojiReciURecenice(string ispis,
 }
 
 void ispisNaEkran(vector <string> &recenice, int brRecenica) {
+  cout << endl;
   for(int i = 0; i < brRecenica; i++) {
     cout << recenice[i] << endl;
   }
   cout << endl;
 }
 
-void upisReceniceUFajlRecPoRec() {
+void upisReceniceUFajlRecPoRec(vector <int> &nizBrReci) {
+  nizBrReci.clear();
   string recenica;
   string rec;
   int i;
+  int brReci = 1;
   char c;
   cout << "Unesite recenicu za rastavljanje na reci." << endl;
   getline(cin, recenica);
+  nizBrReci.push_back(brReci);
   //cout << recenica << endl;
   ofstream out("./../../domaciDusan/domaciUpisIspis/razbijanjeRecenice.txt");
   for(i = 0; i < recenica.length(); i++) {
@@ -96,19 +100,23 @@ void upisReceniceUFajlRecPoRec() {
     }
     if(isspace(recenica[i])) {
       rec += "\n";
+      ++brReci;
+      nizBrReci.push_back(brReci);
     }
   }
   out << rec;
   out.close();
 }
 
-void iscitavanjeIzFajlaRecPoReC() {
+void iscitavanjeIzFajlaRecPoReC(vector <int> nizBrReci) {
   string line;
   ifstream myfile("./../../domaciDusan/domaciUpisIspis/razbijanjeRecenice.txt");
   cout << endl;
+  cout << "1" << endl;
+  cout << nizBrReci.size() << endl;;
     while(myfile.good()) {
       getline(myfile, line);
-      cout << line << endl;
+      cout << line << endl << endl;
     }
     myfile.close();
 }
@@ -148,13 +156,13 @@ int main() {
       {
         cin.ignore();
         ofstream out;
-        upisReceniceUFajlRecPoRec();
+        upisReceniceUFajlRecPoRec(nizBrReci);
       break;
       }
       case 3:
       {
         ifstream myfile;
-        iscitavanjeIzFajlaRecPoReC();
+        iscitavanjeIzFajlaRecPoReC(nizBrReci);
       break;
       }
       case 4:
