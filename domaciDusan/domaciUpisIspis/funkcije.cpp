@@ -47,12 +47,9 @@ void spojiReciURecenice(string &ispis,
         recenica += myfile;
         recenica += " ";
         brIteracija++;
-        if(j == k-1) {
-          recenice.push_back(recenica);
-          recenica = "";
-          break;
-        }
     }
+    recenice.push_back(recenica);
+    recenica = "";
     i++;
     //cout << "krug: " << krug << endl;
     //cout << "k: " << k << endl;
