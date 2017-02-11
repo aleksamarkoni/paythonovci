@@ -2,7 +2,7 @@
 #include <ctime>
 #include <vector>
 #include <stdlib.h>
-#include "konacnaZarada.h"
+//#include "konacnaZarada.h"
 #include "lokal.h"
 #include "sto.h"
 //#include "konobari.h"
@@ -16,5 +16,5 @@ int main() {
   Lokal pivnica;
   cout << "Pivnica ima " << pivnica.getBrojStolova() << " " << "stolova." << endl;
   pivnica.generisiStolove();
-  pivnica.ispis();
+  pivnica.ispis(pivnica);
 }

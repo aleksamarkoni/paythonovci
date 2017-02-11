@@ -3,7 +3,6 @@
 #include <iostream>
 #include <ctime>
 #include <stdlib.h>
-#include "lokal.h"
 
 using namespace std;
 

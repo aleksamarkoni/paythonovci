@@ -2,11 +2,7 @@
 using namespace std;
 
 ostream& operator<<(ostream& out, Sto &sto) {
-  int i,k;
-  i = getBrojStolova();
-  for (k = 0; k < i; k++) {
-    out << pivnica.stolovi[k] << endl;
-  }
+  out << sto.brojGostiju;
   return out;
 }
 

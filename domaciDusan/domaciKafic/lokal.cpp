@@ -4,23 +4,21 @@
 using namespace std;
 
 ostream& operator<<(ostream& out, Lokal &pivnica) {
-  int i,k;
-  i = getBrojStolova();
-  for (k = 0; k < i; k++) {
+  for (int k = 0; k < pivnica.stolovi.size(); k++) {
     out << pivnica.stolovi[k] << endl;
   }
   return out;
 }
 
+/*
 int& Lokal::operator()(const int index) {
   return stolovi[index];
 }
+*/
 
-int Lokal::ispis() {
-  int i,k;
-  i = getBrojStolova();
-  for (k = 0; k < i; k++) {
-    cout << stolovi[k] << endl;
+void Lokal::ispis(Lokal &pivnica) {
+  for (int k = 0; k < getBrojStolova(); k++) {
+    cout << k+1 <<". sto ima: " << pivnica.stolovi[k] << " gostiju." << endl;
   }
 }
 
