@@ -1,4 +1,5 @@
 #include "sto.h"
+
 using namespace std;
 
 ostream& operator<<(ostream& out, Sto &sto) {
@@ -10,4 +11,6 @@ Sto::Sto() {
   brojGostiju = rand() % 8 + 2;
 }
 
-Sto::~Sto() {}
+int Sto::getBrojGostiju() {
+  return brojGostiju;
+}

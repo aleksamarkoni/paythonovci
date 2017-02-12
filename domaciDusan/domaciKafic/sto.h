@@ -11,7 +11,7 @@ private:
   int brojGostiju;
 public:
   Sto();
-  ~Sto();
+  int getBrojGostiju();
   friend ostream& operator<<(ostream& out, Sto &sto);
 };
 
