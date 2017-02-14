@@ -2,13 +2,48 @@
 #include <stdlib.h>
 #include <sqlite3.h>
 
-static int callback(void *NotUsed, int argc, char **argv, char **azColName){
+
+
+
+int callback(void *NotUsed, int argc, char **argv, char **azColName){
    int i;
+   int *brojReda = (int*) NotUsed;
+   if ((*brojReda) == 0) {
+     for(i=0; i<argc; i++) {
+       printf("%-10s|", azColName[i]);
+     }
+     (*brojReda)++;
+     printf("\n");
+   }
    for(i=0; i<argc; i++){
-      printf("%s = %s|", azColName[i], argv[i] ? argv[i] : "NULL");
+      printf("%-10s|", argv[i] ? argv[i] : "NULL");
    }
    printf("\n");
    return 0;
+}
+
+int callback1(void *NotUsed, int argc, char **argv, char **azColName){
+   int i;
+   for(i=0; i<argc; i++){
+      printf("%-10s|", argv[i] ? argv[i] : "NULL");
+   }
+   printf("\n");
+   return 0;
+}
+
+// TODO pokazivaci na funkcije
+void ispisiSvePodatkeIzBaze(sqlite3 *db) {
+  const char *sql = "SELECT * from COMPANY order by ID desc";
+  char *zErrMsg = 0;
+  int brojReda = 0;
+  /* Execute SQL statement */
+  int rc = sqlite3_exec(db, sql, callback1, &brojReda, &zErrMsg);
+  if( rc != SQLITE_OK ){
+   fprintf(stderr, "SQL error: %s\n", zErrMsg);
+   sqlite3_free(zErrMsg);
+ }else{
+   fprintf(stdout, "Operation done successfully\n");
+ }
 }
 
 int main(int argc, char* argv[])
@@ -17,6 +52,7 @@ int main(int argc, char* argv[])
    char *zErrMsg = 0;
    int  rc;
    const char *sql;
+
 
    /* Open database */
    rc = sqlite3_open("test.db", &db);
@@ -46,8 +82,6 @@ int main(int argc, char* argv[])
 
    /* Create SQL statement */
    sql = "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) "  \
-         "VALUES (1, 'Paul', 32, 'California', 20000.00 ); " \
-         "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) "  \
          "VALUES (2, 'Allen', 25, 'Texas', 15000.00 ); "     \
          "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY)" \
          "VALUES (3, 'Teddy', 23, 'Norway', 20000.00 );" \
@@ -63,17 +97,12 @@ int main(int argc, char* argv[])
       fprintf(stdout, "Records created successfully\n");
    }
 
-   sql = "SELECT * from COMPANY";
+   //printf("Ovo je sa zaglavljem\n");
+   //ispisiSvePodatkeIzBaze(db, callback);
+   //printf("Ovo je bez zaglavlja\n");
+   //ispisiSvePodatkeIzBaze(db, callback1);
 
-   /* Execute SQL statement */
-   rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
-   if( rc != SQLITE_OK ){
-      fprintf(stderr, "SQL error: %s\n", zErrMsg);
-      sqlite3_free(zErrMsg);
-   }else{
-      fprintf(stdout, "Operation done successfully\n");
-   }
-   sqlite3_close(db);
+   ispisiSvePodatkeIzBaze(db);
 
    sqlite3_close(db);
    return 0;
