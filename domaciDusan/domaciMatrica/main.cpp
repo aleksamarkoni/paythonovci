@@ -6,9 +6,8 @@ using namespace std;
 
 int main() {
   int m, n;
-  cout << "Unesite duzinu i sirinu matrice." << endl;
-  cin >> m >> n;
-  Matrica *mat = new Matrica(m, n);
-  mat->popuniMatricu(*mat);
-  //mat->ispisiMatricu(*mat);
+  //cout << "Unesite duzinu i sirinu matrice." << endl;
+  //cin >> m >> n;
+  Matrica mat(3, 3);
+  cout << mat << endl;
 }
