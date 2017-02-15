@@ -11,7 +11,7 @@ class Mat {
     int **m;
     Mat(int sirina, int duzina);
     ~Mat();
-    friend std::ostream &operator<<(std::ostream &out, Mat m);
+    friend std::ostream &operator<<(std::ostream &out, Mat &m);
     int srednjaVrednostDijagonale();
     int sumNaDijagonali();
     int sumNaSporednojDijagonali();
