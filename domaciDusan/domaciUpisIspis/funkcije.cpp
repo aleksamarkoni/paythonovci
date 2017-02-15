@@ -47,12 +47,9 @@ void spojiReciURecenice(string &ispis,
         recenica += myfile;
         recenica += " ";
         brIteracija++;
-        if(j == k-1) {
-          recenice.push_back(recenica);
-          recenica = "";
-          break;
-        }
     }
+    recenice.push_back(recenica);
+    recenica = "";
     i++;
     //cout << "krug: " << krug << endl;
     //cout << "k: " << k << endl;
@@ -100,6 +97,38 @@ void upisReceniceUFajlRecPoRec(vector <int> &nizBrReci) {
   out.close();
 }
 
+/*
+vector<string> razbiRecenicuNaReci(string recenica) {
+  vector<string> rezultat();
+  // izvucem rec
+  rezultat.push_back(rec);
+  return rezultat;
+}
+*/
+
+/*
+void test1() {
+  string test1 = "Ja sam pera";
+  vector<string> test1Result = razbiRecenicuNaReci(test1);
+  test1Result.size() == 3;
+  test1Result[0] == "Ja";
+  test1Result[1] == "sam";
+  test1Result[2] == "pera";
+}
+*/
+
+/*
+void test2() {
+  string test1 = "  Ja  sam      pera  ";
+  vector<string> test1Result = razbiRecenicuNaReci(test1);
+  test1Result.size() == 3;
+  test1Result[0] == "Ja";
+  test1Result[1] == "sam";
+  test1Result[2] == "pera";
+}
+*/
+
+
 void iscitavanjeIzFajlaRecPoReC(vector <int> &nizBrReci) {
   string line;
   ifstream myfile("./../../domaciDusan/domaciUpisIspis/razbijanjeRecenice.txt");
@@ -146,12 +175,10 @@ int main_menu(int *izbor) {
           break;
 
           case 2:
-          {
+
             cin.ignore();
-            ofstream out;
             upisReceniceUFajlRecPoRec(nizBrReci);
           break;
-          }
           case 3:
           {
             ifstream myfile;

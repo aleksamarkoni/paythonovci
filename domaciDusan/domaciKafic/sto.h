@@ -3,7 +3,6 @@
 #include <iostream>
 #include <ctime>
 #include <stdlib.h>
-#include "lokal.h"
 
 using namespace std;
 
@@ -12,7 +11,7 @@ private:
   int brojGostiju;
 public:
   Sto();
-  ~Sto();
+  int getBrojGostiju();
   friend ostream& operator<<(ostream& out, Sto &sto);
 };
 

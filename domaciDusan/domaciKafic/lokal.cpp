@@ -1,45 +1,51 @@
 #include "lokal.h"
-#include "sto.h"
 
 using namespace std;
 
 ostream& operator<<(ostream& out, Lokal &pivnica) {
-  int i,k;
-  i = getBrojStolova();
-  for (k = 0; k < i; k++) {
+  for (int k = 0; k < pivnica.stolovi.size(); k++) {
     out << pivnica.stolovi[k] << endl;
   }
   return out;
-}
-
-int& Lokal::operator()(const int index) {
-  return stolovi[index];
-}
-
-int Lokal::ispis() {
-  int i,k;
-  i = getBrojStolova();
-  for (k = 0; k < i; k++) {
-    cout << stolovi[k] << endl;
-  }
 }
 
 Lokal::Lokal() {
   brojStolova = 15;
 }
 
-Lokal::~Lokal() {}
+//Kolektiv Lokal::getKolektiv() {
+//  return kolektiv;
+//}
+
+vector <Sto> Lokal::getStolovi() {
+  return stolovi;
+}
 
 int Lokal::getBrojStolova() {
   return brojStolova;
 }
 
-/*vector <Sto> Lokal::getStolovi() {
-  return stolovi;
-}*/
-
 void Lokal::generisiStolove() {
   for(int i = 0; i < brojStolova; i++) {
     stolovi.push_back(Sto());
   }
+}
+
+
+void Lokal::ispisStolova(Lokal &pivnica) {
+  for (int k = 0; k < getBrojStolova(); k++) {
+    cout << k+1 <<". sto ima: " << pivnica.stolovi[k] << " gostiju." << endl;
+  }
+}
+
+int Lokal::ukupanBrojGostiju(Lokal &pivnica) {
+  int ukupanBrojGostiju = 0;
+  for (int k = 0; k < pivnica.stolovi.size(); k++) {
+    ukupanBrojGostiju += pivnica.stolovi[k].getBrojGostiju();
+  }
+  return ukupanBrojGostiju;
+}
+
+void Lokal::ispisUkupnogBrojaGostiju(Lokal &pivnica) {
+  cout << "Ukupno ima: " << ukupanBrojGostiju(pivnica) << " gostiju." << endl;
 }
