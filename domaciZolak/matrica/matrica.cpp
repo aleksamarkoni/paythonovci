@@ -32,7 +32,6 @@ int Mat::srednjaVrednostDijagonale() {  //int jer nece drugacije...
     for (int i = 0; i < this->sirina; i++) {
       for (int j = 0; j < this->duzina; j++) {
         if(i == j) {
-          cout << m[i][j];       // test za elemente matrice izbacuje 0 0 9 a treba da bude 1 5 9...
           srednjaVrednost += m[i][j];
           br++;                  // br se uvecava za svaki element u dijagonali
         }
@@ -89,7 +88,7 @@ int Mat::sumNaSporednojDijagonali() {
 
 
 
-ostream &operator<<(ostream &out, Mat m) {
+ostream &operator<<(ostream &out, Mat &m) {
   for (int i = 0; i < m.sirina; i++) {
     for (int j = 0; j < m.duzina; j++)
       out << m.m[i][j] << " ";
