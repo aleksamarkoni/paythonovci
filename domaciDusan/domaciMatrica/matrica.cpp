@@ -76,9 +76,9 @@ Matrica& Matrica<T>::operator= (const Matrica &cmat)
   return *this;
 }
 
-T Matrica<T>::operator()(int m, int n) {
-  //TODO da li je m izmedju 0 i this->m
-  //TODO da li je n izmedju 0 i this->n
+int Matrica::operator()(int m, int n) {
+  assert(m >= 0 && m < this->m);
+  assert(n >= 0 && n < this->n);
   return mat[m][n];
 }
 
@@ -110,4 +110,26 @@ Matrica<T>::~Matrica() {
 void Matrica<T>::set(int m, int n, T v) {
   //TODO asserts
   mat[m][n] = v;
+}
+  
+void Matrica::sumNaDijagonali() {
+  int sum;
+  for (int i = 0; i < this->m; i++) {
+    for (int j = 0; j < this->n; j++) {
+      if(i == j) {
+        sum += mat[i][j];
+        cout << "Suma: " << sum << endl;
+      }
+    }
+  }
+  cout << "Suma dijagonale je: " << sum << endl;
+}
+
+void Matrica::sumNaSporednojDijagonali() {
+  int sum = 0;
+  for (int i = 0; i < this->m; i++) {
+    sum += mat[i][m - i - 1];
+    cout << "Suma: " << sum << endl;
+  }
+  cout << "Suma sporedne dijagonale je: " << sum << endl;
 }
