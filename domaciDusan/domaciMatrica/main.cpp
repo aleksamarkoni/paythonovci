@@ -4,10 +4,22 @@
 
 using namespace std;
 
+void unesiBrojeve(int *m, int *n) {
+  cout << "Unesite duzinu i sirinu matrice." << endl;
+  cin >> *m >> *n;
+  while(*m != *n) {
+    cout << "Ne moze bato, ovuda neces proci." << endl;
+    cin >> *m >> *n;
+  }
+}
+
 int main() {
   int m, n;
-  //cout << "Unesite duzinu i sirinu matrice." << endl;
-  //cin >> m >> n;
-  Matrica mat(3, 3);
+  unesiBrojeve(&m, &n);
+
+
+  Matrica mat(m, n);
   cout << mat << endl;
+  mat.sumNaDijagonali();
+  mat.sumNaSporednojDijagonali();
 }

@@ -42,3 +42,25 @@ Matrica::~Matrica() {
   }
   delete [] mat;
 }
+
+void Matrica::sumNaDijagonali() {
+  int sum;
+  for (int i = 0; i < this->m; i++) {
+    for (int j = 0; j < this->n; j++) {
+      if(i == j) {
+        sum += mat[i][j];
+        cout << "Suma: " << sum << endl;
+      }
+    }
+  }
+  cout << "Suma dijagonale je: " << sum << endl;
+}
+
+void Matrica::sumNaSporednojDijagonali() {
+  int sum = 0;
+  for (int i = 0; i < this->m; i++) {
+    sum += mat[i][m - i - 1];
+    cout << "Suma: " << sum << endl;
+  }
+  cout << "Suma sporedne dijagonale je: " << sum << endl;
+}

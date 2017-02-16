@@ -13,6 +13,8 @@ public:
   ~Matrica();
   friend std::ostream &operator<<(std::ostream &out, Matrica &mat);
   int operator()(int n, int m);
+  void sumNaDijagonali();
+  void sumNaSporednojDijagonali();
 };
 
 #endif
