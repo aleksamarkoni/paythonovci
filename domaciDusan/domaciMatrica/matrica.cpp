@@ -12,8 +12,8 @@ Matrica::Matrica(int m, int n) {
 }
 
 int Matrica::operator()(int m, int n) {
-  //TODO da li je m izmedju 0 i this->m
-  //TODO da li je n izmedju 0 i this->n
+  assert(m >= 0 && m < this->m);
+  assert(n >= 0 && n < this->n);
   return mat[m][n];
 }
 

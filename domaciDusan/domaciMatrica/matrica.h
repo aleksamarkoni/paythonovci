@@ -2,6 +2,7 @@
 #define MATRICA_H
 
 #include <iostream>
+#include <assert.h>
 
 class Matrica {
 private:

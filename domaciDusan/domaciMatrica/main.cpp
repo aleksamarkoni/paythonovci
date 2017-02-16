@@ -20,6 +20,7 @@ int main() {
 
   Matrica mat(m, n);
   cout << mat << endl;
+  cout << mat(3, 3) << endl;
   mat.sumNaDijagonali();
   mat.sumNaSporednojDijagonali();
 }
