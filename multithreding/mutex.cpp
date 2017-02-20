@@ -18,6 +18,10 @@ void *PrintHello(void *i) {
    pthread_exit(NULL);
 }
 
+void *druga(void *i) {
+	count ++;
+}
+
 int main () {
    pthread_t threads[NUM_THREADS];
    int rc;
