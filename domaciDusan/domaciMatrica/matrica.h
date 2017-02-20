@@ -5,12 +5,11 @@
 #include <string>
 #include <assert.h>
 
-template <class T>
 class Matrica {
 private:
   std::string ime;
   int m, n;
-  T **mat;
+  int **mat;
   void popuniMatricu();
 public:
   Matrica();
@@ -19,9 +18,7 @@ public:
   Matrica& operator= (const Matrica &cmat);
   Matrica(const Matrica &mat);
   ~Matrica();
-  friend std::ostream &operator<<(std::ostream &out, Matrica<T> &mat);
-  T operator()(int n, int m);
-  void set(int m, int n, T v);
+  void set(int m, int n, int v);
   friend std::ostream &operator<<(std::ostream &out, Matrica &mat);
   int operator()(int n, int m);
   void sumNaDijagonali();

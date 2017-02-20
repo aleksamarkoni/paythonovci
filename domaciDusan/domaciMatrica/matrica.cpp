@@ -2,23 +2,23 @@
 
 using namespace std;
 
-Matrica<T>::Matrica() {
+Matrica::Matrica() {
   this->ime = "Podrazumevana matrica";
   m = 5; n = 5;
-  mat = new T*[m];
+  mat = new int*[m];
   for(int i = 0; i < m; i++) {
-    mat[i] = new T[n];
+    mat[i] = new int[n];
   }
   popuniMatricu();
 }
 
-Matrica<T>::Matrica(const Matrica &cmat) {
+Matrica::Matrica(const Matrica &cmat) {
   cout << "Kopi konstruktor" << endl;
   this->ime = cmat.ime;
   m = cmat.m; n = cmat.n;
-  mat = new T*[m];
+  mat = new int*[m];
   for(int i = 0; i < m; i++) {
-    mat[i] = new T[n];
+    mat[i] = new int[n];
   }
   for (int i = 0; i < m; i++) {
 	for (int j = 0; j < n; j++) {
@@ -27,29 +27,29 @@ Matrica<T>::Matrica(const Matrica &cmat) {
   }
 }
 
-Matrica<T>::Matrica(int m, int n) {
+Matrica::Matrica(int m, int n) {
   this->m = m; this->n = n;
   this->ime = "Nepoznato ime";
-  mat = new T*[m];
+  mat = new int*[m];
   for(int i = 0; i < m; i++) {
-    mat[i] = new T[n];
+    mat[i] = new int[n];
   }
   popuniMatricu();
 }
 
-Matrica<T>::Matrica(int m, int n, std::string ime) {
+Matrica::Matrica(int m, int n, std::string ime) {
   this->ime = ime;
   this->m = m; this->n = n;
-  mat = new T*[m];
+  mat = new int*[m];
   for(int i = 0; i < m; i++) {
-    mat[i] = new T[n];
+    mat[i] = new int[n];
   }
   popuniMatricu();
 }
 
-Matrica& Matrica<T>::operator= (const Matrica &cmat)
+Matrica& Matrica::operator= (const Matrica &cmat)
 {
-	
+
    cout << "Operator jednakosti" << endl;
   // self-assignment guard
   if (this == &cmat)
@@ -59,19 +59,19 @@ Matrica& Matrica<T>::operator= (const Matrica &cmat)
     delete [] mat[i];
   }
   delete [] mat;
- 
+
   this->ime = cmat.ime;
   m = cmat.m; n = cmat.n;
-  mat = new T*[m];
+  mat = new int*[m];
   for(int i = 0; i < m; i++) {
-    mat[i] = new T[n];
+    mat[i] = new int[n];
   }
   for (int i = 0; i < m; i++) {
 	for (int j = 0; j < n; j++) {
 		mat[i][j] = cmat.mat[i][j];
 	}
   }
- 
+
   // return the existing object so we can chain this operator
   return *this;
 }
@@ -82,7 +82,7 @@ int Matrica::operator()(int m, int n) {
   return mat[m][n];
 }
 
-void Matrica<T>::popuniMatricu() {
+void Matrica::popuniMatricu() {
   for(int i = 0; i < this->m; i++) {
     for(int j = 0; j < this->n; j++) {
       mat[i][j] = 0;
@@ -99,7 +99,7 @@ std::ostream &operator<<(std::ostream &out, Matrica &mat) {
   return out;
 }
 
-Matrica<T>::~Matrica() {
+Matrica::~Matrica() {
   cout << "Pocinje destruktor za " << ime << endl;
   for(int i = 0; i < m; i++) {
     delete [] mat[i];
@@ -107,11 +107,11 @@ Matrica<T>::~Matrica() {
   delete [] mat;
 }
 
-void Matrica<T>::set(int m, int n, T v) {
+void Matrica::set(int m, int n, int v) {
   //TODO asserts
   mat[m][n] = v;
 }
-  
+
 void Matrica::sumNaDijagonali() {
   int sum;
   for (int i = 0; i < this->m; i++) {
