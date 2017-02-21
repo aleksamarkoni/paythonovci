@@ -3,7 +3,7 @@
 #include <sys/time.h>
 #include "../domaciDusan/domaciMatrica/matrica.h"
 
-#define MS_PER_FRAME 1000
+#define MS_PER_FRAME 500
 #define WIDTH 10
 #define HEIGHT 15
 
