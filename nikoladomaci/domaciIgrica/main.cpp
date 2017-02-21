@@ -41,19 +41,10 @@ void update() {
   x += dx;
   y += dy;
   if (mat(x, y) == 2 ) {
-    br++;
     score++;
+    // TODO kako dodati sada na mapu jos jednu dvojku
   }
   mat.set(x, y, 1);
-}
-
-void generisanjeRandBrojeva1() {
-  if (br == 0) {
-    x = rand() % WIDTH;
-    y = rand() % HEIGHT;
-    mat.set(x, y, 0);
-    cout << x << y << endl;
-  }
 }
 
 void generisanjeRandBrojeva2() {
@@ -67,6 +58,9 @@ void generisanjeRandBrojeva2() {
 }
 
 void gameLoop() {
+
+  generisanjeRandBrojeva2();
+
   while(true) {
     struct timeval tp;
     gettimeofday(&tp, NULL);
@@ -74,8 +68,8 @@ void gameLoop() {
 
     krajMape();
     resetPolja();
-    generisanjeRandBrojeva1();
-    generisanjeRandBrojeva2();
+    //generisanjeRandBrojeva1();
+    //generisanjeRandBrojeva2();
     update();
     render();
 
