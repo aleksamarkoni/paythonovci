@@ -18,6 +18,8 @@ public:
   Matrica& operator= (const Matrica &cmat);
   Matrica(const Matrica &mat);
   ~Matrica();
+  int getDuzina();
+  int getSirina();
   void set(int m, int n, int v);
   friend std::ostream &operator<<(std::ostream &out, Matrica &mat);
   int operator()(int n, int m);

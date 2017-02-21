@@ -2,6 +2,7 @@
 
 using namespace std;
 
+
 Matrica::Matrica() {
   this->ime = "Podrazumevana matrica";
   m = 5; n = 5;
@@ -45,6 +46,14 @@ Matrica::Matrica(int m, int n, std::string ime) {
     mat[i] = new int[n];
   }
   popuniMatricu();
+}
+
+int Matrica::getDuzina() {
+  return this->m;
+}
+
+int Matrica::getSirina() {
+  return this->n;
 }
 
 Matrica& Matrica::operator= (const Matrica &cmat)
