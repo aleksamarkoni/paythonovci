@@ -52,6 +52,8 @@ void render() {
 }
 
 void gameLoop() {
+  randomDva();
+
   while(true) {
     struct timeval tp;
     gettimeofday(&tp, NULL);
@@ -61,7 +63,6 @@ void gameLoop() {
 
     okviri();
     reset();
-    randomDva();
     update();
     render();
 
