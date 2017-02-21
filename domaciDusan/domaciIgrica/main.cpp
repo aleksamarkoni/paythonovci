@@ -99,11 +99,13 @@ void render() {
 }
 
 void gameLoop() {
+
   while(running) {
     struct timeval tp;
     gettimeofday(&tp, NULL);
     long int start = tp.tv_sec * 1000 + tp.tv_usec / 1000;
 
+    resetPolja();
     daLiJeKrajMape();
     resetPolja();
     randomBrojJedan();
