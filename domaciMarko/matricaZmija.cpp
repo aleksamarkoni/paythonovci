@@ -17,26 +17,32 @@ int dx = 1, dy = 1;
 void update() {
   dopuna = 0;
   vrednost;
+  mat.set(x, y, 0);
   x += dx;
   y += dy;
+  if (x + dx >= WIDTH || x + dx < 0)
+    dx = -dx;
+  if (y + dy >= HEIGHT || y + dy < 0)
+    dy = -dy;
   if (mat(x, y) == 2) {
     dopuna++;
     vrednost++;
   }
   if (dopuna > 0) {
-  int a = (rand() % 10) + 0;
-  int b = (rand() % 10) + 0;
-    if (a != x || b != y)
-      mat.set(a, b, 2);
+    int a = (rand() % 10) + 0;
+    int b = (rand() % 10) + 0;
+  if (a != x || b != y)
+  if (!(mat(a, b) == 1 || mat(a, b) == 2))
+    mat.set(a, b, 2);
   }
-      mat.set(x, y, 1);
-      cout << "Count: "<< vrednost << endl;
+    mat.set(x, y, 1);
+    cout << "Count: "<< vrednost << endl;
 }
 
 void render() {
-  cout << "-----------------------------" << endl;
-  cout << mat << endl;
-  cout << "-----------------------------" << endl;
+    cout << "-----------------------------" << endl;
+    cout << mat << endl;
+    cout << "-----------------------------" << endl;
 }
 
 void gameLoop() {
@@ -44,11 +50,6 @@ void gameLoop() {
     struct timeval tp;
     gettimeofday(&tp, NULL);
     long int start = tp.tv_sec * 1000 + tp.tv_usec / 1000;
-    mat.set(x, y, 0);
-    if (x + dx >= WIDTH || x + dx < 0)
-      dx = -dx;
-    if (y + dy >= HEIGHT || y + dy < 0)
-      dy = -dy;
     update();
     render();
     gettimeofday(&tp, NULL);
@@ -67,12 +68,13 @@ void gameLoop() {
   void popunjavanjeMatriceDvojkama() {
       int a, b;
       for (int i = 0; i < 10; i++){
-      a = (rand() % 10) + 0;
-      b = (rand() % 10) + 0;
+        a = (rand() % 10) + 0;
+        b = (rand() % 10) + 0;
       if (a != x || b != y)
-      mat.set(a, b, 2);
+      if (!(mat(a, b) == 1 || mat(a, b) == 2))
+        mat.set(a, b, 2);
       }
-    }
+  }
 
 int main() {
   srand(time(0));
