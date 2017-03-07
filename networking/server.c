@@ -147,6 +147,8 @@ void *connection_handler(void *socket_desc)
     //Receive a message from client
     while( (read_size = recv(sock , client_message , 2000 , 0)) > 0 )
     {
+
+        client_message[read_size] = '\0';
         //Send the message back to client
         for (j = 0; j < i; j++) {
           write(connected_client[j] , client_message , strlen(client_message));
@@ -173,7 +175,5 @@ void *connection_handler(void *socket_desc)
 
     //Free the socket pointer
     free(socket_desc);
-
-
     return 0;
 }

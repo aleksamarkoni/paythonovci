@@ -141,5 +141,6 @@ void *cekam_podatke_sa_server(void *socket_desc) {
 
       puts("Server reply :");
       puts(server_replay);
+      fflush(stdout);
   }
 }
