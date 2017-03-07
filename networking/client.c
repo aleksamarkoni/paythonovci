@@ -11,13 +11,16 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
-
+#include <pthread.h>
 #include <arpa/inet.h>
 
 #define PORT "34567" // the port client will be connecting to
 #define IP_ADRESS "92.244.137.93"
 
 #define MAXDATASIZE 1000 // max number of bytes we can get at once
+
+void *cekam_korisnikov_unos(void *);
+void *cekam_podatke_sa_server(void *);
 
 // get sockaddr, IPv4 or IPv6:
 void *get_in_addr(struct sockaddr *sa)
@@ -32,7 +35,6 @@ void *get_in_addr(struct sockaddr *sa)
 int main(int argc, char *argv[])
 {
     int sockfd, numbytes;
-    char message[MAXDATASIZE], server_reply[MAXDATASIZE];
     struct addrinfo hints, *servinfo, *p;
     int rv;
     char s[INET6_ADDRSTRLEN];
@@ -74,55 +76,70 @@ int main(int argc, char *argv[])
 
     freeaddrinfo(servinfo); // all done with this structure
 
-    //greatings message
-    int r = recv(sockfd , server_reply , MAXDATASIZE-1 , 0);
-    if (r < 0) {
-        puts("recv failed");
-    }
+    // ovde smo konektovani na server
 
-    server_reply[r] = '\0';
+    pthread_t tastatura_thread, server_thread;
+    int *new_sock = (int*) malloc(sizeof (int));
+    *new_sock = sockfd;
 
-    puts(server_reply);
-
-
-    //now type something message
-    r = recv(sockfd , server_reply , MAXDATASIZE-1 , 0);
-    if (r < 0) {
-        puts("recv failed");
-    }
-
-    server_reply[r] = '\0';
-
-    puts(server_reply);
-
-
-    while(1)
+    if( pthread_create( &tastatura_thread , NULL ,  cekam_korisnikov_unos , (void*) new_sock) < 0)
     {
-        printf("Enter message : ");
-        scanf("%s" , message);
-        printf("Saljemo na server: %s\n", message);
-
-        //Send some data
-        if( send(sockfd , message , strlen(message) , 0) < 0)
-        {
-            puts("Send failed");
-            return 1;
-        }
-
-        //Receive a reply from the server
-        r = recv(sockfd , server_reply , MAXDATASIZE-1 , 0);
-        if (r < 0) {
-            puts("recv failed");
-            break;
-        }
-
-        server_reply[r] = '\0';
-
-        puts("Server reply :");
-        puts(server_reply);
+        perror("could not create thread");
+        return 1;
     }
+
+    if( pthread_create( &server_thread , NULL ,  cekam_podatke_sa_server , (void*) new_sock) < 0)
+    {
+        perror("could not create thread");
+        return 1;
+    }
+
+    pthread_join(tastatura_thread, NULL);
+    pthread_join(server_thread, NULL);
 
     close(sockfd);
 
     return 0;
+}
+
+void *cekam_korisnikov_unos(void *socket_desc) {
+  //Get the socket descriptor
+  int sock = *(int*)socket_desc;
+  char message[MAXDATASIZE];
+
+  while(1)
+  {
+      printf("Enter message : ");
+      scanf("%s" , message);
+      printf("Saljemo na server: %s\n", message);
+
+      //Send some data
+      if( send(sock , message , strlen(message) , 0) < 0)
+      {
+          puts("Send failed");
+          break;
+      }
+  }
+
+}
+void *cekam_podatke_sa_server(void *socket_desc) {
+  //Get the socket descriptor
+  int sock = *(int*)socket_desc;
+  int r;
+  char server_replay[MAXDATASIZE];
+
+  while(1)
+  {
+      //Receive a reply from the server
+      r = recv(sock , server_replay , MAXDATASIZE-1 , 0);
+      if (r < 0) {
+          puts("recv failed");
+          break;
+      }
+
+      server_replay[r] = '\0';
+
+      puts("Server reply :");
+      puts(server_replay);
+  }
 }

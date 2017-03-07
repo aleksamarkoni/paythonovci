@@ -21,6 +21,9 @@
 
 #define BACKLOG 10     // how many pending connections queue will hold
 
+int connected_client[100];
+int i = 0;
+
 //the thread function
 void *connection_handler(void *);
 
@@ -103,6 +106,7 @@ int main(void)
             s, sizeof s);
         printf("server: got connection from %s\n", s);
 
+        connected_client[i++] = new_fd;
 
         pthread_t sniffer_thread;
         int *new_sock = (int*) malloc(sizeof (int));
@@ -130,7 +134,7 @@ void *connection_handler(void *socket_desc)
 {
     //Get the socket descriptor
     int sock = *(int*)socket_desc;
-    int read_size;
+    int read_size, j;
     char *message , client_message[2000];
 
     //Send some messages to the client
@@ -144,7 +148,9 @@ void *connection_handler(void *socket_desc)
     while( (read_size = recv(sock , client_message , 2000 , 0)) > 0 )
     {
         //Send the message back to client
-        write(sock , client_message , strlen(client_message));
+        for (j = 0; j < i; j++) {
+          write(connected_client[j] , client_message , strlen(client_message));
+        }
     }
 
     if(read_size == 0)
@@ -157,8 +163,17 @@ void *connection_handler(void *socket_desc)
         perror("recv failed");
     }
 
+    for (j = 0; j < i-1; j++) {
+      if (connected_client[j] == sock) {
+        connected_client[j] = connected_client[i-1];
+        break;
+      }
+    }
+    i--;
+
     //Free the socket pointer
     free(socket_desc);
+
 
     return 0;
 }
