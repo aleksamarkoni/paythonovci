@@ -14,7 +14,7 @@
 #include <pthread.h>
 #include <arpa/inet.h>
 
-#define PORT "34567" // the port client will be connecting to
+#define PORT "34510" // the port client will be connecting to
 #define IP_ADRESS "92.244.137.93"
 
 #define MAXDATASIZE 1000 // max number of bytes we can get at once
@@ -37,13 +37,23 @@ int main(int argc, char *argv[])
     int sockfd, numbytes;
     struct addrinfo hints, *servinfo, *p;
     int rv;
+    char *port;
     char s[INET6_ADDRSTRLEN];
+
+    if (argc == 2) {
+       port = argv[1];
+    } else if (argc == 1) {
+       port = PORT;
+    } else {
+      printf("Imas vise od 2 argumenta komandne linije, to ne valja");
+      exit(1);
+    }
 
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
 
-    if ((rv = getaddrinfo(IP_ADRESS, PORT, &hints, &servinfo)) != 0) {
+    if ((rv = getaddrinfo(IP_ADRESS, port, &hints, &servinfo)) != 0) {
         fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
         return 1;
     }
