@@ -13,11 +13,23 @@
 #include <sys/socket.h>
 #include <pthread.h>
 #include <arpa/inet.h>
+#include <FL/Fl.H>
+#include <FL/Fl_Return_Button.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Input.H>
+#include <FL/Fl_Multiline_Output.H>
+#include <string>
+#include <iostream>
 
-#define PORT "34510" // the port client will be connecting to
+using namespace std;
+
+#define PORT "34525" // the port client will be connecting to
 #define IP_ADRESS "92.244.137.93"
 
 #define MAXDATASIZE 1000 // max number of bytes we can get at once
+
+int sockfd;
+Fl_Multiline_Output *messagesTextView;
 
 void *cekam_korisnikov_unos(void *);
 void *cekam_podatke_sa_server(void *);
@@ -32,9 +44,37 @@ void *get_in_addr(struct sockaddr *sa)
     return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 
+void posaljiOvoNaServer(const char* text) {
+  pthread_t tastatura_thread;
+  if( pthread_create( &tastatura_thread , NULL ,  cekam_korisnikov_unos , (void*) text) < 0)
+  {
+      perror("could not create thread");
+  }
+}
+
+void send_cb(Fl_Widget* dugme, void*) {
+	Fl_Return_Button* b = (Fl_Return_Button*)dugme;
+	Fl_Input* in = (Fl_Input*)b->parent()->child(1);
+	const char* inText = in->value();
+	posaljiOvoNaServer(inText);
+  in->value("");
+}
+
+void kreirajProzor() {
+  Fl_Window * win = new Fl_Window(600, 800, "Chat Client 2.0");
+	win->begin();
+		Fl_Return_Button *send = new Fl_Return_Button(520, 760, 70, 30, "&Send");
+		Fl_Input *inp = new Fl_Input(10, 760, 500, 30, "");
+		messagesTextView = new Fl_Multiline_Output(10, 10, 580, 740, "");
+	win->end();
+	send->callback(send_cb);
+	messagesTextView->value("");
+	win->show();
+}
+
 int main(int argc, char *argv[])
 {
-    int sockfd, numbytes;
+    int numbytes;
     struct addrinfo hints, *servinfo, *p;
     int rv;
     char *port;
@@ -48,6 +88,9 @@ int main(int argc, char *argv[])
       printf("Imas vise od 2 argumenta komandne linije, to ne valja");
       exit(1);
     }
+
+    Fl::lock();
+    kreirajProzor();
 
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
@@ -88,15 +131,9 @@ int main(int argc, char *argv[])
 
     // ovde smo konektovani na server
 
-    pthread_t tastatura_thread, server_thread;
+    pthread_t server_thread;
     int *new_sock = (int*) malloc(sizeof (int));
     *new_sock = sockfd;
-
-    if( pthread_create( &tastatura_thread , NULL ,  cekam_korisnikov_unos , (void*) new_sock) < 0)
-    {
-        perror("could not create thread");
-        return 1;
-    }
 
     if( pthread_create( &server_thread , NULL ,  cekam_podatke_sa_server , (void*) new_sock) < 0)
     {
@@ -104,34 +141,24 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    pthread_join(tastatura_thread, NULL);
-    pthread_join(server_thread, NULL);
+    int result = Fl::run();
+
+    //TODO ubi tredove koje smo kreirali
 
     close(sockfd);
 
-    return 0;
+    return result;
 }
 
-void *cekam_korisnikov_unos(void *socket_desc) {
-  //Get the socket descriptor
-  int sock = *(int*)socket_desc;
-  char message[MAXDATASIZE];
-
-  while(1)
-  {
-      printf("Enter message : ");
-      scanf("%s" , message);
-      printf("Saljemo na server: %s\n", message);
-
-      //Send some data
-      if( send(sock , message , strlen(message) , 0) < 0)
-      {
-          puts("Send failed");
-          break;
-      }
-  }
-
+void *cekam_korisnikov_unos(void *text) {
+  const char* poruka = (const char *) text;
+  printf("Saljemo poruku na server\n");
+  //Send text to the server
+  if( send(sockfd , poruka , strlen(poruka) , 0) < 0) {
+      puts("Send failed");
+    }
 }
+
 void *cekam_podatke_sa_server(void *socket_desc) {
   //Get the socket descriptor
   int sock = *(int*)socket_desc;
@@ -149,8 +176,12 @@ void *cekam_podatke_sa_server(void *socket_desc) {
 
       server_replay[r] = '\0';
 
-      puts("Server reply :");
-      puts(server_replay);
-      fflush(stdout);
+      Fl::lock();
+      const char* messagesText = messagesTextView->value();
+    	cout << server_replay << endl;
+    	string inString(server_replay);
+    	string messagesTextString(messagesText);
+    	messagesTextView->value((messagesTextString + "\n" + inString).c_str());
+      Fl::unlock();
   }
 }
