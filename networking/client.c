@@ -183,5 +183,6 @@ void *cekam_podatke_sa_server(void *socket_desc) {
     	string messagesTextString(messagesText);
     	messagesTextView->value((messagesTextString + "\n" + inString).c_str());
       Fl::unlock();
+      Fl::awake();
   }
 }
