@@ -153,8 +153,9 @@ void *connection_handler(void *socket_desc)
     recv(sock, username, 666, 0);
     strcat(username, ":");
     strcat(username, " ");
-    string prenos;
+    char disconnect[2666];
     char poruka[2666];
+
     std::cout << "Username: " << username << std::endl;
 
     //Receive a message from client
@@ -173,6 +174,11 @@ void *connection_handler(void *socket_desc)
     if(read_size == 0)
     {
         std::cout << "Client disconnected" << std::endl;
+        for (j = 0; j < i-1; j++) {
+          strcpy(disconnect, username);
+          strcat(disconnect, "disconnected!");
+          write(client_message, disconnect, strlen(disconnect));
+        }
         fflush(stdout);
     }
     else if(read_size == -1)
