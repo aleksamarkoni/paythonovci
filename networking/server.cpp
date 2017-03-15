@@ -150,7 +150,9 @@ void *connection_handler(void *socket_desc)
     //Send some messages to the client
     message = "Unesite vas username: \n";
     write(sock , message , strlen(message));
-    recv(sock, username, 666, 0);
+    recv(sock, username, 666, 0)
+    message = "Izaberite kanal: \n1 - General\n2 - Programming\n3 - Sex\n4 - Kolaci\n";
+    write(sock, message, strlen(message));
     strcat(username, ":");
     strcat(username, " ");
     char disconnect[2666];
@@ -165,8 +167,8 @@ void *connection_handler(void *socket_desc)
         //Send the message back to client
         for (j = 0; j < i; j++) {
           //write(sock, username, strlen(username));
-          strcat(poruka, username);
-          strcpy(poruka, client_message);
+          strcpy(poruka, username);
+          strcat(poruka, client_message);
           write(connected_client[j] , poruka , strlen(poruka));
         }
     }
@@ -177,7 +179,7 @@ void *connection_handler(void *socket_desc)
         for (j = 0; j < i-1; j++) {
           strcpy(disconnect, username);
           strcat(disconnect, "disconnected!");
-          write(client_message, disconnect, strlen(disconnect));
+          write(connected_client[j], disconnect, strlen(disconnect));
         }
         fflush(stdout);
     }
