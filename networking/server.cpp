@@ -1,7 +1,6 @@
 /*
 ** server.c -- a stream socket server demo
 */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -15,11 +14,21 @@
 #include <sys/wait.h>
 #include <signal.h>
 #include <pthread.h>
+#include <iostream>
 
-#define PORT "34567"  // the port users will be connecting to
-#define IP_ADRESS "192.168.0.150"
 
+#define PORT "34515" // the port client will be connecting to
+#define IP_ADRESS "92.244.137.93"
 #define BACKLOG 10     // how many pending connections queue will hold
+/*
+    class User {
+    public:
+      char username_server[666];
+      int ipadresa;
+    User();
+  };
+*/
+
 
 int connected_client[100];
 int i = 0;
@@ -36,9 +45,14 @@ void *get_in_addr(struct sockaddr *sa)
 
     return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
+void *user() {
+
+}
+
 
 int main(void)
 {
+
     int sockfd, new_fd;  // listen on sock_fd, new connection on new_fd
     struct addrinfo hints, *servinfo, *p;
     struct sockaddr_storage their_addr; // connector's address information
@@ -47,6 +61,7 @@ int main(void)
     int yes=1;
     char s[INET6_ADDRSTRLEN];
     int rv;
+
 
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
@@ -100,11 +115,12 @@ int main(void)
             perror("accept");
             continue;
         }
+        std::cout << "Username: " << std::endl;
+
 
         inet_ntop(their_addr.ss_family,
-            get_in_addr((struct sockaddr *)&their_addr),
-            s, sizeof s);
-        printf("server: got connection from %s\n", s);
+            get_in_addr((struct sockaddr *)&their_addr), s, sizeof s);
+        std::cout << "server: got connection from \n" << s << std::endl;
 
         connected_client[i++] = new_fd;
 
@@ -120,7 +136,7 @@ int main(void)
 
         //Now join the thread , so that we dont terminate before the thread
         //pthread_join( sniffer_thread , NULL);
-        puts("Handler assigned");
+        std::cout << "Handler assigned" << std::endl;
 
     }
 
@@ -136,13 +152,25 @@ void *connection_handler(void *socket_desc)
     int sock = *(int*)socket_desc;
     int read_size, j;
     char *message , client_message[2000];
+    char username[666];
+
+
 
     //Send some messages to the client
-    message = "Greetings! I am your connection handler\n";
-    write(sock , message , strlen(message));
+  //  User user = new User(sock, username_server);
 
-    message = "Now type something and i shall repeat what you type \n";
+    message = "Unesite vas username: \n";
     write(sock , message , strlen(message));
+    recv(sock, username, 666, 0);
+
+    char random = ':';
+    char random2 = ' ';
+    strncat(username, &random, 1);
+    strncat(username, &random2, 1);
+//    user.username_server;
+  //  username += ": ";
+  //  client_message = username + client_message;
+    std::cout << "Username: " << username << std::endl;
 
     //Receive a message from client
     while( (read_size = recv(sock , client_message , 2000 , 0)) > 0 )
@@ -151,13 +179,14 @@ void *connection_handler(void *socket_desc)
         client_message[read_size] = '\0';
         //Send the message back to client
         for (j = 0; j < i; j++) {
+          write(sock, username, strlen(username));
           write(connected_client[j] , client_message , strlen(client_message));
         }
     }
 
     if(read_size == 0)
     {
-        puts("Client disconnected");
+        std::cout << "Client disconnected" << std::endl;
         fflush(stdout);
     }
     else if(read_size == -1)

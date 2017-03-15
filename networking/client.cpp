@@ -2,11 +2,9 @@
 ** client.c -- a stream socket client demo
 */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
-#include <string.h>
 #include <netdb.h>
 #include <sys/types.h>
 #include <netinet/in.h>
@@ -20,11 +18,11 @@
 #include <FL/Fl_Multiline_Output.H>
 #include <string>
 #include <iostream>
+#include <fstream>
 
-using namespace std;
-
-#define PORT "34525" // the port client will be connecting to
+#define PORT "34515" // the port client will be connecting to
 #define IP_ADRESS "92.244.137.93"
+
 
 #define MAXDATASIZE 1000 // max number of bytes we can get at once
 
@@ -85,7 +83,8 @@ int main(int argc, char *argv[])
     } else if (argc == 1) {
        port = PORT;
     } else {
-      printf("Imas vise od 2 argumenta komandne linije, to ne valja");
+      std::cout << "Imas vise od 2 argumenta komandne linije, to ne valja"
+      << std::endl;
       exit(1);
     }
 
@@ -97,7 +96,8 @@ int main(int argc, char *argv[])
     hints.ai_socktype = SOCK_STREAM;
 
     if ((rv = getaddrinfo(IP_ADRESS, port, &hints, &servinfo)) != 0) {
-        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
+        std::cout << stderr << "getaddrinfo: \n" << gai_strerror(rv)
+        << std::endl;
         return 1;
     }
 
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
 
     inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),
             s, sizeof s);
-    printf("client: connecting to %s\n", s);
+    std::cout << "client: connecting to \n" << s << std::endl;
 
     freeaddrinfo(servinfo); // all done with this structure
 
@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
 
 void *cekam_korisnikov_unos(void *text) {
   const char* poruka = (const char *) text;
-  printf("Saljemo poruku na server\n");
+  std::cout << "Saljemo poruku na server\n" << std::endl;
   //Send text to the server
   if( send(sockfd , poruka , strlen(poruka) , 0) < 0) {
       puts("Send failed");
@@ -178,9 +178,9 @@ void *cekam_podatke_sa_server(void *socket_desc) {
 
       Fl::lock();
       const char* messagesText = messagesTextView->value();
-    	cout << server_replay << endl;
-    	string inString(server_replay);
-    	string messagesTextString(messagesText);
+    	std::cout << server_replay << std::endl;
+    	std::string inString(server_replay);
+    	std::string messagesTextString(messagesText);
     	messagesTextView->value((messagesTextString + "\n" + inString).c_str());
       Fl::unlock();
       Fl::awake();
