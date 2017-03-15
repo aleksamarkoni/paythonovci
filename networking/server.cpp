@@ -19,18 +19,9 @@
 
 using namespace std;
 
-#define PORT "34500" // the port client will be connecting to
+#define PORT "34503" // the port client will be connecting to
 #define IP_ADRESS "192.168.0.151"
 #define BACKLOG 10     // how many pending connections queue will hold
-/*
-    class User {
-    public:
-      char username_server[666];
-      int ipadresa;
-    User();
-  };
-*/
-
 
 int connected_client[100];
 int i = 0;
@@ -156,22 +147,14 @@ void *connection_handler(void *socket_desc)
     char *message , client_message[2000];
     char username[666];
 
-
     //Send some messages to the client
-  //  User user = new User(sock, username_server);
-
     message = "Unesite vas username: \n";
     write(sock , message , strlen(message));
     recv(sock, username, 666, 0);
-    //char random = ':';
-    //char random2 = ' ';
     strcat(username, ":");
     strcat(username, " ");
     string prenos;
-    duzina = strlen(username);
-    //char *posalji;
-    //(string)username;
-    //username += ": ";
+    char poruka[2666];
     std::cout << "Username: " << username << std::endl;
 
     //Receive a message from client
@@ -181,13 +164,10 @@ void *connection_handler(void *socket_desc)
         //Send the message back to client
         for (j = 0; j < i; j++) {
           //write(sock, username, strlen(username));
-          strcat(username, client_message);
-          strcpy(client_message, username);
-          write(connected_client[j] , client_message , strlen(client_message));
+          strcat(poruka, username);
+          strcpy(poruka, client_message);
+          write(connected_client[j] , poruka , strlen(poruka));
         }
-    }
-    for(int m = 0; m < strlen(client_message); m++) {
-      username[duzina+1] = 0;
     }
 
     if(read_size == 0)
