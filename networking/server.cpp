@@ -15,10 +15,12 @@
 #include <signal.h>
 #include <pthread.h>
 #include <iostream>
+#include <string>
 
+using namespace std;
 
-#define PORT "34515" // the port client will be connecting to
-#define IP_ADRESS "92.244.137.93"
+#define PORT "34500" // the port client will be connecting to
+#define IP_ADRESS "192.168.0.151"
 #define BACKLOG 10     // how many pending connections queue will hold
 /*
     class User {
@@ -155,33 +157,37 @@ void *connection_handler(void *socket_desc)
     char username[666];
 
 
-
     //Send some messages to the client
   //  User user = new User(sock, username_server);
 
     message = "Unesite vas username: \n";
     write(sock , message , strlen(message));
     recv(sock, username, 666, 0);
-
-    char random = ':';
-    char random2 = ' ';
-    strncat(username, &random, 1);
-    strncat(username, &random2, 1);
-//    user.username_server;
-  //  username += ": ";
-  //  client_message = username + client_message;
+    //char random = ':';
+    //char random2 = ' ';
+    strcat(username, ":");
+    strcat(username, " ");
+    string prenos;
+    duzina = strlen(username);
+    //char *posalji;
+    //(string)username;
+    //username += ": ";
     std::cout << "Username: " << username << std::endl;
 
     //Receive a message from client
     while( (read_size = recv(sock , client_message , 2000 , 0)) > 0 )
     {
-
         client_message[read_size] = '\0';
         //Send the message back to client
         for (j = 0; j < i; j++) {
-          write(sock, username, strlen(username));
+          //write(sock, username, strlen(username));
+          strcat(username, client_message);
+          strcpy(client_message, username);
           write(connected_client[j] , client_message , strlen(client_message));
         }
+    }
+    for(int m = 0; m < strlen(client_message); m++) {
+      username[duzina+1] = 0;
     }
 
     if(read_size == 0)
