@@ -32,13 +32,11 @@ class Korisnik {
 private:
   int sock;
   char username[666];
-  Kanal *kanalKorisnika;
 public:
   Korisnik() {}
   Korisnik(int sock, char *username) {
     setSocket(sock);
     setUsername(username);
-    kanalKorisnika = NULL;
   }
   void setSocket(int sock) {
     this->sock = sock;
@@ -297,9 +295,12 @@ void *connection_handler(void *socket_desc) {
           for (int j = 0; j < kanali[i].korisnici.length(); j++) {
             if (kanali[i].korisnici[j].sock == sock) {
               //pronasao sam kanal u kome je korisnki
-              kanal = korisnik
+              kanal = korisnikKanal;
           }
         }
+        for (int i =0; *korisnikKanal->getKorisniki().length(); i++) {
+
+      }
      }
      }
          //
