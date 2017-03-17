@@ -28,6 +28,50 @@ public:
     }
   }
 
+  //TODO kopi konstruktor
+  PString(const &PString p) {}
+  //TODO operator =
+  /*
+  PString ps1("ovo je neki text");
+  PString ps2("ovo je neki drugi text");
+  ps1 = ps2;
+  cout << ps1 << endl; // "ovo je neki drugi text"
+  */
+
+  //TODO operator +
+  // recimo da su ps1 i ps2 iste kao iz prethodnog primera
+  // PString ps3;
+  // ps3 = ps1 + ps2;
+  // cout << ps3 << endl; "ovo je neki textovo je neki drugi text"
+
+  //TODO operator[i]
+  // vraca karakter unutar naseg string za zadati index i
+
+  //TODO
+  // dodati funkcije back i front, koje vracaju poslednji odnosno prvi karakter
+
+  //TODO operator +=
+  // ps1 += ps2; kao ps1.append(ps2);\
+
+/*
+push_back Append character to string (public member function )
+PString ps1("ovo");
+ps1.push_back('a');
+ovoa
+
+assign Assign content to string (public member function )
+PString ps1("ovo je neka recenica");
+ps1.assign('pera');
+pera
+
+clear clears the string (public member function )
+PString ps1("ovo je neka recenica");
+ps1.clear();
+''
+
+pop_back Delete last character (public member function )
+*/
+
   PString(string s) {
     //izracunaj len
     int len = s.length();
@@ -56,10 +100,29 @@ public:
     // rec = "ovo je neka rec"
     // arec = " "
 
+    for (int i = 0; i < lenrec - 1; i++) {
+      pom[i] = rec[i];
+    }
+
+    delete [] rec;
+
+    for (int j = 0; j < lenarec; j++) {
+      pom[lenrec - 1 + j] = arec[j];
+    }
+    pom[lenrec + lenarec - 2] = '\0';
+
+    rec = pom;
   }
 
   ~PString() {
     delete [] rec;
+  }
+
+  int len() {
+    int len = 0;
+    while (rec[len++] != '\0');
+    len - 1;
+    return len;
   }
 
   friend ostream& operator<<(ostream &out, const PString &string);
@@ -73,9 +136,11 @@ ostream& operator<<(ostream &out, const PString &pstring) {
 int main() {
   PString ps;
   PString ps1("Ovo je neka rec.");
-  string s("proba stringa");
+  cout << ps1.len() << endl;
+  string s("pr");
   PString ps2(s);
   ps1.append(" ");
-  ps1.append("Ovo je nastavak.");
+  ps1.append("Zika.");
   cout << ps1 << endl;
+  cout << ps1.len() << endl;
 }

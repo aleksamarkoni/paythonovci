@@ -20,9 +20,15 @@ int main() {
 
   }
 
-  char rec[20];
+  char rec[20] = "ove je neka rec";
+  char rec1[20];
+  for (int i = 0; i < 16; i++) {
+    rec1[i] = rec[i];
+  }
 
-  string recstring(20);
+  string recstring("ovo je neka rec");
+  string rec1string(recstring);
+  recstring.c_str();
 
   Korisnik pera(123, "pera");
   cout << pera << endl;

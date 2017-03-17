@@ -50,6 +50,7 @@ public:
     return *username;
   }
   string printUsername() {
+    //string ispis(username)
     for (int p = 0; p < strlen(username); p++) {
       ispis += username[p];
     }
@@ -59,7 +60,8 @@ public:
 };
 
 ostream& operator<<(ostream &out, Korisnik &user) {
-  out << user.printUsername();
+  //probajte ovo
+  out << user.username << endl;
   return out;
 }
 
@@ -92,7 +94,11 @@ public:
 vector<Kanal> kanali;
 
 ostream& operator<<(ostream &out, Kanal &kanal) {
-  out << kanal;
+  //TODO
+  out << kanal.imeKanala << endl;
+  for (int i = 0; i < kanal.korisnici.size(); i++) {
+    out << kanal.korisnici[i] << endl;
+  }
   return out;
 }
 
