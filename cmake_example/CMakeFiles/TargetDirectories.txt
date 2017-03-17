@@ -1,0 +1,1 @@
+/mnt/c/Users/aleksamarkoni/paythonovci/cmake_example/CMakeFiles/hello.dir
