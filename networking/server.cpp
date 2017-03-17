@@ -26,16 +26,19 @@ using namespace std;
 int connected_client[100];
 int i = 0;
 string ispis;
+vector<Kanal> kanali;
 
 class Korisnik {
 private:
   int sock;
   char username[666];
+  Kanal *kanalKorisnika;
 public:
   Korisnik() {}
   Korisnik(int sock, char *username) {
     setSocket(sock);
     setUsername(username);
+    kanalKorisnika = NULL;
   }
   void setSocket(int sock) {
     this->sock = sock;
@@ -88,10 +91,7 @@ public:
   }
 
   friend ostream& operator<<(ostream &out, Kanal &kanal);
-  friend ostream& operator<<(ostream &out, vector<Korisnik> &korisnici);
 };
-
-vector<Kanal> kanali;
 
 ostream& operator<<(ostream &out, Kanal &kanal) {
   //TODO
@@ -101,13 +101,6 @@ ostream& operator<<(ostream &out, Kanal &kanal) {
   }
   return out;
 }
-
-ostream& operator<<(ostream &out, vector<Korisnik> &korisnici) {
-  out << kanali[0].getKorisnik()[i].printUsername() << endl;
-  return out;
-}
-
-//vector<std::pair<int, Korisnik> > kanali;
 
 //the thread function
 void *connection_handler(void *);
@@ -226,6 +219,7 @@ void *connection_handler(void *socket_desc) {
     char *message , client_message[2000], username[666];
     string imeKanala;
     Korisnik *user;
+    Kanal *korisnikovKanal = NULL;
     Kanal general("General");
     Kanal Programming("Programming");
     Kanal Sex("Sex");
@@ -238,8 +232,12 @@ void *connection_handler(void *socket_desc) {
     user = new Korisnik(sock, username);
     cout << "Korisnikov socket: " << user->getSocket() << endl;
     cout << "Korisnikov username: " << user->printUsername() << endl;
-    message = "Izaberite kanal: \n1 - General\n2 - Programming\n3 - Sex\n4 - Kolaci\n";
-    write(sock, message, strlen(message));
+    string skanali;
+    for (int i = 0; i < kanali; i++) {
+      skanali += kanali[i].imeKanala;
+    }
+    int len = skanali.length();
+    write(sock, skanali.c_str(), strlen(message));
     recv(sock, client_message, 2000, 0);
     int izbor = atoi(client_message);
     cout << "Izbor: " << izbor << endl;
@@ -279,7 +277,35 @@ void *connection_handler(void *socket_desc) {
 
     //std::cout << "Username: " << username << std::endl;
     while( (read_size = recv(sock, client_message , 2000 , 0)) > 0 ) {
+
         client_message[read_size] = '\0';
+        //TODO ove gledamo sta je korisnik hteo?
+        /*
+        // izdvoj prvu rec, pronadjem prvu prazninu, substrin(0, prve beline)
+        if (prva_rec == "/lista_kanala") {
+          posalji_klientu_sve_kanale();
+        } else if (prva_rec == /udji_u_kanal) {
+         // izdvoj drugu rec u recenici /udji_u_kanal sex
+         for (int i=0; i < kanali.length(); i++) {
+           if (kanali[i].imeKanala == druga_rec) {
+             korisnikovKanal = &kanali[i];
+             dodaj korisnika u kanal i to je to
+         }
+         // nema tog kanala, onda prijavljujem gresku
+       } else {
+       for (int i = 0; i < kanali.length(); i++) {
+          for (int j = 0; j < kanali[i].korisnici.length(); j++) {
+            if (kanali[i].korisnici[j].sock == sock) {
+              //pronasao sam kanal u kome je korisnki
+              kanal = korisnik
+          }
+        }
+     }
+     }
+         //
+      }
+
+        */
         //Send the message back to client
         for (j = 0; j < i; j++) {
           //write(sock, username, strlen(username));
