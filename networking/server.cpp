@@ -41,9 +41,7 @@ public:
     this->sock = sock;
   }
   void setUsername(char *username) {
-    for (int p = 0; p < strlen(username); p++) {
       strcpy(this->username, username);
-    }
   }
   int getSocket() {
     return sock;
@@ -61,7 +59,7 @@ public:
 };
 
 ostream& operator<<(ostream &out, Korisnik &user) {
-  out << user;
+  out << user.printUsername();
   return out;
 }
 
@@ -86,6 +84,7 @@ public:
   vector<Korisnik> getKorisnik() {
     return this->korisnici;
   }
+
   friend ostream& operator<<(ostream &out, Kanal &kanal);
   friend ostream& operator<<(ostream &out, vector<Korisnik> &korisnici);
 };
@@ -98,7 +97,7 @@ ostream& operator<<(ostream &out, Kanal &kanal) {
 }
 
 ostream& operator<<(ostream &out, vector<Korisnik> &korisnici) {
-  out << kanali[0].getKorisnik()[0] << endl;
+  out << kanali[0].getKorisnik()[i].printUsername() << endl;
   return out;
 }
 
@@ -187,7 +186,6 @@ int main(void) {
         }
         //std::cout << "Username: " << std::endl;
 
-
         inet_ntop(their_addr.ss_family,
             get_in_addr((struct sockaddr *)&their_addr), s, sizeof s);
         //std::cout << "server: got connection from \n" << s << std::endl;
@@ -212,14 +210,6 @@ int main(void) {
     return 0;
 }
 
-//napraviti klasu korisnik
-//vektor kanala
-//vektor kanal tipa korisnik
-/*
-void connection_handler_general(vector<vector<Korisnik> > kanali) {
-
-}
-*/
 /*
  * This will handle connection for each client
  * */
@@ -241,13 +231,10 @@ void *connection_handler(void *socket_desc) {
     recv(sock, username, 666, 0);
     user = new Korisnik(sock, username);
     cout << "Korisnikov socket: " << user->getSocket() << endl;
-    cout << "Korisnikov username: "; user->printUsername();
-    //user->setSocket(sock);
-    //user->setUsername(username);
+    cout << "Korisnikov username: " << user->printUsername() << endl;
     message = "Izaberite kanal: \n1 - General\n2 - Programming\n3 - Sex\n4 - Kolaci\n";
     write(sock, message, strlen(message));
     recv(sock, client_message, 2000, 0);
-    cout << "Poruka: " << client_message << endl;
     int izbor = atoi(client_message);
     cout << "Izbor: " << izbor << endl;
     switch(izbor) {
@@ -255,14 +242,25 @@ void *connection_handler(void *socket_desc) {
         kanali.push_back(general);
         kanali[0].dodajKorisnika(*user);
         cout << "Kanal: " << kanali[0] << endl;
-        cout << kanali[0].getKorisnik()[0].printUsername() << endl;
+        for (j = 0; j < i; j++) {
+          cout << kanali[0].getKorisnik()[i].printUsername() << endl;
+        }
       break;
       case 2:
-        //kanali[1].push_back(*user);
+        kanali.push_back(Programming);
+        kanali[1].dodajKorisnika(*user);
+        cout << "Kanal: " << kanali[1] << endl;
+        for (j = 0; j < i; j++) {
+          cout << kanali[1].getKorisnik()[i].printUsername() << endl;
+        }
       break;
       case 3:
+        //kanali.push_back(Sex);
+        //kanali[2].dodajKorisnika(*user);
       break;
       case 4:
+        //kanali.push_back(Kolaci);
+        //kanali[3].dodajKorisnika(*user);
       break;
 
     }
@@ -271,6 +269,7 @@ void *connection_handler(void *socket_desc) {
     char disconnect[2666];
     char poruka[2666];
 
+//umesto connected_client staviti kanali[izbor].getKorisnik()[i]
 
     //std::cout << "Username: " << username << std::endl;
     while( (read_size = recv(sock, client_message , 2000 , 0)) > 0 ) {
