@@ -19,7 +19,7 @@
 
 using namespace std;
 
-#define PORT "34521" // the port client will be connecting to
+#define PORT "34500" // the port client will be connecting to
 #define IP_ADRESS "192.168.0.151"
 #define BACKLOG 10     // how many pending connections queue will hold
 
@@ -246,13 +246,13 @@ void *connection_handler(void *socket_desc) {
     cout << "Korisnikov username: " << user->getUsername() << endl;
     string skanali;
     for (int k = 0; k < kanali.size(); k++) {
+      skanali += to_string(k+1) + " - ";
       skanali += kanali[k].getImeKanala();
-      skanali += " ";
+      skanali += "\n";
     }
-    cout << skanali << endl;
     int len = skanali.length();
-    cout << len << endl;
-    for (int p = 0; p < len; p++) {
+    kanaliChar = new char[len - 1];
+    for (int p = 0; p < len - 1; p++) {
       kanaliChar[p] = skanali[p];
     }
     kanaliChar[len] = '\0';

@@ -20,7 +20,7 @@
 #include <iostream>
 #include <fstream>
 
-#define PORT "34503" // the port client will be connecting to
+#define PORT "34500" // the port client will be connecting to
 #define IP_ADRESS "92.244.137.93"
 
 
