@@ -19,52 +19,15 @@
 
 using namespace std;
 
-#define PORT "34503" // the port client will be connecting to
+#define PORT "34521" // the port client will be connecting to
 #define IP_ADRESS "192.168.0.151"
 #define BACKLOG 10     // how many pending connections queue will hold
 
 int connected_client[100];
 int i = 0;
 string ispis;
-vector<Kanal> kanali;
 
-class Korisnik {
-private:
-  int sock;
-  char username[666];
-public:
-  Korisnik() {}
-  Korisnik(int sock, char *username) {
-    setSocket(sock);
-    setUsername(username);
-  }
-  void setSocket(int sock) {
-    this->sock = sock;
-  }
-  void setUsername(char *username) {
-      strcpy(this->username, username);
-  }
-  int getSocket() {
-    return sock;
-  }
-  char getUsername() {
-    return *username;
-  }
-  string printUsername() {
-    //string ispis(username)
-    for (int p = 0; p < strlen(username); p++) {
-      ispis += username[p];
-    }
-    return ispis;
-  }
-  friend ostream& operator<<(ostream &out, const Korisnik &user);
-};
-
-ostream& operator<<(ostream &out, Korisnik &user) {
-  //probajte ovo
-  out << user.username << endl;
-  return out;
-}
+class Korisnik;
 
 class Kanal {
 private:
@@ -91,9 +54,55 @@ public:
   friend ostream& operator<<(ostream &out, Kanal &kanal);
 };
 
+
+class Korisnik {
+private:
+  int sock;
+  string username;
+  Kanal *korisnikovKanal = NULL;
+public:
+  Korisnik() {}
+  Korisnik(int sock, char *username) {
+    setSocket(sock);
+    setUsername(username);
+  }
+  void setSocket(int sock) {
+    this->sock = sock;
+  }
+  void setUsername(char *username) {
+      this->username = username;
+  }
+  void setUsername() {
+    this->username.append(": ");
+  }
+  int getSocket() {
+    return sock;
+  }
+  string getUsername() {
+    return username;
+  }
+  Kanal getKorisnikovKanal() {
+    return *korisnikovKanal;
+  }
+  void konvStrUChar(char *nickname){
+    int len = username.length();
+    for (int i = 0; i < len; i++) {
+      nickname[i] = username[i];
+    }
+  }
+  friend ostream& operator<<(ostream &out, const Korisnik &user);
+};
+
+ostream& operator<<(ostream &out, Korisnik &user) {
+  //probajte ovo
+  out << user.getUsername() << endl;
+  return out;
+}
+
+
 ostream& operator<<(ostream &out, Kanal &kanal) {
   //TODO
-  out << kanal.imeKanala << endl;
+  out << kanal.ime << endl;
   for (int i = 0; i < kanal.korisnici.size(); i++) {
     out << kanal.korisnici[i] << endl;
   }
@@ -116,6 +125,11 @@ void *user() {
 
 }
 
+vector<Kanal> kanali;
+Kanal general("General");
+Kanal Programming("Programming");
+Kanal Sex("Sex");
+Kanal Kolaci("Kolaci");
 
 int main(void) {
 
@@ -128,6 +142,10 @@ int main(void) {
     char s[INET6_ADDRSTRLEN];
     int rv;
 
+    kanali.push_back(general);
+    kanali.push_back(Programming);
+    kanali.push_back(Sex);
+    kanali.push_back(Kolaci);
 
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
@@ -214,46 +232,48 @@ void *connection_handler(void *socket_desc) {
     //Get the socket descriptor
     int sock = *(int*)socket_desc;
     int read_size, j;
-    char *message , client_message[2000], username[666];
+    char *message , client_message[2000], nickname[666], *kanaliChar;
     string imeKanala;
     Korisnik *user;
-    Kanal *korisnikovKanal = NULL;
-    Kanal general("General");
-    Kanal Programming("Programming");
-    Kanal Sex("Sex");
-    Kanal Kolaci("Kolaci");
 
     //Send some messages to the client
     message = "Unesite vas username: \n";
     write(sock , message , strlen(message));
-    recv(sock, username, 666, 0);
-    user = new Korisnik(sock, username);
+    recv(sock, nickname, 666, 0);
+    //user->setUsername(nickname);
+    user = new Korisnik(sock, nickname);
     cout << "Korisnikov socket: " << user->getSocket() << endl;
-    cout << "Korisnikov username: " << user->printUsername() << endl;
+    cout << "Korisnikov username: " << user->getUsername() << endl;
     string skanali;
-    for (int i = 0; i < kanali; i++) {
-      skanali += kanali[i].imeKanala;
+    for (int k = 0; k < kanali.size(); k++) {
+      skanali += kanali[k].getImeKanala();
+      skanali += " ";
     }
+    cout << skanali << endl;
     int len = skanali.length();
-    write(sock, skanali.c_str(), strlen(message));
+    cout << len << endl;
+    for (int p = 0; p < len; p++) {
+      kanaliChar[p] = skanali[p];
+    }
+    kanaliChar[len] = '\0';
+    cout << kanaliChar << endl;
+    write(sock, kanaliChar, strlen(kanaliChar));
     recv(sock, client_message, 2000, 0);
     int izbor = atoi(client_message);
     cout << "Izbor: " << izbor << endl;
     switch(izbor) {
       case 1:
-        kanali.push_back(general);
         kanali[0].dodajKorisnika(*user);
         cout << "Kanal: " << kanali[0] << endl;
         for (j = 0; j < i; j++) {
-          cout << kanali[0].getKorisnik()[i].printUsername() << endl;
+          cout << kanali[0].getKorisnik()[i].getUsername() << endl;
         }
       break;
       case 2:
-        kanali.push_back(Programming);
         kanali[1].dodajKorisnika(*user);
         cout << "Kanal: " << kanali[1] << endl;
         for (j = 0; j < i; j++) {
-          cout << kanali[1].getKorisnik()[i].printUsername() << endl;
+          cout << kanali[1].getKorisnik()[i].getUsername() << endl;
         }
       break;
       case 3:
@@ -266,10 +286,10 @@ void *connection_handler(void *socket_desc) {
       break;
 
     }
-    strcat(username, ":");
-    strcat(username, " ");
+    user->setUsername();
     char disconnect[2666];
     char poruka[2666];
+    //string disconnect, poruka;
 
 //umesto connected_client staviti kanali[izbor].getKorisnik()[i]
 
@@ -310,7 +330,8 @@ void *connection_handler(void *socket_desc) {
         //Send the message back to client
         for (j = 0; j < i; j++) {
           //write(sock, username, strlen(username));
-          strcpy(poruka, username);
+          user->konvStrUChar(nickname);
+          strcpy(poruka, nickname);
           strcat(poruka, client_message);
           write(connected_client[j] , poruka , strlen(poruka));
         }
@@ -320,7 +341,7 @@ void *connection_handler(void *socket_desc) {
     {
         std::cout << "Client disconnected" << std::endl;
         for (j = 0; j < i-1; j++) {
-          strcpy(disconnect, username);
+          strcpy(disconnect, nickname);
           strcat(disconnect, "disconnected!");
           write(connected_client[j], disconnect, strlen(disconnect));
           delete user;
