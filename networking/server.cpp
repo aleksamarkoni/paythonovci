@@ -19,7 +19,7 @@
 
 using namespace std;
 
-#define PORT "34521" // the port client will be connecting to
+#define PORT "34500" // the port client will be connecting to
 #define IP_ADRESS "192.168.0.151"
 #define BACKLOG 10     // how many pending connections queue will hold
 
@@ -170,7 +170,10 @@ void svi_kanali(vector <Kanal> kanali, int sock) {
   write(sock, kanaliChar, strlen(kanaliChar));
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 40bc076dc7adbc8facc769da22853acd727d6da9
 int main(void) {
 
     int sockfd, new_fd;  // listen on sock_fd, new connection on new_fd
@@ -288,13 +291,30 @@ void *connection_handler(void *socket_desc) {
     cout << "Korisnikov socket: " << user->getSocket() << endl;
     cout << "Korisnikov username: " << user->getUsername() << endl;
     string skanali = "Unesite broj ili ime zeljenog kanala\n";
+<<<<<<< HEAD
     svi_kanali(kanali, sock);
+=======
+    for (int k = 0; k < kanali.size(); k++) {
+      skanali += to_string(k+1) + " - ";
+      skanali += kanali[k].getImeKanala();
+      skanali += "\n";
+    }
+    len = skanali.length();
+    kanaliChar = new char[len - 1];
+    for (int p = 0; p < len - 1; p++) {
+      kanaliChar[p] = skanali[p];
+    }
+    kanaliChar[len] = '\0';
+    //cout << kanaliChar << endl;
+    write(sock, kanaliChar, strlen(kanaliChar));
+>>>>>>> 40bc076dc7adbc8facc769da22853acd727d6da9
     recv(sock, client_message, 2000, 0);
     int izbor = atoi(client_message);
     cout << "Izbor: " << izbor << endl;
     switch(izbor) {
       case 1:
         /*j,k,p,len = 0;
+<<<<<<< HEAD
         kanali[0].dodajKorisnika(*user);
         //General.konvKANALStrUChar(pomocni, izbor, kanali);
         write(sock, message2, strlen(message2));
@@ -311,11 +331,33 @@ void *connection_handler(void *socket_desc) {
           clanoviChar[p] = clanovi[p];
         }
         kanaliChar[len] = '\0';*/
+=======
+>>>>>>> 40bc076dc7adbc8facc769da22853acd727d6da9
         kanali[0].dodajKorisnika(*user);
+        //General.konvKANALStrUChar(pomocni, izbor, kanali);
+        write(sock, message2, strlen(message2));
         cout << "Kanal: " << kanali[0] << endl;
+        clanovi = "";
+        for (k = 0; k < i; k++) {
+          clanovi += to_string(k+1) + " - ";
+          clanovi += kanali[0].getKorisnik()[k].getUsername();
+          clanovi += "\n";
+        }
+        len = clanovi.length();
+        clanoviChar = new char[len - 1];
+        for (p = 0; p < len - 1; p++) {
+          clanoviChar[p] = clanovi[p];
+        }
+        kanaliChar[len] = '\0';*/
         for (j = 0; j < i; j++) {
+<<<<<<< HEAD
           cout << "test 1: " << kanali[0].getKorisnik()[j].getUsername() << endl;
           cout << "test 2: " << nickname << endl;
+=======
+          write(sock, clanoviChar, strlen(clanoviChar));
+          cout << kanali[0].getKorisnik()[j].getUsername() << endl;
+          cout << nickname << endl;
+>>>>>>> 40bc076dc7adbc8facc769da22853acd727d6da9
         }
       break;
       case 2:
