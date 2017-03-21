@@ -59,16 +59,16 @@ void send_cb(Fl_Widget* dugme, void*) {
 }
 
 void kreirajProzor() {
-    Fl_Window * win = new Fl_Window(400, 600, "Chat Client 2.0");
-    win->begin();
-    Fl_Return_Button *send = new Fl_Return_Button(320, 560, 70, 30, "&Send");
-    Fl_Input *inp = new Fl_Input(10, 560, 300, 30, "");
-    messagesTextView = new Fl_Multiline_Output(10, 10, 380, 540, "");
-    win->end();
-    send->callback(send_cb);
-    messagesTextView->value("");
-     win->show();
-   }
+  Fl_Window * win = new Fl_Window(600, 800, "Chat Client 2.0");
+	win->begin();
+		Fl_Return_Button *send = new Fl_Return_Button(520, 760, 70, 30, "&Send");
+		Fl_Input *inp = new Fl_Input(10, 760, 500, 30, "");
+		messagesTextView = new Fl_Multiline_Output(10, 10, 580, 740, "");
+	win->end();
+	send->callback(send_cb);
+	messagesTextView->value("");
+	win->show();
+}
 
 int main(int argc, char *argv[])
 {
