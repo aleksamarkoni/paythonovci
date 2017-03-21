@@ -19,7 +19,7 @@
 
 using namespace std;
 
-#define PORT "34500" // the port client will be connecting to
+#define PORT "34521" // the port client will be connecting to
 #define IP_ADRESS "192.168.0.151"
 #define BACKLOG 10     // how many pending connections queue will hold
 
@@ -141,9 +141,35 @@ void *get_in_addr(struct sockaddr *sa)
 
     return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
-void *user() {
+//void *user() {
+//
+//}
 
+string prva_rec(char *message) {
+  string str1 = message;
+  size_t pos = str1.find(" ");
+  string str2 = str1.substr(0, pos);
+  return str2;
 }
+
+void svi_kanali(vector <Kanal> kanali, int sock) {
+  string skanali;
+  char *kanaliChar;
+  for (int k = 0; k < kanali.size(); k++) {
+    skanali += to_string(k+1) + " - ";
+    skanali += kanali[k].getImeKanala();
+    skanali += "\n";
+  }
+  int len = skanali.length();
+  kanaliChar = new char[len - 1];
+  for (int p = 0; p < len - 1; p++) {
+    kanaliChar[p] = skanali[p];
+  }
+  kanaliChar[len] = '\0';
+  //cout << kanaliChar << endl;
+  write(sock, kanaliChar, strlen(kanaliChar));
+}
+
 
 int main(void) {
 
@@ -262,19 +288,7 @@ void *connection_handler(void *socket_desc) {
     cout << "Korisnikov socket: " << user->getSocket() << endl;
     cout << "Korisnikov username: " << user->getUsername() << endl;
     string skanali = "Unesite broj ili ime zeljenog kanala\n";
-    for (int k = 0; k < kanali.size(); k++) {
-      skanali += to_string(k+1) + " - ";
-      skanali += kanali[k].getImeKanala();
-      skanali += "\n";
-    }
-    len = skanali.length();
-    kanaliChar = new char[len - 1];
-    for (int p = 0; p < len - 1; p++) {
-      kanaliChar[p] = skanali[p];
-    }
-    kanaliChar[len] = '\0';
-    //cout << kanaliChar << endl;
-    write(sock, kanaliChar, strlen(kanaliChar));
+    svi_kanali(kanali, sock);
     recv(sock, client_message, 2000, 0);
     int izbor = atoi(client_message);
     cout << "Izbor: " << izbor << endl;
@@ -297,10 +311,11 @@ void *connection_handler(void *socket_desc) {
           clanoviChar[p] = clanovi[p];
         }
         kanaliChar[len] = '\0';*/
+        kanali[0].dodajKorisnika(*user);
+        cout << "Kanal: " << kanali[0] << endl;
         for (j = 0; j < i; j++) {
-          write(sock, clanoviChar, strlen(clanoviChar));
-          cout << kanali[0].getKorisnik()[j].getUsername() << endl;
-          cout << nickname << endl;
+          cout << "test 1: " << kanali[0].getKorisnik()[j].getUsername() << endl;
+          cout << "test 2: " << nickname << endl;
         }
       break;
       case 2:
@@ -338,6 +353,12 @@ void *connection_handler(void *socket_desc) {
 
         client_message[read_size] = '\0';
         //TODO ove gledamo sta je korisnik hteo?
+        if(prva_rec(client_message) == "/lista") {
+          svi_kanali(kanali, sock);
+          //client_message[0] = "";
+          //recv(sock, client_message, 2000, 0);
+          //client_message[read_size] = '\0';
+        }
         /*
         // izdvoj prvu rec, pronadjem prvu prazninu, substrin(0, prve beline)
         if (prva_rec == "/lista_kanala") {
