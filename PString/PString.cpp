@@ -3,8 +3,6 @@
 
 using namespace std;
 
-//|'o'|'v'|'o'|'a'|_|_|....
-
 class PString {
 private:
   char *rec;
@@ -42,18 +40,23 @@ public:
     int len = 0;
     while (p.rec[len++] != '\0');
 
+    //TODO hocu da mi ovde objasnite zasto je len a ne len + 1, kada inicijalizujete memoriju
+
     rec = new char[len];
 
     for (int i = 0; i <= len; i++) {
       rec[i] = p.rec[i];
     }
+    //TODO i zasto ovde ne dodajete \0
   }
 
   ~PString() {
+    //TODO zasto ste ovde iskljucili destruktor
     //cout << "Ukljucio se destruktor" << endl;
     //delete [] rec;
   }
 
+  //TODO da li ovde treba konst i zasto. Na ovo pitanje da odgovori Marko
   void append(PString &p) {
     // duzina nase reci
     int lenrec = 0;
@@ -61,6 +64,7 @@ public:
     // duzina reci koju appendujemo
     int lenarec = 0;
     while (p.rec[lenarec++] != '\0');
+
     char * pom = new char[lenrec + lenarec - 1];
     // pom = "ovo je neka rec "
     // rec = "ovo je neka rec"
@@ -99,10 +103,10 @@ public:
   }
 
   void assign(const char *rrec) {
-    // duzina nase reci
+    // duzina reci kojom menjamo nasu rec
     int lenrec = 0;
     while (rrec[lenrec++] != '\0');
-    // duzina reci koju appendujemo
+    cout << lenrec << endl;
     char * pom = new char[lenrec - 1];
     for (int i = 0; i < lenrec - 1; i++) {
       pom[i] = rrec[i];
@@ -203,6 +207,10 @@ int main() {
   cout << ps4 << endl;
   ps4.assign("Prc");
   cout << ps4 << endl;
+
+  PString ps5("da");
+  ps5.assign("mozda");
+  cout << ps5 << endl;
 }
 
 //TODO operator =
