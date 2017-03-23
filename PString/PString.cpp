@@ -39,25 +39,27 @@ public:
   PString(const PString &p) {
     int len = 0;
     while (p.rec[len++] != '\0');
+    cout << len << endl;
 
     //TODO hocu da mi ovde objasnite zasto je len a ne len + 1, kada inicijalizujete memoriju
 
     rec = new char[len];
 
-    for (int i = 0; i <= len; i++) {
+    for (int i = 0; i <= len - 1; i++) {
       rec[i] = p.rec[i];
     }
+    rec[len] = '\0';
     //TODO i zasto ovde ne dodajete \0
   }
 
   ~PString() {
     //TODO zasto ste ovde iskljucili destruktor
     //cout << "Ukljucio se destruktor" << endl;
-    //delete [] rec;
+    delete [] rec;
   }
 
   //TODO da li ovde treba konst i zasto. Na ovo pitanje da odgovori Marko
-  void append(PString &p) {
+  void append(const PString &p) {
     // duzina nase reci
     int lenrec = 0;
     while (rec[lenrec++] != '\0');
@@ -189,16 +191,19 @@ char& PString::operator[](const int index) {
 
 int main() {
   PString ps1;
-  ps1 = "Zolak voli male guze.";
-  cout << "Test 1: " << ps1 << endl;
+  //ps1 = "Zolak voli male guze.";
+//  cout << "Test 1: " << ps1 << endl;
   PString ps2("Pesic ima papagaja");
   PString ps3 ("Srbija");
-  PString ps4 ("Jebem");
+  //PString ps4 ("Jebem");
   cout << ps2 << endl;
-  ps1.append(" Ovo je istina.");
-  cout << "Test 2: " << ps1 << endl;
+  //ps1.append(" Ovo je istina.");
+  //cout << "Test 2: " << ps1 << endl;
   ps2.append(ps3);
-  ps2.clear();
+  cout << ps2 << endl;
+  //PString ps6(ps3);
+  //cout << ps6 << endl;
+/*  ps2.clear();
   cout << ps3.front() << endl;
   cout << ps3.back() << endl;
   ps3.push_back('5');
@@ -210,7 +215,7 @@ int main() {
 
   PString ps5("da");
   ps5.assign("mozda");
-  cout << ps5 << endl;
+  cout << ps5 << endl;*/
 }
 
 //TODO operator =
