@@ -19,14 +19,21 @@
 
 using namespace std;
 
-#define PORT "34521" // the port client will be connecting to
+#define PORT "34500" // the port client will be connecting to
 #define IP_ADRESS "192.168.0.151"
 #define BACKLOG 10     // how many pending connections queue will hold
 
 int connected_client[100];
 int i = 0;
 string ispis;
-
+enum OPCIJE {
+  LISTA_KANALA,
+  GENERAL,
+  PROGRAMMING,
+  SEX,
+  KOLACI,
+  ERROR
+};
 
 class Korisnik;
 
@@ -42,15 +49,19 @@ public:
   void setKanal(string imeKanala) {
     this->ime = imeKanala;
   }
-  void dodajKorisnika(Korisnik &user) {
-    korisnici.push_back(user);
+  void dodajKorisnika(Korisnik *user) {
+    korisnici.push_back(*user);
+    cout << "Upisao korisnika" << endl;
   }
   string getImeKanala() {
     return this->ime;
   }
-  vector<Korisnik> getKorisnik() {
+  vector<Korisnik> getKorisnici() {
     return this->korisnici;
   }
+  //Korisnik getUserUKanalu(Korisnik &user) {
+  //  return korisnici.user;
+  //}
   void konvKANALStrUChar(char *pomocni, int izbor, vector<Kanal> kanali) {
     int len = ime.length();
     for (int i = 0; i < len; i++) {
@@ -145,14 +156,44 @@ void *get_in_addr(struct sockaddr *sa)
 //
 //}
 
-string prva_rec(char *message) {
+void napusti_kanal(vector<Kanal> kanali, Korisnik &user) {
+  for(int j = 0; j < i; j++) {
+    for(int k = 0; k < i; k++)
+    if(kanali[j].getKorisnici()[k].getSocket() == user.getSocket()) {
+      kanali[j].getKorisnici().erase(kanali[j].getKorisnici().begin() + k);
+      cout << "Korisnik: " << kanali[j].getKorisnici()[k].getUsername() <<
+       " je napustio " << kanali[j] << endl;
+    }
+  }
+}
+
+char prvo_slovo(char *message) {
+  return message[0];
+}
+
+OPCIJE prva_rec(char *message) {
   string str1 = message;
   size_t pos = str1.find(" ");
   string str2 = str1.substr(0, pos);
-  return str2;
+  if(str2 == "/lista") {
+    return LISTA_KANALA;
+  }
+  else if(str2 == "/General" || str2 == "/general" || str2 == "/1") {
+    return GENERAL;
+  }
+  else if(str2 == "/Programming" || str2 == "/programming" || str2 == "/2") {
+    return PROGRAMMING;
+  }
+  else if(str2 == "/Sex" || str2 == "/sex" || str2 == "/3") {
+    return SEX;
+  }
+  else if(str2 == "/Kolaci" || str2 == "/kolaci" || str2 == "/4") {
+    return KOLACI;
+  }
+  else return ERROR;
 }
 
-void svi_kanali(vector <Kanal> kanali, int sock) {
+void svi_kanali(Korisnik &user) {
   string skanali;
   char *kanaliChar;
   for (int k = 0; k < kanali.size(); k++) {
@@ -167,7 +208,75 @@ void svi_kanali(vector <Kanal> kanali, int sock) {
   }
   kanaliChar[len] = '\0';
   //cout << kanaliChar << endl;
-  write(sock, kanaliChar, strlen(kanaliChar));
+  write(user.getSocket(), kanaliChar, strlen(kanaliChar));
+}
+
+void izbor_kanala(OPCIJE opcije, Korisnik *user) {
+  int j;
+  cout << "Izbor: " << opcije << endl;
+  switch(opcije) {
+    case LISTA_KANALA:
+      svi_kanali(*user);
+    break;
+    case GENERAL:
+      for(j = 0; j < i; j++) {
+        if(!(kanali[j].getKorisnici().empty())) {
+          napusti_kanal(kanali, *user);
+          cout << kanali[0].getKorisnici()[j].getUsername() << endl;
+        }
+      }
+      kanali[0].dodajKorisnika(user);
+      cout << "Kanal: " << kanali[0] << endl;
+      for (j = 0; j < i; j++) {
+        cout << "Upisao se: " << kanali[0].getKorisnici()[j].getUsername() << endl;
+      }
+    break;
+    case PROGRAMMING:
+    for(j = 0; j < i; j++) {
+      if(!(kanali[j].getKorisnici().empty())) {
+        napusti_kanal(kanali, *user);
+      }
+    }
+    kanali[1].dodajKorisnika(user);
+    cout << "Kanal: " << kanali[1] << endl;
+    for (j = 0; j < i; j++) {
+      cout << "Upisao se: " << kanali[1].getKorisnici()[j].getUsername() << endl;
+    }
+    break;
+    case SEX:
+    for(j = 0; j < i; j++) {
+      if(!(kanali[j].getKorisnici().empty())) {
+        napusti_kanal(kanali, *user);
+      }
+    }
+    kanali[2].dodajKorisnika(user);
+    cout << "Kanal: " << kanali[2] << endl;
+    for (j = 0; j < i; j++) {
+      cout << "Upisao se: " << kanali[2].getKorisnici()[j].getUsername() << endl;
+    }
+    break;
+    case KOLACI:
+    for(j = 0; j < i; j++) {
+      if(!(kanali[j].getKorisnici().empty())) {
+        napusti_kanal(kanali, *user);
+      }
+    }
+    kanali[3].dodajKorisnika(user);
+    cout << "Kanal: " << kanali[3] << endl;
+    for (j = 0; j < i; j++) {
+      cout << "Upisao se: " << kanali[3].getKorisnici()[j].getUsername() << endl;
+    }
+    break;
+    case ERROR:
+      write(user->getSocket(), "Pogresna opcija", 15);
+      svi_kanali(*user);
+    break;
+    default:
+      write(user->getSocket(), "Ne znam sta si hteo", 19);
+      svi_kanali(*user);
+      break;
+
+  }
 }
 
 int main(void) {
@@ -277,6 +386,7 @@ void *connection_handler(void *socket_desc) {
     char *message2 = "General";
     string imeKanala;
     Korisnik *user;
+    OPCIJE opcije;
 
     //Send some messages to the client
     message = "Unesite vas username: \n";
@@ -287,60 +397,8 @@ void *connection_handler(void *socket_desc) {
     cout << "Korisnikov socket: " << user->getSocket() << endl;
     cout << "Korisnikov username: " << user->getUsername() << endl;
     string skanali = "Unesite broj ili ime zeljenog kanala\n";
-    svi_kanali(kanali, sock);
-    recv(sock, client_message, 2000, 0);
-    int izbor = atoi(client_message);
-    cout << "Izbor: " << izbor << endl;
-    switch(izbor) {
-      case 1:
-        /*j,k,p,len = 0;
-        kanali[0].dodajKorisnika(*user);
-        //General.konvKANALStrUChar(pomocni, izbor, kanali);
-        write(sock, message2, strlen(message2));
-        cout << "Kanal: " << kanali[0] << endl;
-        clanovi = "";
-        for (k = 0; k < i; k++) {
-          clanovi += to_string(k+1) + " - ";
-          clanovi += kanali[0].getKorisnik()[k].getUsername();
-          clanovi += "\n";
-        }
-        len = clanovi.length();
-        clanoviChar = new char[len - 1];
-        for (p = 0; p < len - 1; p++) {
-          clanoviChar[p] = clanovi[p];
-        }
-        kanaliChar[len] = '\0';*/
-        kanali[0].dodajKorisnika(*user);
-        cout << "Kanal: " << kanali[0] << endl;
-        for (j = 0; j < i; j++) {
-          cout << "test 1: " << kanali[0].getKorisnik()[j].getUsername() << endl;
-          cout << "test 2: " << nickname << endl;
-        }
-        }
-      break;
-      case 2:
-        kanali[1].dodajKorisnika(*user);
-        cout << "Kanal: " << kanali[1] << endl;
-        for (j = 0; j < i; j++) {
-          cout << kanali[1].getKorisnik()[i].getUsername() << endl;
-        }
-      break;
-      case 3:
-      kanali[3].dodajKorisnika(*user);
-      cout << "Kanal: " << kanali[1] << endl;
-      for (j = 0; j < i; j++) {
-        cout << kanali[3].getKorisnik()[i].getUsername() << endl;
-      }
-      break;
-      case 4:
-      kanali[4].dodajKorisnika(*user);
-      cout << "Kanal: " << kanali[4] << endl;
-      for (j = 0; j < i; j++) {
-        cout << kanali[1].getKorisnik()[i].getUsername() << endl;
-      }
-      break;
+    svi_kanali(*user);
 
-    }
     user->prosiriUsername();
     char disconnect[2666];
     char poruka[2666];
@@ -353,12 +411,14 @@ void *connection_handler(void *socket_desc) {
 
         client_message[read_size] = '\0';
         //TODO ove gledamo sta je korisnik hteo?
-        if(prva_rec(client_message) == "/lista") {
-          svi_kanali(kanali, sock);
+        if(prvo_slovo(client_message) == '/') {
+          opcije = prva_rec(client_message);
+          izbor_kanala(opcije, &*user);
+        }
+
           //client_message[0] = "";
           //recv(sock, client_message, 2000, 0);
-          //client_message[read_size] = '\0';
-        }
+          //client_message[read_size] = '\0'
         /*
         // izdvoj prvu rec, pronadjem prvu prazninu, substrin(0, prve beline)
         if (prva_rec == "/lista_kanala") {

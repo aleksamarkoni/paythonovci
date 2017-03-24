@@ -3,8 +3,6 @@
 
 using namespace std;
 
-//|'o'|'v'|'o'|'a'|_|_|....
-
 class PString {
 private:
   char *rec;
@@ -41,26 +39,34 @@ public:
   PString(const PString &p) {
     int len = 0;
     while (p.rec[len++] != '\0');
+    cout << len << endl;
+
+    //TODO hocu da mi ovde objasnite zasto je len a ne len + 1, kada inicijalizujete memoriju
 
     rec = new char[len];
 
-    for (int i = 0; i <= len; i++) {
+    for (int i = 0; i <= len - 1; i++) {
       rec[i] = p.rec[i];
     }
+    rec[len] = '\0';
+    //TODO i zasto ovde ne dodajete \0
   }
 
   ~PString() {
+    //TODO zasto ste ovde iskljucili destruktor
     //cout << "Ukljucio se destruktor" << endl;
-    //delete [] rec;
+    delete [] rec;
   }
 
-  void append(PString &p) {
+  //TODO da li ovde treba konst i zasto. Na ovo pitanje da odgovori Marko
+  void append(const PString &p) {
     // duzina nase reci
     int lenrec = 0;
     while (rec[lenrec++] != '\0');
     // duzina reci koju appendujemo
     int lenarec = 0;
     while (p.rec[lenarec++] != '\0');
+
     char * pom = new char[lenrec + lenarec - 1];
     // pom = "ovo je neka rec "
     // rec = "ovo je neka rec"
@@ -99,10 +105,10 @@ public:
   }
 
   void assign(const char *rrec) {
-    // duzina nase reci
+    // duzina reci kojom menjamo nasu rec
     int lenrec = 0;
     while (rrec[lenrec++] != '\0');
-    // duzina reci koju appendujemo
+    cout << lenrec << endl;
     char * pom = new char[lenrec - 1];
     for (int i = 0; i < lenrec - 1; i++) {
       pom[i] = rrec[i];
@@ -185,16 +191,19 @@ char& PString::operator[](const int index) {
 
 int main() {
   PString ps1;
-  ps1 = "Zolak voli male guze.";
-  cout << "Test 1: " << ps1 << endl;
+  //ps1 = "Zolak voli male guze.";
+//  cout << "Test 1: " << ps1 << endl;
   PString ps2("Pesic ima papagaja");
   PString ps3 ("Srbija");
-  PString ps4 ("Jebem");
+  //PString ps4 ("Jebem");
   cout << ps2 << endl;
-  ps1.append(" Ovo je istina.");
-  cout << "Test 2: " << ps1 << endl;
+  //ps1.append(" Ovo je istina.");
+  //cout << "Test 2: " << ps1 << endl;
   ps2.append(ps3);
-  ps2.clear();
+  cout << ps2 << endl;
+  //PString ps6(ps3);
+  //cout << ps6 << endl;
+/*  ps2.clear();
   cout << ps3.front() << endl;
   cout << ps3.back() << endl;
   ps3.push_back('5');
@@ -203,6 +212,10 @@ int main() {
   cout << ps4 << endl;
   ps4.assign("Prc");
   cout << ps4 << endl;
+
+  PString ps5("da");
+  ps5.assign("mozda");
+  cout << ps5 << endl;*/
 }
 
 //TODO operator =
