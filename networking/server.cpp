@@ -19,7 +19,7 @@
 
 using namespace std;
 
-#define PORT "34500" // the port client will be connecting to
+#define PORT "34510" // the port client will be connecting to
 #define IP_ADRESS "192.168.0.151"
 #define BACKLOG 10     // how many pending connections queue will hold
 
@@ -59,6 +59,7 @@ public:
   vector<Korisnik> getKorisnici() {
     return this->korisnici;
   }
+
   //Korisnik getUserUKanalu(Korisnik &user) {
   //  return korisnici.user;
   //}
@@ -68,9 +69,9 @@ public:
       pomocni[i] = kanali[izbor - 1].ime[i];
     }
   }
-
   friend ostream& operator<<(ostream &out, Kanal &kanal);
 };
+
 
 vector<Kanal> kanali;
 Kanal General("General");
@@ -82,7 +83,7 @@ class Korisnik {
 private:
   int sock;
   string username;
-  Kanal *korisnikovKanal = NULL;
+  int korisnikovKanal = -1;
 public:
   Korisnik() {}
   Korisnik(int sock, char *username) {
@@ -104,8 +105,11 @@ public:
   string getUsername() {
     return username;
   }
-  Kanal getKorisnikovKanal() {
-    return *korisnikovKanal;
+  int getKorisnikovKanal() {
+    return korisnikovKanal;
+  }
+  void setKorisnikovKanal(int izbor) {
+    this->korisnikovKanal = izbor;
   }
   void konvStrUChar(char *nickname) {
     int len = username.length();
@@ -129,6 +133,7 @@ ostream& operator<<(ostream &out, Korisnik &user) {
   out << user.getUsername() << endl;
   return out;
 }
+
 
 
 ostream& operator<<(ostream &out, Kanal &kanal) {
@@ -166,6 +171,9 @@ void napusti_kanal(vector<Kanal> kanali, Korisnik &user) {
     }
   }
 }
+
+
+
 
 char prvo_slovo(char *message) {
   return message[0];
@@ -212,19 +220,26 @@ void svi_kanali(Korisnik &user) {
 }
 
 void izbor_kanala(OPCIJE opcije, Korisnik *user) {
-  int j;
+  int j, izbor;
   cout << "Izbor: " << opcije << endl;
   switch(opcije) {
     case LISTA_KANALA:
       svi_kanali(*user);
     break;
     case GENERAL:
-      for(j = 0; j < i; j++) {
-        if(!(kanali[j].getKorisnici().empty())) {
+    izbor = 0;
+    if (user->getKorisnikovKanal() != -1 ) {
+      //for(j = 0; j < i; j++) {
+    //    if(!(kanali[j].getKorisnici().empty())) {
+          cout << "U kanalu_General :  " << endl;
           napusti_kanal(kanali, *user);
-          cout << kanali[0].getKorisnici()[j].getUsername() << endl;
-        }
+            cout << "Napustio kanal General :  " << endl;
+
+        //  cout << kanali[0].getKorisnici()[j].getUsername() << endl;
+        //}
       }
+      user->setKorisnikovKanal(izbor);
+
       kanali[0].dodajKorisnika(user);
       cout << "Kanal: " << kanali[0] << endl;
       for (j = 0; j < i; j++) {
@@ -232,11 +247,16 @@ void izbor_kanala(OPCIJE opcije, Korisnik *user) {
       }
     break;
     case PROGRAMMING:
-    for(j = 0; j < i; j++) {
-      if(!(kanali[j].getKorisnici().empty())) {
+    izbor = 1;
+      if (user->getKorisnikovKanal() != -1 ) {
+  //  for(j = 0; j < i; j++) {
+  //    if(!(kanali[j].getKorisnici().empty())) {
+      cout << "U kanalu Programing :  " << endl;
         napusti_kanal(kanali, *user);
+        cout << "Napustio kanal Programing :  " << endl;
       }
-    }
+      user->setKorisnikovKanal(izbor);
+  //  }
     kanali[1].dodajKorisnika(user);
     cout << "Kanal: " << kanali[1] << endl;
     for (j = 0; j < i; j++) {
@@ -244,6 +264,7 @@ void izbor_kanala(OPCIJE opcije, Korisnik *user) {
     }
     break;
     case SEX:
+    izbor = 2;
     for(j = 0; j < i; j++) {
       if(!(kanali[j].getKorisnici().empty())) {
         napusti_kanal(kanali, *user);
@@ -256,6 +277,7 @@ void izbor_kanala(OPCIJE opcije, Korisnik *user) {
     }
     break;
     case KOLACI:
+    izbor = 3;
     for(j = 0; j < i; j++) {
       if(!(kanali[j].getKorisnici().empty())) {
         napusti_kanal(kanali, *user);

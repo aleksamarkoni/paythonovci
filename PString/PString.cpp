@@ -48,6 +48,7 @@ public:
     for (int i = 0; i <= len - 1; i++) {
       rec[i] = p.rec[i];
     }
+
     rec[len] = '\0';
     //TODO i zasto ovde ne dodajete \0
   }
@@ -86,6 +87,7 @@ public:
     // duzina nase reci
     int lenrec = 0;
     while (rec[lenrec++] != '\0');
+
     // duzina reci koju appendujemo
     int lenarec = 0;
     while (arec[lenarec++] != '\0');
@@ -195,6 +197,8 @@ int main() {
 //  cout << "Test 1: " << ps1 << endl;
   PString ps2("Pesic ima papagaja");
   PString ps3 ("Srbija");
+  PString ps4 (ps3);
+  cout << "Test: " << ps4 << endl;
   //PString ps4 ("Jebem");
   cout << ps2 << endl;
   //ps1.append(" Ovo je istina.");
