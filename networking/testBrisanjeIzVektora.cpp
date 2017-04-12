@@ -5,7 +5,47 @@
 
 using namespace std;
 
-class Korisnik;
+class Kanal;
+
+vector<Kanal> kanali;
+
+class Korisnik {
+private:
+  int sock;
+  string username;
+  int korisnikovKanal;
+public:
+  Korisnik(int sock, string ime) {
+    this->sock = sock;
+    this->username = ime;
+    korisnikovKanal = -1;
+  }
+  int getSocket() {
+    return this->sock;
+  }
+  string getUsername() {
+    return this->username;
+  }
+  int getKorisnikovKanal() {
+    return this->korisnikovKanal;
+  }
+
+  friend ostream& operator<<(ostream &out, const Korisnik &user);
+
+};
+
+class IsOdd {
+  Korisnik &zaBrisanje;
+
+public:
+  IsOdd(Korisnik &zaBrisanje) :
+    zaBrisanje(zaBrisanje)
+  {}
+
+  bool operator()(Korisnik k) const {
+    return k.getSocket() == zaBrisanje.getSocket();
+  }
+};
 
 class Kanal {
 private:
@@ -26,33 +66,13 @@ public:
     korisnici.push_back(user);
   }
 
+  void ukloniKorisnika(Korisnik &user) {
+    korisnici.erase(
+      remove_if(korisnici.begin(), korisnici.end(), IsOdd(user)),
+      korisnici.end());
+  }
+
   friend ostream& operator<<(ostream &out, Kanal &kanal);
-};
-
-vector<Kanal> kanali;
-
-class Korisnik {
-private:
-  int sock;
-  string username;
-  int korisnikovKanal = -1;
-public:
-  Korisnik(int sock, string ime) {
-    this->sock = sock;
-    this->username = ime;
-  }
-  int getSocket() {
-    return this->sock;
-  }
-  string getUsername() {
-    return this->username;
-  }
-  int getKorisnikovKanal() {
-    return this->korisnikovKanal;
-  }
-
-  friend ostream& operator<<(ostream &out, const Korisnik &user);
-
 };
 
 ostream& operator<<(ostream &out, Korisnik &user) {
@@ -68,47 +88,12 @@ ostream& operator<<(ostream &out, Kanal &kanal) {
   return out;
 }
 
-bool napusti_kanal(vector<Kanal> &kanali, Korisnik &user) {
+void napusti_sve_kanale(vector<Kanal> &kanali, Korisnik &user) {
   for (int i = 0; i < 2; ++i) {
-       for (int j = 0; j < kanali[i].getKorisnici().size(); j++) {
-            cout << " Username: " << i+1 << " "
-            << kanali[i].getKorisnici()[j].getUsername() << " "
-            << kanali[i].getKorisnici()[j].getSocket() << endl;
-        }
-    cout << kanali[i].getKorisnici().size() << endl;
-    for (vector<Korisnik>::iterator it = kanali[i].getKorisnici().begin() ; it != kanali[i].getKorisnici().end(); ++it)
-      cout << "\t" << *it;
-      kanali[i].getKorisnici().erase(remove_if(kanali[i].getKorisnici().begin(), kanali[i].getKorisnici().end(),
-      [&user](Korisnik &k) {
-        cout << k.getSocket() << " " << user.getSocket() << endl;
-        return k.getSocket() == user.getSocket();} ), kanali[i].getKorisnici().end() );
-      cout << kanali[i].getKorisnici().size() << endl;
-      for (vector<Korisnik>::iterator it = kanali[i].getKorisnici().begin() ; it != kanali[i].getKorisnici().end(); ++it)
-        cout << "\t" << *it;
-    }
-  }
-
-    /*  if(kanali[j].getKorisnici()[k]->getSocket() == user.getSocket()) {
-        //delete kanali[j].getKorisnici()[k];
-        cout << "Pokusaj brisanja" << endl;
-        cout << "user.getSocket: "<< user.getSocket() << endl;
-        cout << "k: " << k << endl;
-        cout << "j: " << j << endl;
-    //    (kanali[j].getKorisnici()).erase(kanali[j].getKorisnici().begin() + k);
-        kanali[j].getKorisnici().erase(remove(kanali[j].getKorisnici().begin(),
-        kanali[j].getKorisnici().end(), k), kanali[j].getKorisnici().end());
-        cout << "Obrisao: " << endl;
-        //cout << "Korisnik: " << kanali[j].getKorisnici()[k].getUsername() <<
-        //" je napustio " << kanali[j] << endl;
-      }
-    }
+    kanali[i].ukloniKorisnika(user);
   }
 }
 
-*/
-
-
-//vec.erase(std::remove(vec.begin(), vec.end(), 8), vec.end());
 int main() {
   string imeKanala;
   string ime;
@@ -129,39 +114,20 @@ int main() {
   kanali[1].dodajKorisnika(*k4);
   kanali[1].dodajKorisnika(*k5);
   for (int i = 0; i < 2; ++i) {
-     for (int j = 0; j < kanali[i].getKorisnici().size(); j++) {
-          cout << " Username: " << i+1 << " "
-          << kanali[i].getKorisnici()[j].getUsername() << " "
-          << kanali[i].getKorisnici()[j].getSocket() << endl;
-      }
-   }
-if(napusti_kanal(kanali, *k1)) {
-  cout << "removed" << endl;
-}
-
-for (int i = 0; i < 2; ++i) {
-   for (int j = 0; j < kanali[i].getKorisnici().size(); j++) {
-        cout << " Username: " << i+1 << " "
+    for (int j = 0; j < kanali[i].getKorisnici().size(); j++) {
+      cout << " Username: " << i+1 << " "
         << kanali[i].getKorisnici()[j].getUsername() << " "
         << kanali[i].getKorisnici()[j].getSocket() << endl;
     }
- }
-/*
-  cout << "General: " << kanali[0].getKorisnici()[1]->getUsername() << endl;
-  cout << "General: " << kanali[0].getKorisnici()[2]->getUsername() << endl;
-  cout << "Programming: " << kanali[1].getKorisnici()[0]->getUsername() << endl;
-  cout << "Programming: " << kanali[1].getKorisnici()[1]->getUsername() << endl;
+  }
 
-  napusti_kanal(kanali, *k1);
-  napusti_kanal(kanali, *k2);
-  napusti_kanal(kanali, *k3);
-  napusti_kanal(kanali, *k4);
-  napusti_kanal(kanali, *k5);
+  napusti_sve_kanale(kanali, *k1);
 
-  cout << "General: " << kanali[0].getKorisnici()[0]->getUsername() << endl;
-  cout << "General: " << kanali[0].getKorisnici()[1]->getUsername() << endl;
-  cout << "General: " << kanali[0].getKorisnici()[2]->getUsername() << endl;
-  cout << "Programming: " << kanali[1].getKorisnici()[0]->getUsername() << endl;
-  cout << "Programming: " << kanali[1].getKorisnici()[1]->getUsername() << endl;
-*/
+  for (int i = 0; i < 2; ++i) {
+    for (int j = 0; j < kanali[i].getKorisnici().size(); j++) {
+      cout << " Username: " << i+1 << " "
+        << kanali[i].getKorisnici()[j].getUsername() << " "
+        << kanali[i].getKorisnici()[j].getSocket() << endl;
+    }
+  }
 }
