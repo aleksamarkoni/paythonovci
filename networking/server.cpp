@@ -20,7 +20,7 @@
 
 using namespace std;
 
-#define PORT "34512" // the port client will be connecting to
+#define PORT "34506" // the port client will be connecting to
 #define IP_ADRESS "192.168.0.151"
 #define BACKLOG 10     // how many pending connections queue will hold
 
@@ -34,7 +34,9 @@ enum OPCIJE {
   SEX,
   KOLACI,
   KORISNICI,
-  ERROR
+  ERROR,
+  HELP,
+  NAPUSTI
 };
 
 class Kanal;
@@ -217,6 +219,12 @@ OPCIJE prva_rec(char *message) {
   else if(str2 == "/Korisnici" || str2 == "/korisnici") {
     return KORISNICI;
   }
+  else if(str2 == "/Help" || str2 == "/help" || str2 == "/?" || "/pomoc") {
+    return HELP;
+  }
+  else if(str2 == "/napusti" || str2 == "/leave" || str2 == "/Napusti") {
+    return NAPUSTI;
+  }
   else return ERROR;
 }
 
@@ -242,9 +250,27 @@ void konvertovanje(char *nickname, string username) {
   for (int i = 0; i < len - 2; i++) {
     nickname[i] = username[i];
   }
-  nickname[len-1] = '\0';
+  nickname[len-2] = '\0';
 }
 
+void sve_opcije(Korisnik &user) {
+  string sve_opcije;
+  char *opcije;
+  sve_opcije = "Lista svih kanala - /lista\n";
+  sve_opcije += "Lista svih korisnika - /korisnici\n";
+  sve_opcije += "Kanal general - /general - /1\n";
+  sve_opcije += "Kanal programming - /programming - /2\n";
+  sve_opcije += "Kanal Sex - /sex - /3\n";
+  sve_opcije += "Kanal Kolaci - /kolaci - /4\n";
+  sve_opcije += "Izlaz iz kanala - /leave - /izadji\n";
+  int len = sve_opcije.length();
+  opcije = new char[len - 1];
+  for (int p = 0; p < len - 1; p++) {
+    opcije[p] = sve_opcije[p];
+  }
+  opcije[len] = '\0';
+  write(user.getSocket(), opcije, strlen(opcije));
+}
 
 void izbor_kanala(OPCIJE opcije, Korisnik *user) {
   int j, izbor, broj_korisnika;
@@ -309,6 +335,17 @@ void izbor_kanala(OPCIJE opcije, Korisnik *user) {
     case ERROR:
       write(user->getSocket(), "Pogresna opcija", 15);
       svi_kanali(*user);
+    break;
+    case HELP:
+      sve_opcije(*user);
+    break;
+    case NAPUSTI:
+      if (user->getKorisnikovKanal() != -1 ) {
+        napusti_sve_kanale(kanali, *user);
+      }
+      else {
+        write(user->getSocket(), "Niste ni u jednom kanalu", 24);
+      }
     break;
     default:
       write(user->getSocket(), "Ne znam sta si hteo", 19);
@@ -472,6 +509,7 @@ void *connection_handler(void *socket_desc) {
           strcat(disconnect, " has disconnected!");
           write(connected_client[j], disconnect, strlen(disconnect));
         }
+        napusti_sve_kanale(kanali, *user);
         fflush(stdout);
     }
     else if(read_size == -1)
