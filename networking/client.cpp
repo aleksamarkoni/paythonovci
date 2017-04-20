@@ -20,16 +20,9 @@
 #include <iostream>
 #include <fstream>
 
-<<<<<<< HEAD
-#define PORT "34512" // the port client will be connecting to
-||||||| merged common ancestors
+
 #define PORT "34500" // the port client will be connecting to
-=======
-#define PORT "34510" // the port client will be connecting to
->>>>>>> 2862fde5bcc9314df75c62fc7ceaad9113d4888d
 #define IP_ADRESS "92.244.137.93"
-
-
 #define MAXDATASIZE 1000 // max number of bytes we can get at once
 
 int sockfd;
