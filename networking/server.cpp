@@ -20,9 +20,10 @@
 
 using namespace std;
 
-#define PORT "34500" // the port client will be connecting to
+#define PORT "34522" // the port client will be connecting to
 #define IP_ADRESS "192.168.0.151"
 #define BACKLOG 10     // how many pending connections queue will hold
+#define BROJ_KANALA 4
 
 int connected_client[100];
 int i = 0;
@@ -155,7 +156,7 @@ ostream& operator<<(ostream &out, Korisnik &user) {
 }
 
 void napusti_sve_kanale(vector<Kanal> &kanali, Korisnik &user) {
-  for (int j = 0; j < i; ++j) {
+  for (int j = 0; j < BROJ_KANALA; ++j) {
     kanali[j].ukloniKorisnika(user);
   }
 }
@@ -235,12 +236,34 @@ void svi_kanali(Korisnik &user) {
   delete kanaliChar;
 }
 
+void svi_korisnici(Korisnik &user) {
+  string korisnik;
+  char *korisnik_char;
+  int broj_korisnika = kanali[user.getKorisnikovKanal()].getKorisnici().size();
+  for (int k = 0; k < broj_korisnika; k++) {
+    korisnik += to_string(k+1) + " - ";
+    korisnik += kanali[user.getKorisnikovKanal()].getKorisnici()[k].getUsername();
+    korisnik.erase(korisnik.length() - 2);
+    korisnik += "\n";
+  }
+  int len = korisnik.length();
+  korisnik_char = new char[len - 1];
+  for (int p = 0; p < len - 1; p++) {
+    korisnik_char[p] = korisnik[p];
+  }
+  korisnik_char[len - 1] = '\0';
+  write(user.getSocket(), korisnik_char, strlen(korisnik_char));
+  delete korisnik_char;
+}
+
+//TO DO prvi korisnik ima newline ostali se zalepe jedan za drugog
 void konvertovanje(char *nickname, string username) {
   int len = username.length();
   for (int i = 0; i < len - 2; i++) {
     nickname[i] = username[i];
   }
-  nickname[len-2] = '\0';
+  nickname[len-2] = '\n';
+  nickname[len-1] = '\0';
 }
 
 void sveOpcije(Korisnik &user) {
@@ -280,7 +303,7 @@ void izbor_kanala(OPCIJE opcije, Korisnik *user) {
         user->setKorisnikovKanal(-1);
         cout << "Promenio korisnikov kanal na: " << user->getKorisnikovKanal() << endl;
       }
-      if(user->getKorisnikovKanal() != izbor) {
+      if(user->getKorisnikovKanal() != 0) {
         user->setKorisnikovKanal(izbor);
         kanali[0].dodajKorisnika(user);
         write (user->getSocket(), "Kanal: General", 14);
@@ -297,7 +320,7 @@ void izbor_kanala(OPCIJE opcije, Korisnik *user) {
         user->setKorisnikovKanal(-1);
         cout << "Promenio korisnikov kanal na: " << user->getKorisnikovKanal() << endl;
       }
-      if(user->getKorisnikovKanal() != izbor) {
+      if(user->getKorisnikovKanal() != 1) {
         user->setKorisnikovKanal(izbor);
         kanali[1].dodajKorisnika(user);
         write (user->getSocket(), "Kanal: Programming", 18);
@@ -314,7 +337,7 @@ void izbor_kanala(OPCIJE opcije, Korisnik *user) {
         user->setKorisnikovKanal(-1);
         cout << "Promenio korisnikov kanal na: " << user->getKorisnikovKanal() << endl;
       }
-      if(user->getKorisnikovKanal() != izbor) {
+      if(user->getKorisnikovKanal() != 2) {
         user->setKorisnikovKanal(izbor);
         kanali[2].dodajKorisnika(user);
         write (user->getSocket(), "Kanal: Sex", 10);
@@ -331,7 +354,7 @@ void izbor_kanala(OPCIJE opcije, Korisnik *user) {
         user->setKorisnikovKanal(-1);
         cout << "Promenio korisnikov kanal na: " << user->getKorisnikovKanal() << endl;
       }
-      if(user->getKorisnikovKanal() != izbor) {
+      if(user->getKorisnikovKanal() != 3) {
         user->setKorisnikovKanal(izbor);
         kanali[3].dodajKorisnika(user);
         write (user->getSocket(), "Kanal: Kolaci", 13);
@@ -341,14 +364,17 @@ void izbor_kanala(OPCIJE opcije, Korisnik *user) {
       }
     break;
     case KORISNICI:
-    cout << "Lista korisnika" << endl;
+    /*cout << "Lista korisnika" << endl;
       broj_korisnika = kanali[user->getKorisnikovKanal()].getKorisnici().size();
-      for(int q = 0; q < broj_korisnika; q++) {
+      for(int q = 0; q < broj_korisnik; q++) {
         korisnik = kanali[user->getKorisnikovKanal()].getKorisnici()[q].getUsername();
+        cout << "korisnik length = " << korisnik.length() << endl;
         konvertovanje(korisnik_char, korisnik);
+        cout << "korisnik_char = " << strlen(korisnik_char) << endl;
         cout << korisnik_char << endl;
         write(user->getSocket(), korisnik_char , strlen(korisnik_char));
-      }
+      }*/
+      svi_korisnici(*user);
     break;
     case IZADJI:
     cout << "Poziv na leave" << endl;

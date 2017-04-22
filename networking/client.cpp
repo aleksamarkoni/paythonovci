@@ -21,7 +21,7 @@
 #include <fstream>
 
 
-#define PORT "34500" // the port client will be connecting to
+#define PORT "34521" // the port client will be connecting to
 #define IP_ADRESS "92.244.137.93"
 #define MAXDATASIZE 1000 // max number of bytes we can get at once
 
