@@ -20,7 +20,7 @@
 
 using namespace std;
 
-#define PORT "34522" // the port client will be connecting to
+#define PORT "34502" // the port client will be connecting to
 #define IP_ADRESS "192.168.0.151"
 #define BACKLOG 10     // how many pending connections queue will hold
 #define BROJ_KANALA 4
@@ -231,7 +231,7 @@ void svi_kanali(Korisnik &user) {
   for (int p = 0; p < len - 1; p++) {
     kanaliChar[p] = skanali[p];
   }
-  kanaliChar[len] = '\0';
+  kanaliChar[len - 1] = '\0';
   write(user.getSocket(), kanaliChar, strlen(kanaliChar));
   delete kanaliChar;
 }

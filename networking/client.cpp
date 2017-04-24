@@ -15,18 +15,22 @@
 #include <FL/Fl_Return_Button.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Input.H>
+#include <FL/Fl_Scrollbar.H>
+//#include <FL/Fl_Output.H>
 #include <FL/Fl_Multiline_Output.H>
 #include <string>
 #include <iostream>
 #include <fstream>
 
 
-#define PORT "34521" // the port client will be connecting to
+#define PORT "34502" // the port client will be connecting to
 #define IP_ADRESS "92.244.137.93"
 #define MAXDATASIZE 1000 // max number of bytes we can get at once
 
 int sockfd;
 Fl_Multiline_Output *messagesTextView;
+Fl_Scrollbar *scrollbar = 0;
+//Fl_Output *out = 0;
 
 void *cekam_korisnikov_unos(void *);
 void *cekam_podatke_sa_server(void *);
@@ -57,9 +61,24 @@ void send_cb(Fl_Widget* dugme, void*) {
   in->value("");
 }
 
+//void Scrollbar_CB(Fl_Widget*, void *) {
+//    char s[20];
+//    sprintf(s, "%d", scrollbar->value());
+//    out->value(s);
+//}
+
 void kreirajProzor() {
   Fl_Window * win = new Fl_Window(600, 800, "Chat Client 2.0");
 	win->begin();
+    scrollbar = new Fl_Scrollbar(594, 1, 5, 799, 0);
+    scrollbar->type();
+    scrollbar->slider_size(0.2);
+    scrollbar->bounds(100, 200);
+    scrollbar->value(150);
+    scrollbar->step(5);
+    //scrollbar->callback(Scrollbar_CB, (void*)&out);
+    //out = new Fl_Output(200, 150, 100, 40, 0);
+    //out->textsize(24);
 		Fl_Return_Button *send = new Fl_Return_Button(520, 760, 70, 30, "&Send");
 		Fl_Input *inp = new Fl_Input(10, 760, 500, 30, "");
 		messagesTextView = new Fl_Multiline_Output(10, 10, 580, 740, "");
@@ -67,6 +86,7 @@ void kreirajProzor() {
 	send->callback(send_cb);
 	messagesTextView->value("");
 	win->show();
+  //Scrollbar_CB(0, 0);
 }
 
 int main(int argc, char *argv[])
