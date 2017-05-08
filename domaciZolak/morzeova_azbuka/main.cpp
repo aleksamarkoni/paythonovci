@@ -4,6 +4,7 @@
 
 using namespace std;
 
+// ovo je relativno ok, mada treba koristiti ugradjeni kontejner mapu
 void decode(string word, string *alphabet) {
   if (!word.compare(".-")) *alphabet += "A";
   if (!word.compare("-...")) *alphabet += "B";
@@ -87,6 +88,8 @@ int main() {
   vector<string> sentence;
   //cout << "Enter number of messages" << endl;    //skinuto zbog UVa
   cin >> n;
+  //ovde nije dobro, proveravas da li je nesto vece od jedan ili manje od 10, sto je u sustini bilo koji broj. Razmisli jos jednom
+  // kao drugo nema potrebe da proveravas za UVA da li je tacna postavka, to se podrazumeva da je tako, jer sta bi i da nije.
   if (n > 1 || n < 10) {
     for (int i = 0; i < n; i++) {
       //cout << "Enter message: " << endl;      //skinuto zbog UVa
@@ -95,7 +98,13 @@ int main() {
       }
       getline(cin, message);
       msg_len = message.length();
+      // isto i ovde komentar kao i za n> 1 || n < 10, nema potrebe proveravati da li je zaista duzina linije 2k, jer sta bi da nije
       if (msg_len <= 2000) {
+        /* e sada ovako srz problema je u tome sto ti uzmes jednu liniju, polako odvajas reci, zatim prebacujes ih u drugi vector
+        a onda iz tog vectora kada obradic reci prebacujes ih u sentence, mislim sve je to ok, ali je bespotrebno, jer ti odma mozes da stampas
+        na primer, uzmes rec, vidis da li je praznina, ako jeste to znaci da treba da stampas prazninu, ako nije, onda je to pocetak nove reci 
+        odredis koja je primenis decode i odma ostampas rezultat, onda ti nista od ovog ovde nece trebati. Imao bi samo jedan string ili dva i to je to.
+        */
         for (int i = 0; i <= msg_len; i++) {
           if (message[i] != ' ') {
             letter += message[i];
