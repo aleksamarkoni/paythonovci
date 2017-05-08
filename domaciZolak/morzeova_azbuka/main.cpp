@@ -98,16 +98,16 @@ int main() {
       if (msg_len <= 2000) {
         for (int i = 0; i <= msg_len; i++) {
           if (message[i] != ' ') {
-           letter += message[i];
+            letter += message[i];
           }
           if (message[i] == ' ' || i == msg_len) { // i == msg_len ide da bi push_back odradio i za poslednje slovo
-          word.push_back(letter);
-          letter = "";
-          count++;
+            word.push_back(letter);
+            letter = "";
+            count++;
           }
           if (message[i] == ' ' && message[i + 1] == ' ') {
-          word.push_back(" ");
-          count++;
+            word.push_back(" ");
+            count++;
           }
         }
       conversion(word, count, &alphabet);
