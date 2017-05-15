@@ -16,12 +16,14 @@
 #include <pthread.h>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
-#define PORT "34510" // the port client will be connecting to
+#define PORT "34502" // the port client will be connecting to
 #define IP_ADRESS "192.168.0.151"
 #define BACKLOG 10     // how many pending connections queue will hold
+#define BROJ_KANALA 4
 
 int connected_client[100];
 int i = 0;
@@ -32,63 +34,25 @@ enum OPCIJE {
   PROGRAMMING,
   SEX,
   KOLACI,
+  KORISNICI,
+  IZADJI,
+  POMOC,
   ERROR
 };
 
-class Korisnik;
-
-class Kanal {
-private:
-  string ime;
-  vector <Korisnik> korisnici;
-public:
-  Kanal() {}
-  Kanal(string imeKanala) {
-    setKanal(imeKanala);
-  }
-  void setKanal(string imeKanala) {
-    this->ime = imeKanala;
-  }
-  void dodajKorisnika(Korisnik *user) {
-    korisnici.push_back(*user);
-    cout << "Upisao korisnika" << endl;
-  }
-  string getImeKanala() {
-    return this->ime;
-  }
-  vector<Korisnik> getKorisnici() {
-    return this->korisnici;
-  }
-
-  //Korisnik getUserUKanalu(Korisnik &user) {
-  //  return korisnici.user;
-  //}
-  void konvKANALStrUChar(char *pomocni, int izbor, vector<Kanal> kanali) {
-    int len = ime.length();
-    for (int i = 0; i < len; i++) {
-      pomocni[i] = kanali[izbor - 1].ime[i];
-    }
-  }
-  friend ostream& operator<<(ostream &out, Kanal &kanal);
-};
-
-
-vector<Kanal> kanali;
-Kanal General("General");
-Kanal Programming("Programming");
-Kanal Sex("Sex");
-Kanal Kolaci("Kolaci");
+class Kanal;
 
 class Korisnik {
 private:
   int sock;
   string username;
-  int korisnikovKanal = -1;
+  int korisnikovKanal;
 public:
   Korisnik() {}
   Korisnik(int sock, char *username) {
     setSocket(sock);
     setUsername(username);
+    korisnikovKanal = -1;
   }
   void setSocket(int sock) {
     this->sock = sock;
@@ -128,13 +92,74 @@ public:
   friend ostream& operator<<(ostream &out, const Korisnik &user);
 };
 
+class IsOdd {
+  Korisnik &zaBrisanje;
+
+public:
+  IsOdd(Korisnik &zaBrisanje) :
+    zaBrisanje(zaBrisanje)
+  {}
+
+  bool operator()(Korisnik k) const {
+    return k.getSocket() == zaBrisanje.getSocket();
+  }
+};
+
+class Kanal {
+private:
+  string ime;
+  vector <Korisnik> korisnici;
+public:
+  Kanal() {}
+  Kanal(string imeKanala) {
+    setKanal(imeKanala);
+  }
+  void setKanal(string imeKanala) {
+    this->ime = imeKanala;
+  }
+  void dodajKorisnika(Korisnik *user) {
+    korisnici.push_back(*user);
+    cout << "Upisao korisnika" << endl;
+  }
+  string getImeKanala() {
+    return this->ime;
+  }
+  vector<Korisnik> getKorisnici() {
+    return this->korisnici;
+  }
+
+  void ukloniKorisnika(Korisnik &user) {
+    korisnici.erase(
+      remove_if(korisnici.begin(), korisnici.end(), IsOdd(user)),
+      korisnici.end());
+  }
+
+  void konvKANALStrUChar(char *pomocni, int izbor, vector<Kanal> kanali) {
+    int len = ime.length();
+    for (int i = 0; i < len; i++) {
+      pomocni[i] = kanali[izbor - 1].ime[i];
+    }
+  }
+  friend ostream& operator<<(ostream &out, Kanal &kanal);
+};
+
+vector<Kanal> kanali;
+Kanal General("General");
+Kanal Programming("Programming");
+Kanal Sex("Sex");
+Kanal Kolaci("Kolaci");
+
 ostream& operator<<(ostream &out, Korisnik &user) {
   //probajte ovo
   out << user.getUsername() << endl;
   return out;
 }
 
-
+void napusti_sve_kanale(vector<Kanal> &kanali, Korisnik &user) {
+  for (int j = 0; j < BROJ_KANALA; ++j) {
+    kanali[j].ukloniKorisnika(user);
+  }
+}
 
 ostream& operator<<(ostream &out, Kanal &kanal) {
   //TODO
@@ -157,23 +182,6 @@ void *get_in_addr(struct sockaddr *sa)
 
     return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
-//void *user() {
-//
-//}
-
-void napusti_kanal(vector<Kanal> kanali, Korisnik &user) {
-  for(int j = 0; j < i; j++) {
-    for(int k = 0; k < i; k++)
-    if(kanali[j].getKorisnici()[k].getSocket() == user.getSocket()) {
-      kanali[j].getKorisnici().erase(kanali[j].getKorisnici().begin() + k);
-      cout << "Korisnik: " << kanali[j].getKorisnici()[k].getUsername() <<
-       " je napustio " << kanali[j] << endl;
-    }
-  }
-}
-
-
-
 
 char prvo_slovo(char *message) {
   return message[0];
@@ -183,7 +191,7 @@ OPCIJE prva_rec(char *message) {
   string str1 = message;
   size_t pos = str1.find(" ");
   string str2 = str1.substr(0, pos);
-  if(str2 == "/lista") {
+  if(str2 == "/kanali") {
     return LISTA_KANALA;
   }
   else if(str2 == "/General" || str2 == "/general" || str2 == "/1") {
@@ -197,6 +205,15 @@ OPCIJE prva_rec(char *message) {
   }
   else if(str2 == "/Kolaci" || str2 == "/kolaci" || str2 == "/4") {
     return KOLACI;
+  }
+  else if(str2 == "/Korisnici" || str2 == "/korisnici") {
+    return KORISNICI;
+  }
+  else if(str2 == "/izadji" || str2 == "/leave" || str2 == "/Izadji" || str2 == "/Leave") {
+    return IZADJI;
+  }
+  else if(str2 == "/Help" || str2 == "/help" || str2 == "/?" || str2 == "/pomoc" || str2 == "/Pomoc") {
+    return POMOC;
   }
   else return ERROR;
 }
@@ -214,95 +231,180 @@ void svi_kanali(Korisnik &user) {
   for (int p = 0; p < len - 1; p++) {
     kanaliChar[p] = skanali[p];
   }
-  kanaliChar[len] = '\0';
-  //cout << kanaliChar << endl;
+  kanaliChar[len - 1] = '\0';
   write(user.getSocket(), kanaliChar, strlen(kanaliChar));
+  delete kanaliChar;
+}
+
+void svi_korisnici(Korisnik &user) {
+  string korisnik;
+  char *korisnik_char;
+  int broj_korisnika = kanali[user.getKorisnikovKanal()].getKorisnici().size();
+  for (int k = 0; k < broj_korisnika; k++) {
+    korisnik += to_string(k+1) + " - ";
+    korisnik += kanali[user.getKorisnikovKanal()].getKorisnici()[k].getUsername();
+    korisnik.erase(korisnik.length() - 2);
+    korisnik += "\n";
+  }
+  int len = korisnik.length();
+  korisnik_char = new char[len - 1];
+  for (int p = 0; p < len - 1; p++) {
+    korisnik_char[p] = korisnik[p];
+  }
+  korisnik_char[len - 1] = '\0';
+  write(user.getSocket(), korisnik_char, strlen(korisnik_char));
+  delete korisnik_char;
+}
+
+//TO DO prvi korisnik ima newline ostali se zalepe jedan za drugog
+void konvertovanje(char *nickname, string username) {
+  int len = username.length();
+  for (int i = 0; i < len - 2; i++) {
+    nickname[i] = username[i];
+  }
+  nickname[len-2] = '\n';
+  nickname[len-1] = '\0';
+}
+
+void sveOpcije(Korisnik &user) {
+  string str;
+  char *prebaci;
+  str = "Lista svih kanala - /kanali\n";
+  str += "Lista svih korisnika - /korisnici\n";
+  str += "Kanal general - /general - /1\n";
+  str += "Kanal programming - /programming - /2\n";
+  str += "Kanal Sex - /sex - /3\n";
+  str += "Kanal Kolaci - /kolaci - /4\n";
+  str += "Izlaz iz kanala - /leave - /izadji\n";
+  int len = str.length();
+  prebaci = new char[len - 1];
+  for (int p = 0; p < len - 1; p++) {
+    prebaci[p] = str[p];
+  }
+  prebaci[len] = '\0';
+  write(user.getSocket(), prebaci, strlen(prebaci));
+  delete prebaci;
 }
 
 void izbor_kanala(OPCIJE opcije, Korisnik *user) {
-  int j, izbor;
+  int j, izbor, broj_korisnika;
+  string korisnik;
+  char korisnik_char[666];
   cout << "Izbor: " << opcije << endl;
   switch(opcije) {
     case LISTA_KANALA:
       svi_kanali(*user);
     break;
     case GENERAL:
-    izbor = 0;
-    if (user->getKorisnikovKanal() != -1 ) {
-      //for(j = 0; j < i; j++) {
-    //    if(!(kanali[j].getKorisnici().empty())) {
-          cout << "U kanalu_General :  " << endl;
-          napusti_kanal(kanali, *user);
-            cout << "Napustio kanal General :  " << endl;
-
-        //  cout << kanali[0].getKorisnici()[j].getUsername() << endl;
-        //}
+      izbor = 0;
+      if (user->getKorisnikovKanal() != -1 ) {
+        cout << "U kanalu_General :  " << endl;
+        napusti_sve_kanale(kanali, *user);
+        user->setKorisnikovKanal(-1);
+        cout << "Promenio korisnikov kanal na: " << user->getKorisnikovKanal() << endl;
       }
-      user->setKorisnikovKanal(izbor);
-
-      kanali[0].dodajKorisnika(user);
-      cout << "Kanal: " << kanali[0] << endl;
-      for (j = 0; j < i; j++) {
-        cout << "Upisao se: " << kanali[0].getKorisnici()[j].getUsername() << endl;
+      if(user->getKorisnikovKanal() != 0) {
+        user->setKorisnikovKanal(izbor);
+        kanali[0].dodajKorisnika(user);
+        write (user->getSocket(), "Kanal: General", 14);
+        cout << "Kanal: " << kanali[0] << endl;
+      } else {
+        write (user->getSocket(), "Vec se nalazis u tom kanalu", 27);
       }
     break;
     case PROGRAMMING:
-    izbor = 1;
+      izbor = 1;
       if (user->getKorisnikovKanal() != -1 ) {
-  //  for(j = 0; j < i; j++) {
-  //    if(!(kanali[j].getKorisnici().empty())) {
-      cout << "U kanalu Programing :  " << endl;
-        napusti_kanal(kanali, *user);
-        cout << "Napustio kanal Programing :  " << endl;
+        cout << "U kanalu Programing :  " << endl;
+        napusti_sve_kanale(kanali, *user);
+        user->setKorisnikovKanal(-1);
+        cout << "Promenio korisnikov kanal na: " << user->getKorisnikovKanal() << endl;
       }
-      user->setKorisnikovKanal(izbor);
-  //  }
-    kanali[1].dodajKorisnika(user);
-    cout << "Kanal: " << kanali[1] << endl;
-    for (j = 0; j < i; j++) {
-      cout << "Upisao se: " << kanali[1].getKorisnici()[j].getUsername() << endl;
-    }
+      if(user->getKorisnikovKanal() != 1) {
+        user->setKorisnikovKanal(izbor);
+        kanali[1].dodajKorisnika(user);
+        write (user->getSocket(), "Kanal: Programming", 18);
+        cout << "Kanal: " << kanali[1] << endl;
+      } else {
+        write (user->getSocket(), "Vec se nalazis u tom kanalu", 27);
+      }
     break;
     case SEX:
-    izbor = 2;
-    for(j = 0; j < i; j++) {
-      if(!(kanali[j].getKorisnici().empty())) {
-        napusti_kanal(kanali, *user);
+      izbor = 2;
+      if (user->getKorisnikovKanal() != -1 ) {
+        cout << "U kanalu Sex :  " << endl;
+        napusti_sve_kanale(kanali, *user);
+        user->setKorisnikovKanal(-1);
+        cout << "Promenio korisnikov kanal na: " << user->getKorisnikovKanal() << endl;
       }
-    }
-    kanali[2].dodajKorisnika(user);
-    cout << "Kanal: " << kanali[2] << endl;
-    for (j = 0; j < i; j++) {
-      cout << "Upisao se: " << kanali[2].getKorisnici()[j].getUsername() << endl;
-    }
+      if(user->getKorisnikovKanal() != 2) {
+        user->setKorisnikovKanal(izbor);
+        kanali[2].dodajKorisnika(user);
+        write (user->getSocket(), "Kanal: Sex", 10);
+        cout << "Kanal: " << kanali[2] << endl;
+      } else {
+        write (user->getSocket(), "Vec se nalazis u tom kanalu", 27);
+      }
     break;
     case KOLACI:
-    izbor = 3;
-    for(j = 0; j < i; j++) {
-      if(!(kanali[j].getKorisnici().empty())) {
-        napusti_kanal(kanali, *user);
+      izbor = 3;
+      if (user->getKorisnikovKanal() != -1 ) {
+        cout << "U kanalu Kolaci :  " << endl;
+        napusti_sve_kanale(kanali, *user);
+        user->setKorisnikovKanal(-1);
+        cout << "Promenio korisnikov kanal na: " << user->getKorisnikovKanal() << endl;
       }
-    }
-    kanali[3].dodajKorisnika(user);
-    cout << "Kanal: " << kanali[3] << endl;
-    for (j = 0; j < i; j++) {
-      cout << "Upisao se: " << kanali[3].getKorisnici()[j].getUsername() << endl;
-    }
+      if(user->getKorisnikovKanal() != 3) {
+        user->setKorisnikovKanal(izbor);
+        kanali[3].dodajKorisnika(user);
+        write (user->getSocket(), "Kanal: Kolaci", 13);
+        cout << "Kanal: " << kanali[3] << endl;
+      } else {
+        write (user->getSocket(), "Vec se nalazis u tom kanalu", 27);
+      }
+    break;
+    case KORISNICI:
+    /*cout << "Lista korisnika" << endl;
+      broj_korisnika = kanali[user->getKorisnikovKanal()].getKorisnici().size();
+      for(int q = 0; q < broj_korisnik; q++) {
+        korisnik = kanali[user->getKorisnikovKanal()].getKorisnici()[q].getUsername();
+        cout << "korisnik length = " << korisnik.length() << endl;
+        konvertovanje(korisnik_char, korisnik);
+        cout << "korisnik_char = " << strlen(korisnik_char) << endl;
+        cout << korisnik_char << endl;
+        write(user->getSocket(), korisnik_char , strlen(korisnik_char));
+      }*/
+      svi_korisnici(*user);
+    break;
+    case IZADJI:
+    cout << "Poziv na leave" << endl;
+      if (user->getKorisnikovKanal() != -1 ) {
+        napusti_sve_kanale(kanali, *user);
+        user->setKorisnikovKanal(-1);
+        cout << "Promenio korisnikov kanal na: " << user->getKorisnikovKanal() << endl;
+        write(user->getSocket(), "Napustio kanal", 14);
+      }
+      else {
+        write(user->getSocket(), "Niste ni u jednom kanalu", 24);
+      }
+    break;
+    case POMOC:
+    cout << "Pozvali pomoc" << endl;
+      sveOpcije(*user);
     break;
     case ERROR:
+      cout << "Error - pogresna opcija" << endl;
       write(user->getSocket(), "Pogresna opcija", 15);
-      svi_kanali(*user);
+      write(user->getSocket(), "Pomoc - /help - /pomoc - /?", 29);
     break;
     default:
+    cout << "Pozvao se default" << endl;
       write(user->getSocket(), "Ne znam sta si hteo", 19);
-      svi_kanali(*user);
-      break;
-
+    break;
   }
 }
 
 int main(void) {
-
     int sockfd, new_fd;  // listen on sock_fd, new connection on new_fd
     struct addrinfo hints, *servinfo, *p;
     struct sockaddr_storage their_addr; // connector's address information
@@ -424,7 +526,6 @@ void *connection_handler(void *socket_desc) {
     user->prosiriUsername();
     char disconnect[2666];
     char poruka[2666];
-    //string disconnect, poruka;
 
 //umesto connected_client staviti kanali[izbor].getKorisnik()[i]
 
@@ -436,47 +537,20 @@ void *connection_handler(void *socket_desc) {
         if(prvo_slovo(client_message) == '/') {
           opcije = prva_rec(client_message);
           izbor_kanala(opcije, &*user);
+
         }
-
-          //client_message[0] = "";
-          //recv(sock, client_message, 2000, 0);
-          //client_message[read_size] = '\0'
-        /*
-        // izdvoj prvu rec, pronadjem prvu prazninu, substrin(0, prve beline)
-        if (prva_rec == "/lista_kanala") {
-          posalji_klientu_sve_kanale();
-        } else if (prva_rec == /udji_u_kanal) {
-         // izdvoj drugu rec u recenici /udji_u_kanal sex
-         for (int i=0; i < kanali.length(); i++) {
-           if (kanali[i].imeKanala == druga_rec) {
-             korisnikovKanal = &kanali[i];
-             dodaj korisnika u kanal i to je to
-         }
-         // nema tog kanala, onda prijavljujem gresku
-       } else {
-       for (int i = 0; i < kanali.length(); i++) {
-          for (int j = 0; j < kanali[i].korisnici.length(); j++) {
-            if (kanali[i].korisnici[j].sock == sock) {
-              //pronasao sam kanal u kome je korisnki
-              kanal = korisnikKanal;
-          }
-        }
-        for (int i =0; *korisnikKanal->getKorisniki().length(); i++) {
-
-      }
-     }
-     }
-         //
-      }
-
-        */
         //Send the message back to client
         for (j = 0; j < i; j++) {
           //write(sock, username, strlen(username));
           user->konvStrUChar(nickname);
           strcpy(poruka, nickname);
           strcat(poruka, client_message);
-          write(connected_client[j] , poruka , strlen(poruka));
+          if(prvo_slovo(client_message) != '/' && user->getKorisnikovKanal() != -1) {
+            write(kanali[user->getKorisnikovKanal()].getKorisnici()[j].getSocket() , poruka , strlen(poruka));
+          }
+          if(user->getKorisnikovKanal() == -1) {
+            write(user->getSocket() , "Nisi ni u jednom kanalu" , 25);
+          }
         }
     }
 
@@ -488,6 +562,7 @@ void *connection_handler(void *socket_desc) {
           strcat(disconnect, " has disconnected!");
           write(connected_client[j], disconnect, strlen(disconnect));
         }
+        napusti_sve_kanale(kanali, *user);
         fflush(stdout);
     }
     else if(read_size == -1)
